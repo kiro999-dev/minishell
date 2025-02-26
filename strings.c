@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:48:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/02/22 18:49:29 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/02/26 13:45:45 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,19 @@ char	*ft_strdup(const char *s1)
 		return (NULL);
 	ft_strlcpy(s1_cpy, s1, size);
 	return (s1_cpy);
+}
+char	*ft_strchr(const char *s, int c)
+{
+	char	*ptr_s;
+
+	ptr_s = (char *) s;
+	while (*ptr_s)
+	{
+		if (*ptr_s == (char) c)
+			return (ptr_s);
+		ptr_s++;
+	}
+	if (*ptr_s == (char)c)
+		return (ptr_s);
+	return (NULL);
 }

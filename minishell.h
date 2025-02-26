@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/02/25 18:03:01 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/02/26 13:46:13 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ char   	**ft_split(const char *s, char c);
 char    *join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
 #endif
