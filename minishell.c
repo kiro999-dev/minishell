@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:37:53 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/01 06:10:16 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/01 06:58:02 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,43 @@ t_ast *creat_node_ast(char **cmd,char *value,t_TOKENS type)
 	node->right = NULL;
 	return (node);
 }
+t_ast *pars_redi(t_toknes_list **token) 
+{
+	
+    t_toknes_list *current_tok = *token;
+	t_ast *current;
+
+    
+	current = NULL;// Verify there's a filename following
+	if (!current_tok->next ||( current_tok->next->type != WORD &&
+			 current_tok->next->type != IS_FILE && 
+			 	current_tok->next->type != IS_FILE_APPEND))
+	{
+		// print(token->next->val,token->next->type);
+		fprintf(stderr, "Syntax error: missing filename after '%s'\n", current_tok->val);
+		return NULL;
+	}
+	// Handle different redirection types
+	current = creat_node_ast(NULL,(*token)->val,(*token)->type);
+	if (current_tok->type == REDIR_IN) 
+		current->input_file = ft_strdup(current_tok->next->val);
+	else if (current_tok->type == REDIR_OUT) 
+	{
+		current->output_file = ft_strdup(current_tok->next->val);
+		current->append_mode = 0;
+	} 
+	else if (current_tok->type == APPEND)
+	 {
+		current->output_file = ft_strdup(current_tok->next->val);
+		current->append_mode = 1;
+	}
+		
+	// Move past both the redirection token and filename
+	current_tok = current_tok->next->next;
+    *token = current_tok;
+    return (current);
+}
+
 char **pars_cmd(t_toknes_list **token ,t_ast **root) 
 {
 	
@@ -78,8 +115,6 @@ char **pars_cmd(t_toknes_list **token ,t_ast **root)
     int count = 0;
     char **cmd;
     int i = 0;
-	int	redir = 0;
-
     // Count the number of WORD/CMD tokens
     while (current && (current->type != PIPE)) {
 		
@@ -87,10 +122,9 @@ char **pars_cmd(t_toknes_list **token ,t_ast **root)
         	count++;
         current = current->next;
     }
-	printf("%d count\n",count);
+
     cmd = malloc(sizeof(char *) * (count + 1)); // +1 for NULL terminator
     if (!cmd) return NULL;
-
     current = *token;
 	while (current && (current->type != PIPE)) {
 		
@@ -99,12 +133,13 @@ char **pars_cmd(t_toknes_list **token ,t_ast **root)
 			cmd[i] = ft_strdup(current->val);
 			i++;
 		}
-		if(current->type = REDIR_IN)
-			
-        current = current->next;
-		
+		else if((*token)->type == REDIR_IN || (*token)->type == REDIR_OUT ||  (*token)->type==APPEND)
+		{
+			*root = pars_redi(token);
+		}
+		else
+        	current = current->next;
     }
-
     cmd[i] = NULL; // Null-terminate the array
 	
     // Advance the original token pointer past processed tokens
@@ -114,6 +149,7 @@ char **pars_cmd(t_toknes_list **token ,t_ast **root)
 t_ast *generate_tree(t_toknes_list **token_ptr) {
     t_ast *root = NULL;
     t_ast *current = NULL;
+	t_ast  *redi = NULL;
     t_toknes_list *token = *token_ptr;
 
     while (token) {
@@ -135,56 +171,31 @@ t_ast *generate_tree(t_toknes_list **token_ptr) {
                 return NULL;
             }
             root->right = right;
-        } else if (token->type == CMD || token->type == WORD) {
-            char **cmd = pars_cmd(&token,&current);
+        } else if (token->type == CMD || token->type == WORD) 
+		{
+            char **cmd = pars_cmd(&token,&redi);
             if (!cmd) return NULL;
             t_ast *cmd_node = creat_node_ast(cmd, "cmd", CMD);
-            if (!root) {
+            if (!root && redi) {
+                root = redi;
+				redi->left = cmd_node;
+				current = root;
+            } else if (!root && !redi)
+			{
                 root = cmd_node;
                 current = root;
-            } else {
-                current->right = cmd_node;
-                current = cmd_node;
             }
-        } else if (token->type == REDIR_IN || token->type == REDIR_OUT ||  token->type==APPEND  ) {
-			// Ensure we have a command to attach to
-			// if (!current || current->type != CMD) {
-			// 	fprintf(stderr, "Syntax error: redirection without command\n");
-			// 	return NULL;
-			// }
-			t_ast *redir_nod = creat_node_ast(NULL,token->val,token->type);
-			if (!root)
+			else if (redi)
 			{
-				root = redir_nod;
-				current = root;
+				redi->left = cmd_node;
+				current = cmd_node;
 			}
-			else {
-                current->right = redir_nod;
-                current = redir_nod;
-            }
-			// Verify there's a filename following
-			if (!token->next ||( token->next->type != WORD && token->next->type != IS_FILE && token->next->type != IS_FILE_APPEND)) {
-				// print(token->next->val,token->next->type);
-				fprintf(stderr, "Syntax error: missing filename after '%s'\n", token->val);
-				return NULL;
+			else
+			{
+				current->right = cmd_node;
+				current = cmd_node;
 			}
-		
-			// Handle different redirection types
-			if (token->type == REDIR_IN) {
-				current->input_file = ft_strdup(token->next->val);
-			} 
-			else if (token->type == REDIR_OUT) {
-				current->output_file = ft_strdup(token->next->val);
-				current->append_mode = 0;
-			} 
-			else if (token->type == APPEND) {
-				current->output_file = ft_strdup(token->next->val);
-				current->append_mode = 1;
-			}
-		
-			// Move past both the redirection token and filename
-			token = token->next->next;
-		}
+        }
     }
 
     *token_ptr = token; // Update the token pointer
