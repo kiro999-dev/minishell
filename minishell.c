@@ -6,12 +6,23 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:37:53 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/02/26 13:50:27 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/01 06:10:16 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void free_list(t_toknes_list *head)
+{
+    t_toknes_list *tmp;
+    while (head)
+    {
+        tmp = head;
+        head = head->next;
+        free(tmp->val);
+        free(tmp);
+    }
+}
 
 t_toknes_list *creat_node(char *val,t_TOKENS type)
 {
@@ -25,7 +36,7 @@ t_toknes_list *creat_node(char *val,t_TOKENS type)
 	return (node);
 }
 
-void add(t_toknes_list **head,char *val,t_TOKENS type)
+void	add(t_toknes_list **head,char *val,t_TOKENS type)
 {
 		t_toknes_list *node;
 		t_toknes_list *tmp;
@@ -43,217 +54,235 @@ void add(t_toknes_list **head,char *val,t_TOKENS type)
 			while (tmp->next)
 				tmp = tmp->next;
 			tmp->next = node;
+			node->prv = tmp;
 		}
 		
 }
-void print(char *s , t_TOKENS type)
+t_ast *creat_node_ast(char **cmd,char *value,t_TOKENS type)
 {
-	printf("%s--->",s);
-	if(type ==PIPE)
-		printf("PIPE\n");
-	if(type == CMD)
-		printf("CMD\n");
-	if(type == ARG)
-		printf("ARG\n");
-	if(type == STRING)
-		printf("STRING\n");
-	if(type == REDIR_IN)
-		printf("REDIR_IN\n");
-	if(type == REDIR_OUT)
-		printf("REDIR_OUT\n");
-	if(type == APPEND)
-		printf("APPEND\n");
-	if(type == HER_DOC)
-		printf("HERE_doc\n");
+	t_ast *node;
+	node = malloc(sizeof(t_ast));
+	if(!node)
+		return (printf("malloc fail\n"),NULL);
+	node->cmd = cmd;
+	node->type = type;
+	node->val = value;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
 }
-void print_lits(t_toknes_list *head)
+char **pars_cmd(t_toknes_list **token ,t_ast **root) 
 {
-	while (head)
-	{
-		print(head->val,head->type);
-		head = head->next;
-	}
-}
-void single_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head)
-{
-	char *token;
-	char *tmp;
-	int i;
 	
-	i = *i_ptr;
-	i++;
-	token = ft_strdup("");
-	while (s[i] && s[i] != '\'')
-	{
-	  tmp = token;
-	  token = join_character(token,s[i]);
-	  free(tmp);
-	  i++;
-	}
-	if(*is_cmd)
-	{
-		add(head,ft_strdup(token),CMD);
-		*is_cmd = 0;
-	}
-	else
-		add(head,ft_strdup(token),STRING);
-	free(token);
-	i++;
-	*i_ptr = i;
-}
+    t_toknes_list *current = *token;
+    int count = 0;
+    char **cmd;
+    int i = 0;
+	int	redir = 0;
 
-void double_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head)
-{
-	char *token;
-	char *tmp;
-	int i;
-	
-	i = *i_ptr;
-	i++;
-	token = ft_strdup("");
-	while (s[i] && s[i] != '\"')
-	{
-	  tmp = token;
-	  token = join_character(token,s[i]);
-	  free(tmp);
-	  i++;
-	}
-	if(*is_cmd)
-		add(head,ft_strdup(token),CMD);
-	else
-		add(head,ft_strdup(token),STRING);
-	free(token);
-	i++;
-	*i_ptr = i;
-	*is_cmd = 0;
-}
+    // Count the number of WORD/CMD tokens
+    while (current && (current->type != PIPE)) {
+		
+		if(current->type == WORD || current->type == CMD)
+        	count++;
+        current = current->next;
+    }
+	printf("%d count\n",count);
+    cmd = malloc(sizeof(char *) * (count + 1)); // +1 for NULL terminator
+    if (!cmd) return NULL;
 
-int pipe_symbol(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head)
-{
-	int i;
-	
-	i = *i_ptr;
-	i++;
-	if(s[i] == '|')
-	{
-		printf("syntax erorr hh\n");
-		return (0);
-	}
-	add(head,ft_strdup("|"),PIPE);
-	*is_cmd = 1;
-	*i_ptr = i;
-	return(1);
-}
-int redir_in(int *i_ptr,char *s,t_toknes_list **head)
-{
-	int   i;
-
-	i = *i_ptr;
-	i++;
-	if (s[i] == '<' && s[i + 1] == '<')
-	{
-		printf("syntax erorr hh\n");
-		return (0);
-	}
-	else if (s[i] == '<')
-	{
-		add(head,ft_strdup("<<"),HER_DOC);
-		i++;
-	}
-	else
-		add(head,ft_strdup("<"),REDIR_IN);
-	*i_ptr = i;
-	return (1);
-}
-int redir_out(int *i_ptr,char *s,t_toknes_list **head)
-{
-	int   i;
-
-	i = *i_ptr;
-	i++;
-	if (s[i] == '>' && s[i + 1] == '>')
-	{
-		printf("syntax erorr hh\n");
-		i++;
-		return (0);
-	}
-	else if (s[i] == '>')
-	{
-		add(head,ft_strdup(">>"),APPEND);
-		i++;
-	}
-	else
-		add(head,ft_strdup(">"),REDIR_OUT);
-	*i_ptr = i;
-	return (1);
-}
-int is_not_token(char c)
-{
-	char *s ="<>\'\"| ";
-	if(ft_strchr(s,c) == NULL)
-		return (0);
-	else
-		return (1);
-}
-void  lex(char *s, t_toknes_list **head) // | '' "" cmd args << < > >>
-{
-	int   i;
-	char  *token;
-	char  *tmp;
-	int   is_cmd;
-	
-	i = 0;
-	is_cmd = 1;
-	while (s[i])
-	{
-		while (isspace(s[i]) && s[i])
-			i++;
-		if(s[i] == '\'')
-			single_q(&i,s,&is_cmd,head);
-		else if(s[i] == '\"')
-			double_q(&i,s,&is_cmd,head);
-		else  if(s[i] == '|' &&  !pipe_symbol(&i,s,&is_cmd,head))
-			return;
-		else if(s[i] == '<' && !redir_in(&i,s,head))
-			return;
-		else  if(s[i] == '>' && !redir_out(&i,s,head))
-			return;
-		else if(!is_not_token(s[i]))
-		{
-			token = ft_strdup("");
-			while (!is_not_token(s[i]) && s[i])
-			{
-				tmp = token;
-				token = join_character(token,s[i]);
-				free(tmp);
-				i++;
-			}
-			if(is_cmd)
-			{
-				add(head,ft_strdup(token),CMD);
-				free(token);
-				is_cmd = 0;
-			}
-			else
-			 {
-				add(head,ft_strdup(token),ARG);
-				free(token);
-			 }
-		}
-		else 
-		{
-			printf("i skip -%c-\n",s[i]);
+    current = *token;
+	while (current && (current->type != PIPE)) {
+		
+		if(current->type == WORD || current->type == CMD)
+        {
+			cmd[i] = ft_strdup(current->val);
 			i++;
 		}
-	}
+		if(current->type = REDIR_IN)
+			
+        current = current->next;
+		
+    }
+
+    cmd[i] = NULL; // Null-terminate the array
+	
+    // Advance the original token pointer past processed tokens
+    *token = current;
+    return cmd;
+}
+t_ast *generate_tree(t_toknes_list **token_ptr) {
+    t_ast *root = NULL;
+    t_ast *current = NULL;
+    t_toknes_list *token = *token_ptr;
+
+    while (token) {
+        if (token->type == PIPE) {
+            t_ast *pipe_node = creat_node_ast(NULL, "|", PIPE);
+            if (!root) {
+                // Handle syntax error: pipe with no left command
+                fprintf(stderr, "Syntax error near pipe\n");
+                return NULL;
+            }
+            pipe_node->left = root;
+            root = pipe_node;
+            token = token->next;
+            // Parse right side of the pipe
+            t_ast *right = generate_tree(&token);
+            if (!right) {
+                // Syntax error: pipe with no right command
+                fprintf(stderr, "Syntax error after pipe\n");
+                return NULL;
+            }
+            root->right = right;
+        } else if (token->type == CMD || token->type == WORD) {
+            char **cmd = pars_cmd(&token,&current);
+            if (!cmd) return NULL;
+            t_ast *cmd_node = creat_node_ast(cmd, "cmd", CMD);
+            if (!root) {
+                root = cmd_node;
+                current = root;
+            } else {
+                current->right = cmd_node;
+                current = cmd_node;
+            }
+        } else if (token->type == REDIR_IN || token->type == REDIR_OUT ||  token->type==APPEND  ) {
+			// Ensure we have a command to attach to
+			// if (!current || current->type != CMD) {
+			// 	fprintf(stderr, "Syntax error: redirection without command\n");
+			// 	return NULL;
+			// }
+			t_ast *redir_nod = creat_node_ast(NULL,token->val,token->type);
+			if (!root)
+			{
+				root = redir_nod;
+				current = root;
+			}
+			else {
+                current->right = redir_nod;
+                current = redir_nod;
+            }
+			// Verify there's a filename following
+			if (!token->next ||( token->next->type != WORD && token->next->type != IS_FILE && token->next->type != IS_FILE_APPEND)) {
+				// print(token->next->val,token->next->type);
+				fprintf(stderr, "Syntax error: missing filename after '%s'\n", token->val);
+				return NULL;
+			}
+		
+			// Handle different redirection types
+			if (token->type == REDIR_IN) {
+				current->input_file = ft_strdup(token->next->val);
+			} 
+			else if (token->type == REDIR_OUT) {
+				current->output_file = ft_strdup(token->next->val);
+				current->append_mode = 0;
+			} 
+			else if (token->type == APPEND) {
+				current->output_file = ft_strdup(token->next->val);
+				current->append_mode = 1;
+			}
+		
+			// Move past both the redirection token and filename
+			token = token->next->next;
+		}
+    }
+
+    *token_ptr = token; // Update the token pointer
+    return root;
+}
+#include <stdio.h>
+#include <stdbool.h>
+
+void print_ast_tree(t_ast *node, int depth, bool is_last, bool is_left) {
+    static char prefix[1024] = {0};
+    char new_prefix[1024];
+    
+    if (depth > 0) {
+        // Add vertical lines for parent connections
+        for (int i = 0; i < depth-1; i++) {
+            if (prefix[i] == '`' || prefix[i] == ' ') {
+                printf("    ");
+            } else {
+                printf("│   ");
+            }
+        }
+
+        // Add current node connection
+        if (is_left) {
+            printf("left :%s├── ", is_last ? "┌──" : "│  ");
+        } else {
+            printf("right :%s└── ", is_last ? "└──" : "│  ");
+        }
+    }
+
+    // Print current node
+    if (node->type == PIPE) {
+        printf("-│-\n");
+    } else if (node->type == CMD) {
+        // Print command with arguments
+        printf("CMD [");
+        for (int i = 0; node->cmd[i]; i++) {
+            printf("%s%s", node->cmd[i], node->cmd[i+1] ? " " : "");
+        }
+        printf("]\n");
+    } else if (node->type == REDIR_IN) {
+        printf("%s infile:%s\n", node->val,node->input_file);
+    }
+	else if (node->type == REDIR_OUT) {
+        printf("%s file:%s\n", node->val,node->output_file);
+    }
+	else if (node->type == APPEND) {
+        printf("%s file:%s\n", node->val,node->output_file);
+    }
+
+    // Build prefix for children
+    snprintf(new_prefix, sizeof(new_prefix), "%s%s", 
+            prefix, 
+            (is_last || depth == 0) ? "    " : "│   ");
+
+    // Recursively print children
+    if (node->left) {
+        print_ast_tree(node->left, depth + 1, !node->right, true);
+    }
+    if (node->right) {
+        print_ast_tree(node->right, depth + 1, true, false);
+    }
 }
 
-int main()
-{
-	char *buff = "echo hello | ls /user/bin > file1 << > >> ";
-	t_toknes_list *head = NULL;
-	lex(buff,&head);
-	print_lits(head);
+// Wrapper function
+void print_ast(t_ast *root) {
+    printf("\n");
+    print_ast_tree(root, 0, true, false);
+    printf("\n");
+}
 
-	return (0);
+void free_ast(t_ast *node) {
+    if (!node) return;
+    free_ast(node->left);
+    free_ast(node->right);
+    if (node->cmd) {
+        for (int i = 0; node->cmd[i]; i++) free(node->cmd[i]);
+        free(node->cmd);
+    }
+    free(node->input_file);
+    free(node->output_file);
+    free(node);
+}
+
+
+int main() {
+    char *buff = readline("> ");
+    t_toknes_list *head = NULL;
+    t_ast *ast = NULL;
+
+    lex(buff, &head);
+    ast = generate_tree(&head);
+    
+    // Execute the AST here (not implemented)
+	if(ast)
+    	print_ast(ast);
+    free(buff);
+    free_list(head);
+    // free_ast(ast);
+    return 0;
 }

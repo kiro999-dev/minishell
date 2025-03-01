@@ -1,4 +1,4 @@
-SRC = minishell.c lexer.c strings.c ft_split.c
+SRC = minishell.c lexer.c strings.c ft_split.c 
 OBJ = $(SRC:.c=.o)
 INC = minishell.h
 CC = cc
