@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:37:53 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/01 09:17:32 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/01 11:55:35 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char **pars_cmd(t_toknes_list **token)
 {
 	
     t_toknes_list *current = *token;
+    t_toknes_list *saved = NULL;
     int count = 0;
     char **cmd;
     int i = 0;
@@ -86,19 +87,29 @@ char **pars_cmd(t_toknes_list **token)
         	count++;
         current = current->next;
     }
-
     cmd = malloc(sizeof(char *) * (count + 1)); // +1 for NULL terminator
     if (!cmd) return NULL;
     current = *token;
-	while (current && (current->type == WORD || current->type == CMD)) {
-	    cmd[i] = ft_strdup(current->val);
-        current = current->next;
-	    i++;
+	while (current && (current->type != PIPE)) 
+    {
+        if(current->type == WORD || current->type == CMD)
+        {
+            cmd[i] = ft_strdup(current->val);
+            current = current->next;
+	        i++;
+        }
+        else
+        {
+            if (saved == NULL)
+                saved = current;
+            current = current->next;
+        }
     }
-    cmd[i] = NULL; // Null-terminate the array
-	
-    // Advance the original token pointer past processed tokens
-    *token = current;
+    cmd[i] = NULL;
+    if(saved)
+        *token = saved;
+    else
+        *token = current;
     return cmd;
 }
 t_ast *generate_tree(t_toknes_list **token_ptr)
@@ -116,7 +127,6 @@ t_ast *generate_tree(t_toknes_list **token_ptr)
                 fprintf(stderr, "Syntax error near pipe\n");
                 return NULL;
             }
-            printf("pipe is the root\n");
             pipe_node->left = root;
             root = pipe_node;
             token = token->next;
@@ -129,7 +139,7 @@ t_ast *generate_tree(t_toknes_list **token_ptr)
             }
             root->right = right;
         } 
-        else if (token->type == CMD || token->type == WORD) 
+        else if (token->type == CMD) 
         {
             char **cmd = pars_cmd(&token);
             if (!cmd) return NULL;
@@ -180,6 +190,11 @@ t_ast *generate_tree(t_toknes_list **token_ptr)
 			// Move past both the redirection token and filename
 			token = token->next->next;
 		}
+        else if (token->type == WORD)
+        {
+            token = token->next;
+        }
+        
     }
     *token_ptr = token; // Update the token pointer
     return root;
@@ -270,8 +285,9 @@ int main() {
     t_ast *ast = NULL;
 
     lex(buff, &head);
+    print_lits(head);
     ast = generate_tree(&head);
-    
+   
     // Execute the AST here (not implemented)
 	if(ast)
     	print_ast(ast);

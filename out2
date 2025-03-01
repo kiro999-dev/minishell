@@ -1,4 +1,4 @@
-total 124
+total 128
 -rw-r--r-- 1 zkhourba 2024_khouribga  1979 Mar  1 09:08 a
 -rw-r--r-- 1 zkhourba 2024_khouribga  2081 Feb 21 23:52 ft_split.c
 -rw-r--r-- 1 zkhourba 2024_khouribga  5056 Mar  1 09:38 ft_split.o
@@ -10,7 +10,7 @@ total 124
 -rw-r--r-- 1 zkhourba 2024_khouribga  2356 Mar  1 03:49 minishell.h
 -rw-r--r-- 1 zkhourba 2024_khouribga 15184 Mar  1 11:39 minishell.o
 -rw-r--r-- 1 zkhourba 2024_khouribga   916 Mar  1 09:59 ou
--rw-r--r-- 1 zkhourba 2024_khouribga     0 Mar  1 11:39 out
+-rw-r--r-- 1 zkhourba 2024_khouribga   977 Mar  1 11:39 out
 -rw-r--r-- 1 zkhourba 2024_khouribga     0 Mar  1 11:39 out2
 -rw-r--r-- 1 zkhourba 2024_khouribga  1947 Feb 26 16:16 strings.c
 -rw-r--r-- 1 zkhourba 2024_khouribga  5032 Mar  1 09:38 strings.o
