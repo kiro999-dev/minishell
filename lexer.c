@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/02/28 20:47:30 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/04 21:29:36 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,21 +97,16 @@ int redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 
 	i = *i_ptr;
 	i++;
-	if (s[i] == '<' && s[i + 1] == '<')
-	{
-		printf("Syntax error\n");
-		return (0);
-	}
-	else if (s[i] == '<')
+
+	if (s[i] == '<')
 	{
 		add(head,ft_strdup("<<"),HER_DOC);
 		d->is_here_d  = 1;
-		i++;
 	}
 	else
 	{
       add(head,ft_strdup("<"),REDIR_IN);
-      d->is_redir = 1;
+      d->is_redir_in = 1;
    }
 	*i_ptr = i;
 	return (1);
@@ -122,22 +117,16 @@ int redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 
 	i = *i_ptr;
 	i++;
-	if (s[i] == '>' && s[i + 1] == '>')
-	{
-		printf("Syntax error\n");
-		i++;
-		return (0);
-	}
-	else if (s[i] == '>')
+	
+	if (s[i] == '>')
 	{
 		add(head,ft_strdup(">>"),APPEND);
-		i++;
 		d->is_append = 1;
 	}
 	else
 	{	
 		add(head,ft_strdup(">"),REDIR_OUT);
-		d->is_redir = 1;
+		d->is_redir_out = 1;
 	}
 	*i_ptr = i;
 	
@@ -160,8 +149,10 @@ void print(char *s , t_TOKENS type)
 		printf("APPEND\n");
 	if(type == HER_DOC)
 		printf("HER_DOC\n");
-   if(type == IS_FILE)
-		printf("IS_FILE\n");
+   if(type == IS_FILE_IN)
+		printf("IS_FILE_IN\n");
+	if(type == IS_FILE_OUT)
+		printf("IS_FILE_OUT\n");
 	if(type == LIMTER)
 		printf("LIMTER\n");
 	if(type == IS_FILE_APPEND)
@@ -189,7 +180,8 @@ void	init_tok(t_tok *data_tok)
 	data_tok->is_append = 0;
 	data_tok->is_cmd = 1;
 	data_tok->is_here_d = 0;
-	data_tok->is_redir = 0;
+	data_tok->is_redir_in = 0;
+	data_tok->is_redir_out = 0;
 	data_tok->q = 0;
 	data_tok->dq = 0;
 }
@@ -199,8 +191,10 @@ void token_add(t_toknes_list **head,t_tok *data_tok,t_TOKENS type)
 	free(data_tok->token);
 	if(type == CMD)
 		data_tok->is_cmd = 0;
-	if(type == IS_FILE)
-		data_tok->is_redir = 0;
+	if(type == IS_FILE_IN)
+		data_tok->is_redir_in = 0;
+	if(type == IS_FILE_OUT)
+		data_tok->is_redir_out = 0;
 	if(type == LIMTER)
 		data_tok->is_here_d = 0;
 	if(type == IS_FILE_APPEND)
@@ -210,11 +204,20 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i)
 {
 	char	*tmp;
 	int		i;
+	int		flag;
 
+	flag = 0;
 	i = *ptr_i;
 	data_tok->token = ft_strdup("");
 	while (s[i] && !is_not_token(s[i]))
 	{
+		if(s[i] == '-' && data_tok->is_here_d && !flag)
+		{
+			i++;
+			while (ft_isspace(s[i]) && !data_tok->q && !data_tok->dq)
+				i++;
+			flag = 1;
+		}
 		if(s[i] == '\'')
 			data_tok->q = !data_tok->q;
 		else if(s[i] == '\"')
@@ -231,10 +234,13 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i)
 void not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s)
 {
 	gen_word(data_tok,s,ptr_i);
-	if (data_tok->is_cmd && !data_tok->is_redir && !data_tok->is_here_d)
+	if (data_tok->is_cmd && !data_tok->is_redir_in 
+		&& !data_tok->is_here_d  && !data_tok->is_redir_out)
 		token_add(head,data_tok,CMD);
-	else if (data_tok->is_redir)
-		token_add(head,data_tok,IS_FILE);
+	else if (data_tok->is_redir_in)
+		token_add(head,data_tok,IS_FILE_IN);
+	else if (data_tok->is_redir_out)
+		token_add(head,data_tok,IS_FILE_OUT);
 	else if (data_tok->is_append)
 		token_add(head,data_tok,IS_FILE_APPEND);
 	else if(data_tok->is_here_d)
