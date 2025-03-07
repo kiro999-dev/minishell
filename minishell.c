@@ -138,31 +138,51 @@ void print_exc_list(t_exc_lits **exc_head)
             }
             printf("]\n");
         }
-        // if (head->head_files)
-        // {
-        //     printf("\nstart :\n");
-        //     print_list_file(head->head_files);
-        //     printf("end\n");
-        // }
-        // if(head->limiter)
-        //     printf("limiter of here_doc :%s\n",head->limiter);
+        if (head->head_files)
+        {
+            printf("\nstart :\n");
+            print_list_file(head->head_files);
+            printf("end\n");
+        }
+        if(head->limiter)
+            printf("limiter of here_doc :%s\n",head->limiter);
         head = head->next;
         
     }
 }
 
-int main(void)
+int main(int argc,char **argv,char **env)
 {
-    char *buff = readline("> ");
+    char *buff;
     t_toknes_list *head = NULL;
     t_exc_lits *exc_head = NULL;
-
-    lex(buff, &head);
-    check_syntax(head);
-    expanding(head);
-    generate_list(head, &exc_head); //add_here_doc
-    print_lits(head);
-    print_exc_list(&exc_head);
+    argc = argc-1;
+    argv = NULL;
+    
+    while (1)
+    {
+        buff = readline("> ");
+        if(buff == NULL)
+            break;
+        add_history(buff);
+        lex(buff, &head);
+        check_syntax(head);
+        expanding(head,env); //add $$$$$$ split and conctec
+        print_lits(head);
+        generate_list(head, &exc_head); //add_here_doc
+        print_exc_list(&exc_head);
+        exc_head = NULL;
+        // free_list(head);
+        head = NULL;
+        free(buff);
+    }
+    
+    // lex(buff, &head);
+    // check_syntax(head);
+    // expanding(head,env);
+   
+    
+    
     // free(buff);
     // free_list(head);
     return 0;
