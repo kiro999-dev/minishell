@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/04 21:29:36 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:32:54 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,11 @@ void double_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head)
 	*is_cmd = 0;
 }
 
-int pipe_symbol(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head)
+int pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head)
 {
 	int i;
 	
 	i = *i_ptr;
-	i++;
-	if(s[i] == '|')
-	{
-		printf("Syntax error\n");
-		return (0);
-	}
 	add(head,ft_strdup("|"),PIPE);
 	*is_cmd = 1;
 	*i_ptr = i;
@@ -116,12 +110,11 @@ int redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 	int   i;
 
 	i = *i_ptr;
-	i++;
-	
-	if (s[i] == '>')
+	if (s[i+1] == '>')
 	{
 		add(head,ft_strdup(">>"),APPEND);
 		d->is_append = 1;
+		i++;
 	}
 	else
 	{	
@@ -129,7 +122,6 @@ int redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 		d->is_redir_out = 1;
 	}
 	*i_ptr = i;
-	
 	return (1);
 }
 void print(char *s , t_TOKENS type)
@@ -234,7 +226,7 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i)
 void not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s)
 {
 	gen_word(data_tok,s,ptr_i);
-	if (data_tok->is_cmd && !data_tok->is_redir_in 
+	if (data_tok->is_cmd && !data_tok->is_redir_in  && !data_tok->is_append
 		&& !data_tok->is_here_d  && !data_tok->is_redir_out)
 		token_add(head,data_tok,CMD);
 	else if (data_tok->is_redir_in)
@@ -263,7 +255,7 @@ void  lex(char *s, t_toknes_list **head) // | '' "" cmd args << < > >>
 			i++;
 		if(!is_not_token(s[i]) && s[i])
 			not_token_case(&data_tok,head,&i,s);
-		else  if(s[i] == '|' &&  !pipe_symbol(&i,s,&data_tok.is_cmd,head))
+		else  if(s[i] == '|' &&  !pipe_symbol(&i,&data_tok.is_cmd,head))
 			return;
 		else if(s[i] == '<' && !redir_in(&i,s,head,&data_tok))
 			return;

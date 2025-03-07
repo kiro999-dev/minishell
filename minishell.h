@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/06 20:04:44 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:15:19 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*ft_strchr(const char *s, int c);
 void    lex(char *s, t_toknes_list **head);
 void	single_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
 void 	double_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
-int 	pipe_symbol(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
+int pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head);
 int		redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 void	add(t_toknes_list **head,char *val,t_TOKENS type);

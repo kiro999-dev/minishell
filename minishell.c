@@ -128,7 +128,7 @@ void print_exc_list(t_exc_lits **exc_head)
     while (head)
     {
         i = 0;
-        if ( head &&head->cmd)
+        if (head && head->cmd)
         {
             printf("[");
             while (head->cmd[i])
@@ -138,20 +138,19 @@ void print_exc_list(t_exc_lits **exc_head)
             }
             printf("]\n");
         }
-        // if (head->head_files)
-        // {
-        //     printf("\nstart :\n");
-        //     print_list_file(head->head_files);
-        //     printf("end\n");
-        // }
+        if (head->head_files)
+        {
+            printf("\nstart :\n");
+            print_list_file(head->head_files);
+            printf("end\n");
+        }
         // if(head->limiter)
         //     printf("limiter of here_doc :%s\n",head->limiter);
         head = head->next;
-        
     }
 }
 
-int main(void)
+int main(int ar)
 {
     char *buff = readline("> ");
     t_toknes_list *head = NULL;
@@ -161,9 +160,8 @@ int main(void)
     check_syntax(head);
     expanding(head);
     generate_list(head, &exc_head); //add_here_doc
-    print_lits(head);
     print_exc_list(&exc_head);
     // free(buff);
-    // free_list(head);
+    free_list(head);
     return 0;
 }

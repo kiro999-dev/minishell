@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:01:50 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/04 20:17:37 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/07 12:42:11 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *l
         node->here_doc = 1;
     }
     else
+    {
         node->here_doc = 0;
+        node->limiter = NULL;
+    }
     return node;
 }
 void add_back_list(t_exc_lits **head,t_exc_lits *node)
