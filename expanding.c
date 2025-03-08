@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/08 19:35:08 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:00:39 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ char* expand_val(char *s,char *s2,int j,int n)
     char *tmp;
     
     i = 0;
-    res = ft_substr(s2,0,n);
+    printf("look1 %s\n",s2);
+    res = ft_substr(s2,0,n-1);
     printf("look %s\n",res);
     while (s[i] && s[i] != '=')
         i++;
@@ -79,19 +80,14 @@ static void handle_dollar_expansion(const char *s, int *i,char **env,t_toknes_li
 
     n = *i;
     j = 0;
-    (*i)++;
     expand = ft_strdup("");
     while (s[*i] && s[*i] != '\"' && s[*i] != '\'' && !ft_isspace(s[*i]))
     {
-        if(s[*i] == '$')
-           break;
-        else 
-        {
-            tmp = expand;
-            expand = join_character(expand,s[*i]);
-            (*i)++;
-            free(tmp);
-        }    
+      
+        tmp = expand;
+        expand = join_character(expand,s[*i]);
+        (*i)++;
+        free(tmp);
     }
     printf("the expand : %s\n",expand);
     while (env && env[j])
@@ -120,7 +116,11 @@ int check_is_expandig(char *s,t_toknes_list *head,char **env)
             while (dq && s[i])
             {
                 if (s[i] == '$')
+                {
+                    while (s[i] && s[i] =='$')
+                        i++;
                     handle_dollar_expansion(s, &i,env,head);
+                }
                 else
                 {
                     if (s[i] == '\"')
@@ -136,6 +136,8 @@ int check_is_expandig(char *s,t_toknes_list *head,char **env)
         }
         else if (s[i] == '$')
         {
+            while (s[i] && s[i] =='$')
+                i++;
             handle_dollar_expansion(s, &i,env,head);
         }
         i++;
@@ -146,20 +148,11 @@ int check_is_expandig(char *s,t_toknes_list *head,char **env)
 void check_expand(char *s,t_toknes_list *head,char **env)
 {
     int i = 0;
-    int count = 0;
 
     while (s[i])
     {
         if (s[i] == '$')
-        {
-            while (s[i] && s[i] == '$')
-            {
-                count++;
-                i++;
-            }
-            if(count % 2 != 0)
-                check_is_expandig(s,head,env);
-        }
+           i = check_is_expandig(s,head,env);
         i++;
     }
 }

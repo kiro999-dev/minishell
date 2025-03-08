@@ -108,7 +108,6 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
     }
 }
 
-
 void print_list_file(t_file *head)
 {
     while (head)
