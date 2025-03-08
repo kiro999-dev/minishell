@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/06 20:04:44 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/07 12:31:17 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,8 @@ void add_back_list(t_exc_lits **head,t_exc_lits *node);
 t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter);
 void 	print(char *s , t_TOKENS type);
 void    print_lits(t_toknes_list *head);
+
+// execution
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+
 #endif
