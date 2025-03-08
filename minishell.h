@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/07 14:08:20 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:37:50 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*ft_strchr(const char *s, int c);
 void    lex(char *s, t_toknes_list **head);
 void	single_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
 void 	double_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
-int 	pipe_symbol(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
+int 	pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head);
 int		redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 void	add(t_toknes_list **head,char *val,t_TOKENS type);
@@ -89,4 +89,9 @@ void add_back_list(t_exc_lits **head,t_exc_lits *node);
 t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter);
 void 	print(char *s , t_TOKENS type);
 void    print_lits(t_toknes_list *head);
+char	*ft_substr(char const *s,  int start, int len);
+int 	ft_isspace(int c);
+char	**ft_split(const char *s, char c);
+
+// char	*ft_strjoin(char const *s1, char const *s2);
 #endif

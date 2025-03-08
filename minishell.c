@@ -157,8 +157,7 @@ int main(int argc,char **argv,char **env)
     t_toknes_list *head = NULL;
     t_exc_lits *exc_head = NULL;
     argc = argc-1;
-    argv = NULL;
-    
+    argv[0] = NULL;
     while (1)
     {
         buff = readline("> ");
@@ -175,6 +174,7 @@ int main(int argc,char **argv,char **env)
         // free_list(head);
         head = NULL;
         free(buff);
+        buff = NULL;
     }
     
     // lex(buff, &head);

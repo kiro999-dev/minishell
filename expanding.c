@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/07 15:35:52 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:35:08 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,26 @@ int strcmp_env(char *s1,char *s2,int n)
         return(0);
     return (1);
 }
-char* expand_val(char *s,char *s2,int j)
+char* expand_val(char *s,char *s2,int j,int n)
 {
     int i;
     char *res;
     char *tmp;
     
     i = 0;
-    
+    res = ft_substr(s2,0,n);
+    printf("look %s\n",res);
     while (s[i] && s[i] != '=')
         i++;
-    res = ft_strdup(s+i+1);
-    while (s2[j])
+    i++;
+    while (s[i])
+    {
+        tmp = res;
+        res = join_character(res,s[i]);
+        i++;
+        free(tmp);
+    }
+    while (s2[j] && s2[j]!='\"')
     {
         tmp = res;
         res = join_character(res,s2[j]);
@@ -67,31 +75,37 @@ static void handle_dollar_expansion(const char *s, int *i,char **env,t_toknes_li
     char    *expand;
     char    *tmp;
     int     j;
-    
+    int n;
+
+    n = *i;
     j = 0;
     (*i)++;
     expand = ft_strdup("");
-    while (s[*i] && s[*i] != '\"' && s[*i] != '\'')
+    while (s[*i] && s[*i] != '\"' && s[*i] != '\'' && !ft_isspace(s[*i]))
     {
-        tmp = expand;
-       expand = join_character(expand,s[*i]);
-        (*i)++;
-        free(tmp);
+        if(s[*i] == '$')
+           break;
+        else 
+        {
+            tmp = expand;
+            expand = join_character(expand,s[*i]);
+            (*i)++;
+            free(tmp);
+        }    
     }
-
-    printf("%s\n",expand);
+    printf("the expand : %s\n",expand);
     while (env && env[j])
     {
         if(strcmp_env(env[j],expand,ft_strlen(expand)))
         {
             tmp = head->val;
-            head->val = expand_val(env[j],head->val,*i);
+            head->val = expand_val(env[j],head->val,*i,n);
         }
         j++;
     }
 }
 
-void check_is_expandig(char *s,t_toknes_list *head,char **env)
+int check_is_expandig(char *s,t_toknes_list *head,char **env)
 {
     int i = 0, dq = 0, q = 0;
     
@@ -126,15 +140,26 @@ void check_is_expandig(char *s,t_toknes_list *head,char **env)
         }
         i++;
     }
+    return (i);
 }
 
 void check_expand(char *s,t_toknes_list *head,char **env)
 {
     int i = 0;
+    int count = 0;
+
     while (s[i])
     {
         if (s[i] == '$')
-            check_is_expandig(s,head,env);
+        {
+            while (s[i] && s[i] == '$')
+            {
+                count++;
+                i++;
+            }
+            if(count % 2 != 0)
+                check_is_expandig(s,head,env);
+        }
         i++;
     }
 }

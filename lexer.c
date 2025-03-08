@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/07 15:25:56 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:37:59 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,11 @@ void double_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head)
 	*is_cmd = 0;
 }
 
-int pipe_symbol(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head)
+int pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head)
 {
 	int i;
 	
 	i = *i_ptr;
-	i++;
-	if(s[i] == '|')
-	{
-		printf("Syntax error\n");
-		return (0);
-	}
 	add(head,ft_strdup("|"),PIPE);
 	*is_cmd = 1;
 	*i_ptr = i;
@@ -263,7 +257,7 @@ void  lex(char *s, t_toknes_list **head) // | '' "" cmd args << < > >>
 			i++;
 		if(!is_not_token(s[i]) && s[i])
 			not_token_case(&data_tok,head,&i,s);
-		else  if(s[i] == '|' &&  !pipe_symbol(&i,s,&data_tok.is_cmd,head))
+		else  if(s[i] == '|' &&  !pipe_symbol(&i,&data_tok.is_cmd,head))
 			return;
 		else if(s[i] == '<' && !redir_in(&i,s,head,&data_tok))
 			return;
