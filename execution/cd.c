@@ -77,7 +77,7 @@ void f_cd(char *path, char *env[])
         return ;
     
     current = getcwd(NULL, 0);
-    
+    new_pwd = NULL;
     verify_path(env, path, current, new_pwd);
     old_pwd = ft_strjoin("OLDPWD=", current);
     free(current);
@@ -89,14 +89,44 @@ void f_cd(char *path, char *env[])
     printf("%s\n%s\n", old_pwd, new_pwd);
 }
 
-int main(int ac, char *av[], char *env[])
+void f_pwd(void)
 {
-    t_env vars;
+    char *pwd;
 
-    vars.env = env;
-    if (ac > 2)
-    {
-        f_cd(av[2], env);
-    }
-    return 0;
+    pwd = getcwd(NULL, 0);
+    if (!pwd)
+        return ;
+    printf("%s\n", pwd);
 }
+
+void f_env(char *env[], int export)
+{
+    int i;
+
+    if (!env)
+    {
+        printf("env not found!\n");
+        return ;
+    }
+    i = 0;
+    while (env[i])
+    {
+        if (export)
+            printf("declare -x ");
+        printf("%s\n", env[i]);
+        i++;
+    }
+}
+
+// int main(int ac, char *av[], char *env[])
+// {
+//     f_pwd();
+//     // t_env vars;
+
+//     // vars.env = env;
+//     // if (ac > 2)
+//     // {
+//     //     f_cd(av[2], env);
+//     // }
+//     return 0;
+// }

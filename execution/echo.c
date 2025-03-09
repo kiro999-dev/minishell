@@ -29,26 +29,26 @@ int echo_flag(char *str)
 //     }
 // }
 
-void f_echo(char **av)
+void f_echo(char **cmd)
 {
     int i;
     int nwl;
 
     i = 2;
     nwl = 0;
-    while (av[i] && echo_flag(av[i]))
+    while (cmd[i] && echo_flag(cmd[i]))
     {
         nwl = 1;
         i++;
     }
-    while (av[i])
+    while (cmd[i])
     {
-        printf("%s", av[i]);
-        if (av[i + 1])
+        printf("%s", cmd[i]);
+        if (cmd[i + 1])
             printf(" ");
         i++;
     }
-    if (nwl == 0 || !av[2])
+    if (nwl == 0 || !cmd[2])
         printf("\n");
 }
 
