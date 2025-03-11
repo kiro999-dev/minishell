@@ -12,6 +12,8 @@ typedef struct s_env
     int size_undec;
 }t_env;
 
+int     equal_strcmp(const char *s1, const char *s2);
+int     compare_key(char **array, char *key);
 void    print_export(t_env *e);
 void    f_export(char **cmd, t_env *ev);
 void    ft_putstr(char *str);

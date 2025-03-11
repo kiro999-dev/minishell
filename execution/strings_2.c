@@ -70,3 +70,17 @@ char	*ft_strjoin(char *s1, char *s2)
 	dest[len_s1 + len_s2] = '\0';
 	return (dest);
 }
+
+int	equal_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while ((s1[i] || s2[i]) && s1[i] != '=')
+	{
+		if (s1[i] != s2[i])
+            return (1);
+		i++;
+	}
+	return (0);
+}

@@ -57,13 +57,10 @@ void verify_path(char *env[], char *path, char *current, char *old)
         exit(0);
     }
     if (!ft_strncmp(path, "--", 3))
-    {
-        path = ft_strdup("~");
-        printf("~ : %s\n", path);
-    }
+        path = getenv("HOME");
     if (chdir(path) == -1)
     {
-        printf("file or directory not found!");
+        printf("%s file or directory not found!", path);
         exit(1);
     }
 }

@@ -8,9 +8,9 @@ int main(int ac, char *av[], char *env[])
     {
         t_env e;
         e = init_env(env);
-        // char *t = "hello";
-        // e.undeclared = malloc (sizeof(char *), );
-        f_export(av, &e);
+        // printf("%d\n", compare_key(e.env_arr, av[2]));
+        
+        f_export(av + 1, &e);
         print_export(&e);
         free_array(e.env_arr);
         free_array(e.undeclared);
