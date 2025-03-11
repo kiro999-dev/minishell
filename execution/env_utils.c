@@ -39,9 +39,12 @@ t_env init_env(char *ev[])
     }
     env.size = size_2d(ev);
     env.env_arr = (char**) malloc ((env.size * sizeof(char*)) + 1);
-    if (!env.env_arr)
+    env.undeclared = (char**) malloc (sizeof(char*));
+    if (!env.env_arr || !env.undeclared)
         exit(1);
     env.env_arr[env.size] = NULL;
+    env.undeclared[0] = NULL;
+    env.size_undec = 0;
     i = -1;
     while (++i < env.size)
     {

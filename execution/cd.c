@@ -1,21 +1,21 @@
 #include "../minishell.h"
 #include "heper.h"
 
-char *get_path(char *av[], char *key, int len)
-{
-    int i;
+// char *get_path(char *av[], char *key, int len)
+// {
+//     int i;
 
-    i = 0;
-    if (!av || !key)
-        return (NULL);
-    while (av[i])
-    {
-        if (!ft_strncmp(av[i], key, len))
-            return (ft_strdup(av[i]));
-        i++;
-    }
-    return (NULL);
-}
+//     i = 0;
+//     if (!av || !key)
+//         return (NULL);
+//     while (av[i])
+//     {
+//         if (!ft_strncmp(av[i], key, len))
+//             return (ft_strdup(av[i]));
+//         i++;
+//     }
+//     return (NULL);
+// }
 
 void replace_key_value(char *av[], char *key, char *value)
 {
@@ -44,7 +44,8 @@ void verify_path(char *env[], char *path, char *current, char *old)
 
     if (!ft_strncmp(path, "-", 2))
     {
-        old = get_path(env, "OLDPWD=", 7) + 7;
+        // old = get_path(env, "OLDPWD=", 7) + 7;
+        old = getenv("OLDPWD");
         if (chdir(old) == -1)
            ( printf("file or directory not found!"), exit(1));
         temp = ft_strjoin("OLDPWD=", current);
@@ -99,7 +100,7 @@ void f_pwd(void)
     printf("%s\n", pwd);
 }
 
-void f_env(char *env[], int export)
+void f_env(char *env[])
 {
     int i;
 
@@ -111,22 +112,8 @@ void f_env(char *env[], int export)
     i = 0;
     while (env[i])
     {
-        if (export)
-            printf("declare -x ");
         printf("%s\n", env[i]);
         i++;
     }
 }
 
-// int main(int ac, char *av[], char *env[])
-// {
-//     f_pwd();
-//     // t_env vars;
-
-//     // vars.env = env;
-//     // if (ac > 2)
-//     // {
-//     //     f_cd(av[2], env);
-//     // }
-//     return 0;
-// }

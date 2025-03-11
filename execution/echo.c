@@ -18,23 +18,13 @@ int echo_flag(char *str)
     return (1);
 }
 
-// void ft_putstr(char *str)
-// {
-//     int i = 0;
-
-//     while (str[i])
-//     {
-//         write(1, str + i, 1);
-//         i++;
-//     }
-// }
 
 void f_echo(char **cmd)
 {
     int i;
     int nwl;
 
-    i = 2;
+    i = 1;
     nwl = 0;
     while (cmd[i] && echo_flag(cmd[i]))
     {
@@ -52,13 +42,3 @@ void f_echo(char **cmd)
         printf("\n");
 }
 
-// int main(int ac, char *av[])
-// {
-//     if (ac > 1)
-//     {
-//         if (!ft_strncmp(av[1], "echo", 5))
-//             f_echo(av);
-//         else 
-//             printf("command not Xfound!");
-//     }
-// }

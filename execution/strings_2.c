@@ -19,6 +19,20 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (check);
 }
 
+
+void ft_putstr(char *str)
+{
+    int i = 0;
+	printf("declare -x ");
+    while (str[i])
+    {
+        printf("%c", str[i]);
+		if (str[i] == '=' || !str[i + 1])
+			printf("\"");
+        i++;
+    }
+}
+
 static void	set_prefix(char *dst, char const *src, size_t i, size_t s_len)
 {
 	while (i < s_len)
