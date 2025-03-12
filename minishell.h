@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/08 19:37:50 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:59:26 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef enum e_TOKENS
 {
 	PIPE
 	,REDIR_OUT,REDIR_IN,DOLLAR,CMD,WORD,APPEND
-	,HER_DOC,IS_FILE_APPEND,IS_FILE_IN,IS_FILE_OUT,LIMTER
+	,HER_DOC,IS_FILE_APPEND,IS_FILE_IN,IS_FILE_OUT,LIMTER,eq
 }t_TOKENS;
 
 typedef struct s_toknes
@@ -53,10 +53,6 @@ typedef struct s_file
 	
 }t_file;
 
-typedef struct s_list_var
-{
-	
-}t_list_var;
 typedef struct s_exc_lits
 {
 	char 	**cmd;
@@ -73,7 +69,7 @@ char    *join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
-void    lex(char *s, t_toknes_list **head);
+void  lex(char *s, t_toknes_list **head,int flag);
 void	single_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
 void 	double_q(int *i_ptr,char *s,int *is_cmd,t_toknes_list **head);
 int 	pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head);

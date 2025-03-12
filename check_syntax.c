@@ -6,12 +6,11 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:58:53 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/04 19:59:32 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:03:20 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int check_q(char *s)
 {

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/08 19:37:59 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:01:11 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,13 @@ int is_not_token(char c)
 	else
 		return (1);
 }
-void	init_tok(t_tok *data_tok)
+void	init_tok(t_tok *data_tok,int flag)
 {
 	data_tok->is_append = 0;
-	data_tok->is_cmd = 1;
+	if(flag)
+		data_tok->is_cmd = 1;
+	else
+		data_tok->is_cmd = 0;
 	data_tok->is_here_d = 0;
 	data_tok->is_redir_in = 0;
 	data_tok->is_redir_out = 0;
@@ -198,23 +201,14 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i)
 {
 	char	*tmp;
 	int		i;
-	int		flag;
 
-	flag = 0;
 	i = *ptr_i;
 	data_tok->token = ft_strdup("");
 	while (s[i] && !is_not_token(s[i]))
 	{
-		if(s[i] == '-' && data_tok->is_here_d && !flag)
-		{
-			i++;
-			while (ft_isspace(s[i]) && !data_tok->q && !data_tok->dq)
-				i++;
-			flag = 1;
-		}
-		if(s[i] == '\'')
+		if(s[i] == '\'' && !data_tok->dq)
 			data_tok->q = !data_tok->q;
-		else if(s[i] == '\"')
+		else if(s[i] == '\"' && !data_tok->q)
 			data_tok->dq = !data_tok->dq;
 	  	if(ft_isspace(s[i]) && !data_tok->q && !data_tok->dq)
 			break;
@@ -242,13 +236,13 @@ void not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s)
 	else
 		token_add(head,data_tok,WORD);
 }
-void  lex(char *s, t_toknes_list **head) // | '' "" cmd args << < > >>
+void  lex(char *s, t_toknes_list **head,int flag) // | '' "" cmd args << < > >>
 {
 	t_tok 	data_tok;
 	int		i;
 	int 	len;
 
-	init_tok(&data_tok);
+	init_tok(&data_tok,flag);
 	i = 0;
 	len = ft_strlen(s);
 	while (i < len && s[i])

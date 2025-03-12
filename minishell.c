@@ -143,8 +143,8 @@ void print_exc_list(t_exc_lits **exc_head)
             print_list_file(head->head_files);
             printf("end\n");
         }
-        if(head->limiter)
-            printf("limiter of here_doc :%s\n",head->limiter);
+        // if(head->limiter)
+        //     printf("limiter of here_doc :%s\n",head->limiter);
         head = head->next;
         
     }
@@ -163,7 +163,7 @@ int main(int argc,char **argv,char **env)
         if(buff == NULL)
             break;
         add_history(buff);
-        lex(buff, &head);
+        lex(buff, &head,1);
         check_syntax(head);
         expanding(head,env); //add $$$$$$ split and conctec
         print_lits(head);
