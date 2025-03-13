@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/13 01:40:00 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/13 21:47:59 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ char* expand_val(char *s,char *s2,int j,int flag)
 	printf("look %s\n",res);
 	while (s[i] && s[i] != '=')
 		i++;
-	i++;
+	if(s[i])
+		i++;
 	if(flag)
 		res = join_character(res,'\"');
 	while (s[i])

@@ -2,7 +2,8 @@ SRC = minishell.c lexer.c strings.c linked_lists.c tokenizer_list.c expanding.c 
 OBJ = $(SRC:.c=.o)
 INC = minishell.h
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g 
+# -fsanitize=address
 LDFLAGS = -lreadline            
 NAME = minishell
 
@@ -11,7 +12,7 @@ all: $(NAME)
 
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)  
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)  
 
 
 %.o: %.c $(INC)

@@ -166,7 +166,6 @@ void print_exc_list(t_exc_lits **exc_head)
 		// if(head->limiter)
 		//     printf("limiter of here_doc :%s\n",head->limiter);
 		head = head->next;
-		
 	}
 }
 
@@ -192,7 +191,7 @@ int main(int argc,char **argv,char **env)
 		exc_head = NULL;
 		// free_list(head);
 		head = NULL;
-		free(buff);
+		// free(buff);
 		buff = NULL;
 	}
 	
