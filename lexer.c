@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/12 16:01:11 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/13 01:34:19 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,8 @@ int redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 }
 void print(char *s , t_TOKENS type)
 {
-	printf("%s--->",s);
+	if(s)
+		printf("%s--->",s);
 	if(type ==PIPE)
 		printf("PIPE\n");
 	if(type == CMD)
@@ -151,12 +152,15 @@ void print(char *s , t_TOKENS type)
 		printf("LIMTER\n");
 	if(type == IS_FILE_APPEND)
 		printf("IS_FILE_APPEND\n");
+	if(s && type == DOLLAR)
+		printf("the joind str\n");
 }
 void print_lits(t_toknes_list *head)
 {
 	while (head)
 	{
 		print(head->val,head->type);
+		print(head->joined_str,DOLLAR);
 		head = head->next;
 	}
 }
@@ -222,6 +226,7 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i)
 void not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s)
 {
 	gen_word(data_tok,s,ptr_i);
+	
 	if (data_tok->is_cmd && !data_tok->is_redir_in 
 		&& !data_tok->is_here_d  && !data_tok->is_redir_out)
 		token_add(head,data_tok,CMD);

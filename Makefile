@@ -1,4 +1,4 @@
-SRC = minishell.c lexer.c strings.c linked_lists.c tokenizer_list.c expanding.c check_syntax.c ft_substr.c
+SRC = minishell.c lexer.c strings.c linked_lists.c tokenizer_list.c expanding.c check_syntax.c ft_substr.c ft_split.c
 OBJ = $(SRC:.c=.o)
 INC = minishell.h
 CC = cc

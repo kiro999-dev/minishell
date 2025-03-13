@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/12 16:25:19 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/13 01:40:00 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ static void handle_dollar_expansion(int *i,char **env,t_toknes_list *head,int fl
 	while (head->val[*i]  &&!ft_isspace(head->val[*i]))
 	{
 		
-		if(head->val[*i] == '$' || head->val[*i] =='\"')
+		if(head->val[*i] == '$' || head->val[*i] =='\"' || head->val[*i] =='='  ||  head->val[*i] =='+')
 		{
 			flag = 1;
 			break;
@@ -174,7 +174,6 @@ static void handle_dollar_expansion(int *i,char **env,t_toknes_list *head,int fl
 			head->val = expand_val(env[j],head->val,*i,flag3);
 			if(flag)
 				check_is_expandig(head,env);
-			
 			free(tmp);
 		}  
 		j++;
@@ -222,6 +221,8 @@ int check_is_expandig(t_toknes_list *head,char **env)
 		}
 		else if (head->val[i] == '$')
 		{
+			if(head->val[i-1]!='=')
+				head->split_it = 1;
 			while (head->val[i] && head->val[i] =='$')
 				i++;
 			handle_dollar_expansion(&i,env,head,1);
@@ -254,6 +255,7 @@ void expanding(t_toknes_list *token_head,char **env)
 	head = token_head;
 	while (head)
 	{
+		head->joined_str = ft_strdup(head->val);
 		check_expand(head,env);
 		remove_q_d(head);
 		head = head->next;
