@@ -32,7 +32,7 @@ static int count_cmd_tokens(t_toknes_list *token)
 		{
 			if(token->split_it)
 			{
-				count += counting_words(token->val,' ');
+				count += counting_words(token->val," \n\t");
 				if(token->join_me)
 					count--;
 			}
@@ -68,13 +68,14 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 			if(current->split_it)
 			{
 				j = 0;
-				printf("hi %s\n",current->val);
-				split = ft_split(current->val,' ');
+				split = ft_split(current->val," \t\n");
+				printf("split me %d %s\n",current->split_it,current->val);
 				if(current->join_me)
 				{
 					i--;
 					tmp = cmd[i];
 					cmd[i] = ft_strjoin(cmd[i],split[0]);
+					printf("the res %s\n",cmd[i]);
 					i++;
 					j++;
 					free(tmp);
@@ -89,12 +90,14 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 				current = current->next;
 				while (current && current->join_me && !current->split_it)
 				{
+					printf("split me %d %s\n",current->split_it,current->val);
 					tmp = cmd[i];
 					cmd[i] = ft_strjoin(cmd[i],current->val);	
 					free(tmp);
 					current = current->next;
 				}
 				i++;
+					
 			}
 			else 
 			{

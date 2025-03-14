@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 05:36:53 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 10:05:39 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_exc_lits
 	
 }t_exc_lits;
 
-char   	**ft_split(const char *s, char c);
+
 char    *join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
@@ -91,8 +91,8 @@ void print(char *s , t_TOKENS type);
 void    print_lits(t_toknes_list *head);
 char	*ft_substr(char const *s,  int start, int len);
 int 	ft_isspace(int c);
-char	**ft_split(const char *s, char c);
-size_t	counting_words(const char *s1, char c);
-
+char	**ft_split(const char *s, char *c);
+size_t	counting_words(const char *s1, char *c);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 #endif

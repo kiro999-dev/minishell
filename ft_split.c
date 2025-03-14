@@ -6,13 +6,27 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:17:18 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/12 18:16:04 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 10:03:07 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	void	*free_memory(char **res, int count)
+int	look_for_c(char *c, char ch)
+{
+	int	i;
+
+	i = 0;
+	while (c[i])
+	{
+		if (ch == c[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void	*free_memory(char **res, int count)
 {
 	int	i;
 
@@ -26,7 +40,7 @@ static	void	*free_memory(char **res, int count)
 	return (NULL);
 }
 
-size_t	counting_words(const char *s1, char c)
+size_t	counting_words(const char *s1, char *c)
 {
 	size_t	count;
 	int		in_word;
@@ -35,7 +49,7 @@ size_t	counting_words(const char *s1, char c)
 	in_word = 0;
 	while (*s1)
 	{
-		if (*s1 == c)
+		if (look_for_c(c, *s1))
 			in_word = 0;
 		else
 		{
@@ -50,29 +64,26 @@ size_t	counting_words(const char *s1, char c)
 	return (count);
 }
 
-static char	*fill(char *s, char c, int *ptr_i)
+static char	*fill(char *s, char *c, int *ptr_i)
 {
-	size_t	len;
+	size_t	word_len;
 	char	*str;
+	int		start;
 
-	len = 0;
-	while (s[*ptr_i + len] && s[*ptr_i + len] != c)
-		len++;
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	while (s[*ptr_i] && look_for_c(c, s[*ptr_i]))
+		(*ptr_i)++;
+	start = *ptr_i;
+	while (s[*ptr_i] && !look_for_c(c, s[*ptr_i]))
+		(*ptr_i)++;
+	word_len = *ptr_i - start;
+	str = (char *)malloc(word_len + 1);
 	if (!str)
 		return (NULL);
-	len = 0;
-	while (s[*ptr_i] && s[*ptr_i] != c)
-	{
-		str[len] = s[*ptr_i];
-		(*ptr_i)++;
-		len++;
-	}
-	str[len] = '\0';
+	ft_strlcpy(str, s + start, word_len + 1);
 	return (str);
 }
 
-char	**ft_split(const char *s, char c)
+char	**ft_split(const char *s, char *c)
 {
 	char	**res;
 	int		k;
@@ -80,16 +91,16 @@ char	**ft_split(const char *s, char c)
 
 	if (!s)
 		return (NULL);
-	i = 0;
-	k = 0;
-	res = (char **) malloc(sizeof(char *) * (counting_words(s, c) + 1));
+	res = (char **)malloc(sizeof(char *) * (counting_words(s, c) + 1));
 	if (!res)
 		return (NULL);
+	i = 0;
+	k = 0;
 	while (s[i])
 	{
-		if (s[i] != c)
+		if (!look_for_c(c, s[i]))
 		{
-			res[k] = fill((char *) s, c, &i);
+			res[k] = fill((char *)s, c, &i);
 			if (!res[k])
 				return (free_memory(res, k));
 			k++;

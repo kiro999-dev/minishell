@@ -6,12 +6,18 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 05:00:00 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 08:45:02 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 int check_is_expandig(t_toknes_list *head,char **env);
+int not_character_expand(char c)
+{
+	if(!((c>='a' && c<='z') || (c>='A' && c<='Z') || c== '_'))
+		return (1);
+	return(0);
+}
 void skip_q_expand(char *s, int *ptr_i, int *q_ptr)
 {
 	int i = *ptr_i;
@@ -50,7 +56,6 @@ char* expand_val(char *s,char *s2,int j,int flag)
 	i = 0;
    
 	res = ft_strdup("");
-	printf("look1 %s\n",s2);
 	while (s2[i] && s2[i] !='$')
 	{
 		tmp = res;
@@ -59,7 +64,6 @@ char* expand_val(char *s,char *s2,int j,int flag)
 		free(tmp);
 	}
 	i = 0;
-	printf("look %s\n",res);
 	while (s[i] && s[i] != '=')
 		i++;
 	if(s[i])
@@ -83,7 +87,6 @@ char* expand_val(char *s,char *s2,int j,int flag)
 		free(tmp);
 	}
 	res = join_character(res,'\0');
-	printf("final res: %s\n",res);
 	return (res);
 }
 void remove_q_d(t_toknes_list *head)
@@ -144,9 +147,8 @@ static void handle_dollar_expansion(int *i,char **env,t_toknes_list *head,int fl
 	flag2 = 0;
 	flag = 0;
 	j = 0;
-	printf("%s\n",head->val);
 	expand = ft_strdup("");
-	while (head->val[*i]  &&!ft_isspace(head->val[*i]))
+	while (head->val[*i]  && !ft_isspace(head->val[*i]))
 	{
 		
 		if(head->val[*i] == '$' || head->val[*i] =='\"' || head->val[*i] =='='  ||  head->val[*i] =='+')
@@ -165,7 +167,6 @@ static void handle_dollar_expansion(int *i,char **env,t_toknes_list *head,int fl
 		}
 		(*i)++;
 	}
-	printf("the expand : %s\n",expand);
 	while (env && env[j])
 	{
 		if(strcmp_env(env[j],expand,ft_strlen(expand)))
@@ -207,6 +208,9 @@ int check_is_expandig(t_toknes_list *head,char **env)
 				{
 					while (head->val[i] && head->val[i] =='$')
 						i++;
+					
+					if(not_character_expand(head->val[i]))
+						break;
 					handle_dollar_expansion(&i,env,head,0);
 				}
 				else if (head->val[i] == '\"')
@@ -226,6 +230,8 @@ int check_is_expandig(t_toknes_list *head,char **env)
 				head->split_it = 1;
 			while (head->val[i] && head->val[i] =='$')
 				i++;
+			if(not_character_expand(head->val[i]))
+				break;
 			handle_dollar_expansion(&i,env,head,1);
 		}
 		i++;

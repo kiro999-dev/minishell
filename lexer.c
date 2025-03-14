@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 06:26:42 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 09:10:56 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void double_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head)
 			break;
         tmp = token;
         token = join_character(token,s[i]),free(tmp);
-		if(s[i] == '\'' && !data->is_redir_in && !data->is_redir_out && !data->is_append && !data->is_here_d)
+		if(s[i] == '\"' && !data->is_redir_in && !data->is_redir_out && !data->is_append && !data->is_here_d)
 		{
 			i++;
 			break;
