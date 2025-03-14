@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 03:21:12 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 04:57:05 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,8 @@ int check_is_expandig(t_toknes_list *head,char **env)
 		}
 		else if (head->val[i] == '$')
 		{
-			// if(head->val[i-1]!='=')
+			printf("hmm:%c\n",head->val[0]);
+			if(head->val[0]=='$' || head->val[0]=='=')
 				head->split_it = 1;
 			while (head->val[i] && head->val[i] =='$')
 				i++;
@@ -237,7 +238,8 @@ int check_expand(t_toknes_list *head,char **env)
 {
 	int i = 0;
 	int flag = 0;
-	while (head->val[i])
+	int len =ft_strlen(head->val) ;
+	while (head && i < len )
 	{
 		if (head->val[i] == '$')
 		{

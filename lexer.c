@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 03:15:52 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 04:47:49 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,13 +299,13 @@ void  lex(char *s, t_toknes_list **head,int flag) // | '' "" cmd args << < > >>
 			return;
 		else  if(s[i] == '\'')
 		{
-			data_tok.join_me = 1;
 			single_q(&i,s,&data_tok,head);
+			data_tok.join_me = 1;
 		}
 		else  if(s[i] == '\"')
 		{
-			data_tok.join_me = 1;
 			double_q(&i,s,&data_tok,head);
+			data_tok.join_me = 1;
 		}
 		else 
 			i++;
