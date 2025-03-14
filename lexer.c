@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 04:47:49 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 06:21:10 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,33 @@ int ft_isspace(int c)
 		return (1);
 	return (0);
 }
-
+void add_token(t_tok *data_tok,t_toknes_list **head);
 void single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head)
 {
 	char *token;
 	char *tmp;
 	int i;
+	int q;
 
+	q = 0;
 	i = *i_ptr;
 	token = ft_strdup("");
-	if(s[i] == '\'')
+	if(s[i] == '\"')
 	{
+		q = !q;
 		tmp = token;
         token = join_character(token,s[i]),free(tmp);
 		i++;
 	}
 	while (s[i])
    	{
+		if(s[i] == '\"')
+			q = !q;
+		if(ft_isspace(s[i]) && !q)
+			break;
         tmp = token;
         token = join_character(token,s[i]),free(tmp);
-		if(s[i] == '\'')
+		if(s[i] == '\'' && !data->is_redir_in && !data->is_redir_out && !data->is_append && !data->is_here_d)
 		{
 			i++;
 			break;
@@ -45,36 +52,36 @@ void single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head)
    	}
 	if(token[0] =='\0')
 	   return (*i_ptr = i,free(token));
-	if(data->is_cmd)
-	{
-		add(head,ft_strdup(token),CMD,0);
-		data->is_cmd = 0;
-	}
-	else
-		add(head,ft_strdup(token),WORD,data->join_me);
-	free(token);
+	data->token = token;
+	add_token(data,head);
 	*i_ptr = i;
 }
-
 void double_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head)
 {
 	char *token;
 	char *tmp;
 	int i;
+	int q;
 
+	q = 0;
 	i = *i_ptr;
 	token = ft_strdup("");
 	if(s[i] == '\"')
 	{
+		q = !q;
 		tmp = token;
         token = join_character(token,s[i]),free(tmp);
 		i++;
 	}
 	while (s[i])
    	{
+		if(s[i] == '\"')
+			q = !q;
+		if(ft_isspace(s[i]) && !q)
+			break;
         tmp = token;
         token = join_character(token,s[i]),free(tmp);
-		if(s[i] == '\"')
+		if(s[i] == '\'' && !data->is_redir_in && !data->is_redir_out && !data->is_append && !data->is_here_d)
 		{
 			i++;
 			break;
@@ -83,14 +90,8 @@ void double_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head)
    	}
 	if(token[0] =='\0')
 	   return (*i_ptr = i,free(token));
-	if(data->is_cmd)
-	{
-		add(head,ft_strdup(token),CMD,0);
-		data->is_cmd = 0;
-	}
-	else
-		add(head,ft_strdup(token),WORD,data->join_me);
-	free(token);
+	data->token = token;
+	add_token(data,head);
 	*i_ptr = i;
 }
 
@@ -145,14 +146,11 @@ int redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 	
 	return (1);
 }
-void print(char *s , t_TOKENS type,int join_me)
+void print(char *s , t_TOKENS type)
 {
 	
 	if(s)
 	{
-		if(join_me)
-			printf("join me--->%s--->",s);
-		else
 			printf("%s--->",s);
 	}
 	if(type ==PIPE)
@@ -185,8 +183,7 @@ void print_lits(t_toknes_list *head)
 {
 	while (head)
 	{
-		print(head->val,head->type,head->join_me);
-		printf("split me %d\n",head->split_it);
+		print(head->val,head->type);
 		head = head->next;
 
 	}
@@ -256,9 +253,8 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i)
 	}
 	*ptr_i = i;
 }
-void not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s)
+void add_token(t_tok *data_tok,t_toknes_list **head)
 {
-	gen_word(data_tok,s,ptr_i);
 	if (data_tok->is_cmd && !data_tok->is_redir_in 
 		&& !data_tok->is_here_d  && !data_tok->is_redir_out)
 		token_add(head,data_tok,CMD);
@@ -272,6 +268,11 @@ void not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s)
 		token_add(head,data_tok,LIMTER);
 	else
 		token_add(head,data_tok,WORD);
+}
+void not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s)
+{
+	gen_word(data_tok,s,ptr_i);
+	add_token(data_tok,head);
 }
 void  lex(char *s, t_toknes_list **head,int flag) // | '' "" cmd args << < > >>
 {

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 01:45:11 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 05:36:53 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void 	add_list_exc(t_exc_lits **head,
 			char **cmd, t_TOKENS type, t_file *head_files);
 void 	add_back_list(t_exc_lits **head,t_exc_lits *node);
 t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter);
-void print(char *s , t_TOKENS type,int join_me);
+void print(char *s , t_TOKENS type);
 void    print_lits(t_toknes_list *head);
 char	*ft_substr(char const *s,  int start, int len);
 int 	ft_isspace(int c);

@@ -123,7 +123,6 @@ char **pars_cmd(t_toknes_list *token)
 
 	tmp = token;
 	int count = count_cmd_tokens(token);
-	printf("count %d\n",count);
 	return( copy_cmd_tokens(token, count));
 }
 int isfile(t_TOKENS type)
@@ -153,9 +152,12 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 		else if(tokenz_head->type == HER_DOC)
 		{
 			tokenz_head = tokenz_head->next;
-			node = creat_node_exc(NULL,LIMTER,f_head,ft_strdup(tokenz_head->val));
-			add_back_list(exc_head,node);
-			tokenz_head = tokenz_head->next;
+			if(tokenz_head)
+			{
+				node = creat_node_exc(NULL,LIMTER,f_head,ft_strdup(tokenz_head->val));
+				add_back_list(exc_head,node);
+				tokenz_head = tokenz_head->next;
+			}
 		}
 		while (tokenz_head && (isfile(tokenz_head->type) || tokenz_head->type == REDIR_IN 
 				||  tokenz_head->type == REDIR_OUT || tokenz_head->type == APPEND))
@@ -174,7 +176,7 @@ void print_list_file(t_file *head)
 {
 	while (head)
 	{
-		print(head->file, head->type,0);
+		print(head->file, head->type);
 		head = head->next;
 	}
 }
@@ -244,7 +246,7 @@ int main(int argc,char **argv,char **env)
 		if(buff == NULL)
 			break;
 		add_history(buff);
-		lex(buff, &head,1); // handle file when its 'o''u''t'
+		lex(buff, &head,1); // handle file when its 'o''u''t' end every_case
 		check_syntax(head);
 		expanding(head,env);
 		print_lits(head);
@@ -255,12 +257,6 @@ int main(int argc,char **argv,char **env)
 		head = NULL;
 		// free(buff);
 		buff = NULL;
-	}
-	
-	// lex(buff, &head);
-	// check_syntax(head);
-	// expanding(head,env);
-	// free(buff);
-	// free_list(head);
+	} 
 	return 0;
 }
