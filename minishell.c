@@ -31,9 +31,15 @@ static int count_cmd_tokens(t_toknes_list *token)
 		if (token->type == WORD || token->type == CMD)
 		{
 			if(token->split_it)
-				count = counting_words(token->val,' ');
-			else
+			{
+				count += counting_words(token->val,' ');
+				if(token->join_me)
+					count--;
+			}
+			else if(!token->join_me)
+			{
 				count++;
+			}
 		}
 		token = token->next;
 	}
@@ -42,11 +48,13 @@ static int count_cmd_tokens(t_toknes_list *token)
 
 static char **copy_cmd_tokens(t_toknes_list *token, int count)
 {
+	t_toknes_list *current;
 	char **cmd;
 	int i;
-	t_toknes_list *current;
 	int j;
 	char **split;
+	char *tmp;
+
 	j = 0;
 	cmd = malloc(sizeof(char *) * (count + 1));
 	i = 0;
@@ -59,21 +67,51 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 		{
 			if(current->split_it)
 			{
+				j = 0;
+				printf("hi %s\n",current->val);
 				split = ft_split(current->val,' ');
+				if(current->join_me)
+				{
+					i--;
+					tmp = cmd[i];
+					cmd[i] = ft_strjoin(cmd[i],split[0]);
+					i++;
+					j++;
+					free(tmp);
+				}
 				while (split[j])
 				{
 					cmd[i] = split[j];
 					i++;
 					j++;
 				}
+				i--;
+				current = current->next;
+				while (current && current->join_me && !current->split_it)
+				{
+					tmp = cmd[i];
+					cmd[i] = ft_strjoin(cmd[i],current->val);	
+					free(tmp);
+					current = current->next;
+				}
+				i++;
 			}
-			else
+			else 
 			{
-				cmd[i] = current->val;	
-				i++;	
+				cmd[i] = ft_strdup(current->val);
+				current = current->next;
+				while (current && current->join_me && !current->split_it)
+				{
+					tmp = cmd[i];
+					cmd[i] = ft_strjoin(cmd[i],current->val);	
+					free(tmp);
+					current = current->next;
+				}
+				i++;
 			}
 		}
-		current = current->next;
+		else
+			current = current->next;
 	}
 	cmd[i] = NULL;
 	return (cmd);
@@ -81,7 +119,11 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 
 char **pars_cmd(t_toknes_list *token)
 {
+	t_toknes_list *tmp;
+
+	tmp = token;
 	int count = count_cmd_tokens(token);
+	printf("count %d\n",count);
 	return( copy_cmd_tokens(token, count));
 }
 int isfile(t_TOKENS type)
@@ -132,7 +174,7 @@ void print_list_file(t_file *head)
 {
 	while (head)
 	{
-		print(head->file, head->type);
+		print(head->file, head->type,0);
 		head = head->next;
 	}
 }
@@ -168,7 +210,27 @@ void print_exc_list(t_exc_lits **exc_head)
 		head = head->next;
 	}
 }
+void join_token(t_toknes_list *head,t_toknes_list **final_lits)
+{
+	char *tmp;
+	char *str;
+	t_TOKENS type;
 
+	while (head)
+	{
+		str = head->val;
+		type = head->type;
+		while (head && head->next && head->next->join_me)
+		{
+			tmp = head->val;
+			str = ft_strjoin(str,head->next->val);
+			free(tmp);
+			head = head->next;
+		}
+		add(final_lits,str,type,0);
+		head = head->next;
+	}
+}
 int main(int argc,char **argv,char **env)
 {
 	char *buff;
@@ -182,11 +244,11 @@ int main(int argc,char **argv,char **env)
 		if(buff == NULL)
 			break;
 		add_history(buff);
-		lex(buff, &head,1);
+		lex(buff, &head,1); // handle file when its 'o''u''t'
 		check_syntax(head);
-		expanding(head,env); //add $$$$$$ split and conctec
+		expanding(head,env);
 		print_lits(head);
-		generate_list(head, &exc_head); //add_here_doc
+		generate_list(head, &exc_head);
 		print_exc_list(&exc_head);
 		exc_head = NULL;
 		// free_list(head);

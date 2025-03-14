@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/13 21:47:59 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 03:21:12 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ int check_is_expandig(t_toknes_list *head,char **env)
 		}
 		else if (head->val[i] == '$')
 		{
-			if(head->val[i-1]!='=')
+			// if(head->val[i-1]!='=')
 				head->split_it = 1;
 			while (head->val[i] && head->val[i] =='$')
 				i++;
@@ -256,7 +256,6 @@ void expanding(t_toknes_list *token_head,char **env)
 	head = token_head;
 	while (head)
 	{
-		head->joined_str = ft_strdup(head->val);
 		check_expand(head,env);
 		remove_q_d(head);
 		head = head->next;

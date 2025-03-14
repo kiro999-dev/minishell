@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:58:53 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/12 15:03:20 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:58:52 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,4 @@ void check_syntax(t_toknes_list *head)
         head = head->next;
     }
 }
+ 
