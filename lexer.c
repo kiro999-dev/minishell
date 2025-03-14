@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 06:21:10 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 06:26:42 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head)
 	q = 0;
 	i = *i_ptr;
 	token = ft_strdup("");
-	if(s[i] == '\"')
+	if(s[i] == '\'')
 	{
 		q = !q;
 		tmp = token;
@@ -37,7 +37,7 @@ void single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head)
 	}
 	while (s[i])
    	{
-		if(s[i] == '\"')
+		if(s[i] == '\'')
 			q = !q;
 		if(ft_isspace(s[i]) && !q)
 			break;
