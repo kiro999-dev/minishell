@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 09:10:56 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 10:08:41 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 	{
       add(head,ft_strdup("<"),REDIR_IN,0);
       d->is_redir_in = 1;
+	  i--;
 	}
 	*i_ptr = i;
 	return (1);
@@ -141,6 +142,7 @@ int redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d)
 	{	
 		add(head,ft_strdup(">"),REDIR_OUT,0);
 		d->is_redir_out = 1;
+		i--;
 	}
 	*i_ptr = i;
 	
