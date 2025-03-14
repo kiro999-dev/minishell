@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 10:05:39 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:08:50 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_toknes
 	struct s_toknes *next;
 	struct s_toknes *prv;
 	int				split_it;
+	int				split_it2;
 	int				join_me;
 }t_toknes_list;
 

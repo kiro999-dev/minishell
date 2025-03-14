@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 08:45:02 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:10:10 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,8 @@ int check_is_expandig(t_toknes_list *head,char **env)
 		{
 			if(head->val[0]=='$' || head->val[0]=='=')
 				head->split_it = 1;
+			else
+				head->split_it2 = 1;
 			while (head->val[i] && head->val[i] =='$')
 				i++;
 			if(not_character_expand(head->val[i]))

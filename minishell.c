@@ -99,6 +99,40 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 				i++;
 					
 			}
+			else if(current->split_it2 && strcmp("export",cmd[0]))
+			{
+				j = 0;
+				split = ft_split(current->val," \t\n");
+				printf("split me %d %s\n",current->split_it,current->val);
+				if(current->join_me)
+				{
+					i--;
+					tmp = cmd[i];
+					cmd[i] = ft_strjoin(cmd[i],split[0]);
+					printf("the res %s\n",cmd[i]);
+					i++;
+					j++;
+					free(tmp);
+				}
+				while (split[j])
+				{
+					cmd[i] = split[j];
+					i++;
+					j++;
+				}
+				i--;
+				current = current->next;
+				while (current && current->join_me && !current->split_it)
+				{
+					printf("split me %d %s\n",current->split_it,current->val);
+					tmp = cmd[i];
+					cmd[i] = ft_strjoin(cmd[i],current->val);	
+					free(tmp);
+					current = current->next;
+				}
+				i++;
+					
+			}
 			else 
 			{
 				cmd[i] = ft_strdup(current->val);
