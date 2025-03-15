@@ -39,37 +39,111 @@ void print_export(t_env_list *e)
     }
     while (e)
     {
-        printf("declare -x %s\n", e->var);
+        export_putstr(e->var);
         e = e->next;
     }
     
 }
 
+
+char *trim_plus_sign(char *key)
+{
+    char *equal_pos;
+    char *new_key;
+
+    equal_pos = custom_strnstr(key, "+=", ft_strlen(key));
+    if (!equal_pos)
+        return (key); 
+
+    new_key = malloc(ft_strlen(key));
+    if (!new_key)
+        return (NULL);
+
+    ft_strlcpy(new_key, key, equal_pos - key + 1);
+    ft_strlcat(new_key, equal_pos + 1, ft_strlen(new_key));
+    printf("no + => %s\n", new_key);
+    return (new_key);
+}
+
+
 int replace_existing_key(t_env_list *env, char *key)
 {
     t_env_list *current;
+    char *declared;
     
     current = env;
+    if (custom_strnstr(key, "+=", ft_strlen(key)))
+        key = trim_plus_sign(key);
+    
+    declared = ft_strchr(key, '=');
     while (current)
     {
-        if (ft_strchr(key, '=') && equal_strcmp(current->var, key) == 0)
+        if (declared && equal_strcmp(current->var, key) == 0)
         {
             // free(current->var);
             current->var = strdup(key);
             return (1);
         }
-        if (!ft_strchr(key, '=') && equal_strcmp(current->var, key) == 0)
+        if (!declared && equal_strcmp(current->var, key) == 0)
             return (1);
         current = current->next;
     }
     return (0);
 }
 
+void get_key_value(char *var, char **key, char **value)
+{
+    char *plus_pos;
+
+    plus_pos = custom_strnstr(var, "+=", ft_strlen(var));
+    if (!plus_pos)
+        return ;
+    *key = ft_substr(var, 0, plus_pos - var);
+    if (!(*key))
+    return ;
+    *value = ft_strdup(plus_pos + 2);
+    if (!(*value))
+    {
+        free(key);
+        return ;
+    }
+}
+
+
+int check_append(t_env_list *env, char *var)
+{
+    char *key;
+    char *value;
+    char *tmp;
+
+    key = NULL;
+    value = NULL;
+    get_key_value(var, &key, &value);
+    if (!key || !value)
+        return (0);
+    while (env)
+    {
+        if (!equal_strcmp(key, env->var))
+        {
+            tmp = ft_strjoin(env->var, value);
+            // free(env->var);
+            env->var = tmp;
+            printf("----> %s\n", tmp);
+            free(key);
+            free(value);
+            return (1);
+        }
+        env = env->next;
+    }
+    return (0);
+}
 
 void add_var_2_env(char *cmd, t_env_list **env)
 {
     t_env_list *new;
 
+    if (check_append(*env, cmd))
+        return ;
     if (replace_existing_key(*env, cmd))
         return;
 

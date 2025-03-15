@@ -7,12 +7,12 @@ int main(int ac, char *av[], char *env[])
     t_env_list *e;
     e = NULL;
     e = init_env(env);
-    if (ac > 1 && !ft_strncmp(av[1], "export", 6))
+    if (ac > 1 && !ft_strncmp(av[1], "export", 7))
     {
         
         f_export(av + 1, e);
         // f_env(e);
-        print_export(e);
+        // print_export(e);
     }
     if (ac > 1 && !ft_strncmp(av[1], "env", 4))
         f_env(e);

@@ -6,29 +6,29 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:48:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 15:29:34 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/15 17:43:00 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	len_src;
-	size_t	i;
+// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+// {
+// 	size_t	len_src;
+// 	size_t	i;
 
-	i = 0;
-	len_src = ft_strlen(src);
-	if (dstsize == 0)
-		return (len_src);
-	while (i < dstsize - 1 && src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (len_src);
-}
+// 	i = 0;
+// 	len_src = ft_strlen(src);
+// 	if (dstsize == 0)
+// 		return (len_src);
+// 	while (i < dstsize - 1 && src[i])
+// 	{
+// 		dst[i] = src[i];
+// 		i++;
+// 	}
+// 	dst[i] = '\0';
+// 	return (len_src);
+// }
 
 char	*ft_strdup(const char *s1)
 {

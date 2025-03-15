@@ -106,7 +106,7 @@ void f_env(t_env_list *env)
     }
     while (env && !env->undec)
     {
-        printf("%s | %i\n", env->var, env->undec);
+        printf("%s\n", env->var);
         env = env->next;
     }
 }
