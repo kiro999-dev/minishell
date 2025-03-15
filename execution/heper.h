@@ -12,10 +12,18 @@ typedef struct s_env
     int size_undec;
 }t_env;
 
+typedef struct s_env_list
+{
+    char *var;
+    struct s_env_list *next;
+    short undec;
+} t_env_list;
+
+t_env_list *init_env(char *ev[]);
 int     equal_strcmp(const char *s1, const char *s2);
 int     compare_key(char **array, char *key);
-void    print_export(t_env *e);
-void    f_export(char **cmd, t_env *ev);
+void    print_export(t_env_list *e);
+void    f_export(char **cmd, t_env_list *ev);
 void    ft_putstr(char *str);
 int     size_2d(char **arr);
 void    *free_array(char **s);
@@ -24,7 +32,10 @@ char	*ft_strjoin(char *s1, char *s2);
 void    f_cd(char *path, char *env[]);
 void    f_pwd(void);
 void    f_echo(char **av);
-void    f_env(char *env[]);
-t_env   init_env(char *ev[]);
+void    f_env(t_env_list *env);
 
+// env linked list functions
+void free_env_list(t_env_list *env);
+void add_back(t_env_list **lst, t_env_list *new);
+t_env_list	*new_node(void *content);
 #endif

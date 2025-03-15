@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strings.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:48:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/02/26 16:16:25 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/14 15:29:34 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*ft_strdup(const char *s1)
 	ft_strlcpy(s1_cpy, s1, size);
 	return (s1_cpy);
 }
+
 char	*ft_strchr(const char *s, int c)
 {
 	char	*ptr_s;
@@ -57,6 +58,7 @@ char	*ft_strchr(const char *s, int c)
 		return (ptr_s);
 	return (NULL);
 }
+
 int ft_strlen(const char *s)
 {
    int i = 0;

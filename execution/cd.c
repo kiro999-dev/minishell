@@ -97,20 +97,17 @@ void f_pwd(void)
     printf("%s\n", pwd);
 }
 
-void f_env(char *env[])
+void f_env(t_env_list *env)
 {
-    int i;
-
     if (!env)
     {
         printf("env not found!\n");
         return ;
     }
-    i = 0;
-    while (env[i])
+    while (env && !env->undec)
     {
-        printf("%s\n", env[i]);
-        i++;
+        printf("%s | %i\n", env->var, env->undec);
+        env = env->next;
     }
 }
 

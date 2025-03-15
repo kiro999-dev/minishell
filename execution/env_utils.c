@@ -26,50 +26,102 @@ int size_2d(char **arr)
         i++;
     return (i);
 }
-t_env init_env(char *ev[])
-{
-    int i;
-    t_env env;
 
-    env.size = 0;
-    if (!ev)
-    {
-        printf("env not found!");
-        exit(1);
-    }
-    env.size = size_2d(ev);
-    env.env_arr = (char**) malloc ((env.size * sizeof(char*)) + 1);
-    env.undeclared = (char**) malloc (sizeof(char*));
-    if (!env.env_arr || !env.undeclared)
-        exit(1);
-    env.env_arr[env.size] = NULL;
-    env.undeclared[0] = NULL;
-    env.size_undec = 0;
-    i = -1;
-    while (++i < env.size)
-    {
-        env.env_arr[i] = ft_strdup(ev[i]);
-        if (!env.env_arr[i])
-            (free_array(env.env_arr), exit(1));
-    }
-    return (env);
+t_env_list	*lstlast(t_env_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
 }
 
-int compare_key(char **array, char *key)
-{
-    int i;
 
-    if (!array || !key)
-        return (0);
-    i = -1;
-    while (array[++i])
+void add_back(t_env_list **lst, t_env_list *new)
+{
+    t_env_list *temp;
+
+    if (!new || !lst)
+        return;
+    if (!(*lst))
     {
-        if (equal_strcmp(array[i], key) == 0)
+        *lst = new;
+        return;
+    }
+    temp = lstlast(*lst);
+    temp->next = new;
+}
+
+t_env_list	*new_node(void *content)
+{
+	t_env_list	*dest;
+
+	dest = (t_env_list *)malloc(sizeof(t_env_list));
+	if (!dest)
+		return (NULL);
+	dest->var = content;
+	dest->next = (NULL);
+	return (dest);
+}
+
+void free_env_list(t_env_list *env)
+{
+    t_env_list *temp;
+    
+    while (env->next)
+    {
+        temp = env;
+        env = env->next;
+        free(temp->var);
+        free(temp);
+    }
+}
+
+
+
+t_env_list *init_env(char *ev[])
+{
+    int i = 0;
+    t_env_list *env_list = NULL;
+    t_env_list *new;
+
+    if (!ev || !ev[0])
+    {
+        printf("env not found!\n");
+        exit(1);
+    }
+    while (ev[i])
+    {
+		new = new_node(ft_strdup(ev[i]));
+        if (!new)
         {
-            free(array[i]);
-            array[i] = ft_strdup(key);
-            return (1);
+			printf("Memory allocation failed!\n");
+            exit(1);
         }
+        add_back(&env_list, new);
+        i++;
     }
-    return (0); 
+
+    return env_list;
 }
+
+
+
+// int compare_key(char **array, char *key)
+// {
+//     int i;
+
+//     if (!array || !key)
+//         return (0);
+//     i = -1;
+//     while (array[++i])
+//     {
+//         if (equal_strcmp(array[i], key, 1) == 0)
+//         {
+//             free(array[i]);
+//             array[i] = ft_strdup(key);
+//             return (1);
+//         }
+//     }
+//     return (0); 
+// }

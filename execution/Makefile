@@ -11,11 +11,11 @@ all: $(NAME)
 
 
 $(NAME): $(OBJ)
-	$(CC) -fsanitize=address $(OBJ) $(LDFLAGS) -o $(NAME)  
+	$(CC)  $(OBJ) $(LDFLAGS) -o $(NAME)  
 
 
 %.o: %.c $(INC)
-	$(CC) -fsanitize=address $(CFLAGS) -c $< -o $@ 
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 
 clean:
