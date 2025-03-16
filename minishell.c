@@ -76,105 +76,72 @@ static int count_cmd_tokens(t_toknes_list *token)
 	}
 	return count;
 }
+static void process_split_token(t_toknes_list **curr, char **cmd, int *i, t_gc_collector **gc_head) {
+    char **split;
+    int j = 0;
+    split = ft_split((*curr)->val, " \t\n", gc_head);
+    if ((*curr)->join_me && *i > 0) {
+        *i -= 1;
+        cmd[*i] = ft_strjoin(cmd[*i], split[0], gc_head);
+        j++;
+    }
+    while (split[j])
+        cmd[(*i)++] = split[j++];
+    while ((*curr)->next && (*curr)->next->join_me && !(*curr)->next->split_it) {
+        *curr = (*curr)->next;
+        cmd[*i - 1] = ft_strjoin(cmd[*i - 1], (*curr)->val, gc_head);
+    }
+    *curr = (*curr)->next;
+}
 
-static char **copy_cmd_tokens(t_toknes_list *token, int count,t_gc_collector **gc_head)
-{
-	t_toknes_list *current;
-	char **cmd;
-	int i;
-	int j;
-	char **split;
-	
+static void process_split_token2(t_toknes_list **curr, char **cmd, int *i, t_gc_collector **gc_head) {
+    char **split;
+    int j = 0;
+    split = ft_split((*curr)->val, " \t\n", gc_head);
+    if ((*curr)->join_me && *i > 0) {
+        *i -= 1;
+        cmd[*i] = ft_strjoin(cmd[*i], split[0], gc_head);
+        j++;
+    }
+    while (split[j])
+        cmd[(*i)++] = split[j++];
+    while ((*curr)->next && (*curr)->next->join_me && !(*curr)->next->split_it) {
+        *curr = (*curr)->next;
+        cmd[*i - 1] = ft_strjoin(cmd[*i - 1], (*curr)->val, gc_head);
+    }
+    *curr = (*curr)->next;
+}
 
-	j = 0;
-	cmd = gc_malloc(gc_head,sizeof(char *) * (count + 1));
-	i = 0;
-	current = token;
-	if (!cmd)
-		return NULL;
-	while (current && current->type != PIPE)
+static void process_regular_token(t_toknes_list **curr, char **cmd, int *i, t_gc_collector **gc_head) {
+    cmd[(*i)++] = ft_strdup((*curr)->val, gc_head);
+    while ((*curr)->next && (*curr)->next->join_me && !(*curr)->next->split_it) {
+        *curr = (*curr)->next;
+        cmd[*i - 1] = ft_strjoin(cmd[*i - 1], (*curr)->val, gc_head);
+    }
+    *curr = (*curr)->next;
+}
+
+static char **copy_cmd_tokens(t_toknes_list *token, int count, t_gc_collector **gc_head) {
+    char **cmd;
+    int i = 0;
+    
+    cmd = gc_malloc(gc_head, sizeof(char *) * (count + 1));
+    if (!cmd)
+        return NULL;
+    while (token && token->type != PIPE) {
+        if (token->type == WORD || token->type == CMD) 
 	{
-		if (current->type == WORD || current->type == CMD)
-		{
-			if(current->split_it)
-			{
-				j = 0;
-				split = ft_split(current->val," \t\n",gc_head);
-				printf("split me %d %s\n",current->split_it,current->val);
-				if(current->join_me)
-				{
-					i--;
-					cmd[i] = ft_strjoin(cmd[i],split[0],gc_head);
-					printf("the res %s\n",cmd[i]);
-					i++;
-					j++;
-				}
-				while (split[j])
-				{
-					cmd[i] = split[j];
-					i++;
-					j++;
-				}
-				i--;
-				current = current->next;
-				while (current && current->join_me && !current->split_it)
-				{
-					printf("split me %d %s\n",current->split_it,current->val);
-					cmd[i] = ft_strjoin(cmd[i],current->val,gc_head);	
-					;
-					current = current->next;
-				}
-				i++;
-					
-			}
-			else if(current->split_it2 && strcmp("export",cmd[0]))
-			{
-				j = 0;
-				split = ft_split(current->val," \t\n",gc_head);
-				printf("split me %d %s\n",current->split_it,current->val);
-				if(current->join_me)
-				{
-					i--;
-					cmd[i] = ft_strjoin(cmd[i],split[0],gc_head);
-					printf("the res %s\n",cmd[i]);
-					i++;
-					j++;
-					;
-				}
-				while (split[j])
-				{
-					cmd[i] = split[j];
-					i++;
-					j++;
-				}
-				i--;
-				current = current->next;
-				while (current && current->join_me && !current->split_it)
-				{
-					printf("split me %d %s\n",current->split_it,current->val);
-					cmd[i] = ft_strjoin(cmd[i],current->val,gc_head);	
-					current = current->next;
-				}
-				i++;
-					
-			}
-			else 
-			{
-				cmd[i] = ft_strdup(current->val,gc_head);
-				current = current->next;
-				while (current && current->join_me && !current->split_it)
-				{
-					cmd[i] = ft_strjoin(cmd[i],current->val,gc_head);
-					current = current->next;
-				}
-				i++;
-			}
-		}
-		else
-			current = current->next;
-	}
-	cmd[i] = NULL;
-	return (cmd);
+            if (token->split_it)
+                process_split_token(&token, cmd, &i, gc_head);
+            else if (token->split_it2 && i > 0 && strcmp("export", cmd[0]) != 0)
+                process_split_token2(&token, cmd, &i, gc_head);
+            else
+                process_regular_token(&token, cmd, &i, gc_head);
+        } else 
+            token = token->next;
+    }
+    cmd[i] = NULL;
+    return cmd;
 }
 
 char **pars_cmd(t_toknes_list *token,t_gc_collector **gc_head)
