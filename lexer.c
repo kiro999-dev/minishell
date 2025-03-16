@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/16 19:33:17 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/16 21:18:32 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,75 +18,84 @@ int ft_isspace(int c)
 	return (0);
 }
 void add_token(t_tok *data_tok,t_toknes_list **head,t_gc_collector **gc_head);
-
-static char *read_single_quote_token(char *s, int *i_ptr, t_tok *data, t_gc_collector **gc_head) 
+void single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head,t_gc_collector **gc_head)
 {
-	int i = *i_ptr, q = 0;
-	char *token = ft_strdup("", gc_head);
-	if (s[i] == '\'') {
-		q = !q;
-		token = join_character(token, s[i], gc_head);
-		i++;
-	}
-	while (s[i]) 
-	{
-		if (s[i] == '\'')
-			q = !q;
-		if (ft_isspace(s[i]) && !q)
-			break;
-		token = join_character(token, s[i], gc_head);
-		if (s[i] == '\'' && !data->is_redir_in && !data->is_redir_out &&
-			!data->is_append && !data->is_here_d) {
-			i++;
-			break;
-		}
-		i++;
-	}
-	return (token);
-}
+	char *token;
+	int i;
+	int q;
 
-static char *read_double_quote_token(char *s, int *i_ptr, t_tok *data, t_gc_collector **gc_head) {
-	int i = *i_ptr, q = 0;
-	char *token = ft_strdup("", gc_head);
-	if (s[i] == '\"') 
+	q = 0;
+	i = *i_ptr;
+	token = ft_strdup("",gc_head);
+	if(s[i] == '\'')
 	{
 		q = !q;
-		token = join_character(token, s[i], gc_head);
+        token = join_character(token,s[i],gc_head);
 		i++;
 	}
-	while (s[i]) 
-	{
-		if (s[i] == '\"')
+	while (s[i])
+   	{
+		if(s[i] == '\'')
 			q = !q;
-		if (ft_isspace(s[i]) && !q)
+		if(ft_isspace(s[i]) && !q)
 			break;
-		token = join_character(token, s[i], gc_head);
-		if (s[i] == '\"' && !data->is_redir_in && !data->is_redir_out &&
-			!data->is_append && !data->is_here_d)
-			 {
+        token = join_character(token,s[i],gc_head);
+		if(s[i] == '\'' && !data->is_redir_in && !data->is_redir_out && !data->is_append && !data->is_here_d)
+		{
 			i++;
 			break;
 		}
-		i++;
+        i++;
+   	}
+	if(token[0] =='\0')
+	{
+		*i_ptr = i;
+		return;
 	}
+	data->token = token;
+	add_token(data,head,gc_head);
 	*i_ptr = i;
-	return token;
 }
-void double_q(int *i_ptr, char *s, t_tok *data, t_toknes_list **head, t_gc_collector **gc_head) {
-	char *token = read_double_quote_token(s, i_ptr, data, gc_head);
-	if (token[0] == '\0')
-		return;
-	data->token = token;
-	add_token(data, head, gc_head);
-}
-void single_q(int *i_ptr, char *s, t_tok *data, t_toknes_list **head, t_gc_collector **gc_head) 
+void double_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head,t_gc_collector **gc_head)
 {
-	char *token = read_single_quote_token(s, i_ptr, data, gc_head);
-	if (token[0] == '\0')
+	char *token;
+	
+	int i;
+	int q;
+
+	q = 0;
+	i = *i_ptr;
+	token = ft_strdup("",gc_head);
+	if(s[i] == '\"')
+	{
+		q = !q;
+        token = join_character(token,s[i],gc_head);
+		i++;
+	}
+	while (s[i])
+   	{
+		if(s[i] == '\"')
+			q = !q;
+		if(ft_isspace(s[i]) && !q)
+			break;
+        token = join_character(token,s[i],gc_head);
+		if(s[i] == '\"' && !data->is_redir_in && !data->is_redir_out && !data->is_append && !data->is_here_d)
+		{
+			i++;
+			break;
+		}
+        i++;
+   	}
+	if(token[0] =='\0')
+	{
+		*i_ptr = i;
 		return;
+	}
 	data->token = token;
-	add_token(data, head, gc_head);
+	add_token(data,head,gc_head);
+	*i_ptr = i;
 }
+
 int pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head,t_gc_collector **gc_head)
 {
 	int i;
@@ -183,7 +192,7 @@ void print_lits(t_toknes_list *head)
 	}
 }
 
-int is_not_token(char c)
+int is_token(char c)
 {
 	char *s ="<>|\'\"";
 	if(ft_strchr(s,c) == NULL)
@@ -221,13 +230,20 @@ void token_add(t_toknes_list **head,t_tok *data_tok,t_TOKENS type,t_gc_collector
 	if(type == IS_FILE_APPEND)
 		data_tok->is_append = 0;
 }
+int isparam(t_tok *data_tok)
+{
+	if( data_tok->is_redir_out || data_tok->is_here_d || data_tok->is_append || data_tok->is_redir_in)	
+		return (1);
+	else
+		return (0);
+}
 void gen_word(t_tok  *data_tok, char *s,int *ptr_i,t_gc_collector **gc_head)
 {
 	int		i;
 
 	i = *ptr_i;
 	data_tok->token = ft_strdup("",gc_head);
-	while (s[i] && !is_not_token(s[i]))
+	while (s[i])
 	{
 		if(s[i] == '\'' && !data_tok->dq)
 			data_tok->q = !data_tok->q;
@@ -235,8 +251,12 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i,t_gc_collector **gc_head)
 			data_tok->dq = !data_tok->dq;
 	  	if(ft_isspace(s[i]) && !data_tok->q && !data_tok->dq)
 			break;
-	  	data_tok->token = join_character(data_tok->token,s[i],gc_head);
-	   	;
+		if(is_token(s[i]) && (s[i] == '\'' || s[i] == '\"') && isparam(data_tok))
+	  		data_tok->token = join_character(data_tok->token,s[i],gc_head);
+		else if(is_token(s[i]))
+	  		break;
+		else
+			data_tok->token = join_character(data_tok->token,s[i],gc_head);
 	  	i++;
 	}
 	*ptr_i = i;
@@ -278,7 +298,7 @@ void  lex(char *s, t_toknes_list **head,t_gc_collector **gc_head) // | '' "" cmd
 			i++;
 			data_tok.join_me = 0;
 		}
-		if(!is_not_token(s[i]) && s[i])
+		if(!is_token(s[i]) && s[i])
 			not_token_case(&data_tok,head,&i,s,gc_head);
 		else  if(s[i] == '|' &&  !pipe_symbol(&i,&data_tok.is_cmd,head,gc_head))
 			return;

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/15 23:08:04 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/16 20:57:35 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ int not_character_expand(char c) {
 
 void skip_q_expand(char *s, int *ptr_i, int *q_ptr) {
     int i = *ptr_i, q = *q_ptr;
-    while (q && s[i]) {
+    
+    i++;
+    printf("this -->%c",s[i]);
+    while (q && s[i]) 
+    {
         if (s[i] == '\'')
             q = !q;
         i++;
@@ -202,7 +206,7 @@ static void expand_plain(t_toknes_list *head, char **env, t_gc_collector **gc_he
 
 int check_is_expandig(t_toknes_list *head, char **env, t_gc_collector **gc_head) {
     int i = 0, q = 0;
-    while (head->val[i]) {
+    while (i < ft_strlen(head->val) &&  head->val[i]) {
         if (head->val[i] == '\"')
             expand_in_double_quotes(head, env, gc_head, &i);
         else if (head->val[i] == '\'') {
