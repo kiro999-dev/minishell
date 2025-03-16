@@ -157,44 +157,42 @@ int isfile(t_TOKENS type)
 		return (1);
 	return (0);
 }
+static void process_cmd(t_toknes_list **tokenz, t_exc_lits **exc, t_gc_collector **gc_head) {
+    char **cmd = NULL;
+    t_file *f_head = NULL;
+    if ((*tokenz)->type == CMD) {
+        cmd = pars_cmd(*tokenz, gc_head);
+        *tokenz = (*tokenz)->next;
+    }
+    while (*tokenz && (isfile((*tokenz)->type) || (*tokenz)->type == REDIR_IN ||
+           (*tokenz)->type == REDIR_OUT || (*tokenz)->type == APPEND)) {
+        if (isfile((*tokenz)->type))
+            add_list_file(&f_head, (*tokenz)->val, (*tokenz)->type, gc_head);
+        *tokenz = (*tokenz)->next;
+    }
+    add_list_exc(exc, cmd, CMD, f_head, gc_head);
+}
 
-void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head,t_gc_collector **gc_head)
-{
-	t_exc_lits *node;
-	t_file *f_head; 
-	char **cmd;
+static void process_heredoc(t_toknes_list **tokenz, t_exc_lits **exc, t_gc_collector **gc_head) {
+    t_exc_lits *node = NULL;
+    t_file *f_head = NULL;
+    *tokenz = (*tokenz)->next;
+    if (*tokenz) {
+        node = creat_node_exc(NULL, LIMTER, f_head, ft_strdup((*tokenz)->val, gc_head), gc_head);
+        add_back_list(exc, node);
+        *tokenz = (*tokenz)->next;
+    }
+}
 
-	while (tokenz_head)
-	{
-		cmd = NULL;
-		f_head = NULL;
-		node = NULL;
-		if (tokenz_head->type == CMD)
-		{
-			cmd = pars_cmd(tokenz_head,gc_head);
-			tokenz_head = tokenz_head->next;
-		}
-		else if(tokenz_head->type == HER_DOC)
-		{
-			tokenz_head = tokenz_head->next;
-			if(tokenz_head)
-			{
-				node = creat_node_exc(NULL,LIMTER,f_head,ft_strdup(tokenz_head->val,gc_head),gc_head);
-				add_back_list(exc_head,node);
-				tokenz_head = tokenz_head->next;
-			}
-		}
-		while (tokenz_head && (isfile(tokenz_head->type) || tokenz_head->type == REDIR_IN 
-				||  tokenz_head->type == REDIR_OUT || tokenz_head->type == APPEND))
-		{
-			if (isfile(tokenz_head->type))
-				add_list_file(&f_head, tokenz_head->val, tokenz_head->type,gc_head);
-			tokenz_head = tokenz_head->next;
-		}
-		add_list_exc(exc_head, cmd, CMD, f_head,gc_head);
-		if (tokenz_head && (tokenz_head->type == PIPE || tokenz_head->type == WORD))
-			tokenz_head = tokenz_head->next;
-	}
+void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head, t_gc_collector **gc_head) {
+    while (tokenz_head) {
+        if (tokenz_head->type == CMD)
+            process_cmd(&tokenz_head, exc_head, gc_head);
+        else if (tokenz_head->type == HER_DOC)
+            process_heredoc(&tokenz_head, exc_head, gc_head);
+        if (tokenz_head && (tokenz_head->type == PIPE || tokenz_head->type == WORD))
+            tokenz_head = tokenz_head->next;
+    }
 }
 
 void print_list_file(t_file *head)
