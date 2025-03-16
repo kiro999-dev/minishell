@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:17:18 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/14 10:03:07 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/15 22:19:40 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ size_t	counting_words(const char *s1, char *c)
 	return (count);
 }
 
-static char	*fill(char *s, char *c, int *ptr_i)
+static char	*fill(t_gc_collector **head,char *s, char *c, int *ptr_i)
 {
 	size_t	word_len;
 	char	*str;
@@ -76,14 +76,14 @@ static char	*fill(char *s, char *c, int *ptr_i)
 	while (s[*ptr_i] && !look_for_c(c, s[*ptr_i]))
 		(*ptr_i)++;
 	word_len = *ptr_i - start;
-	str = (char *)malloc(word_len + 1);
+	str = (char *)gc_malloc(head,word_len + 1);
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s + start, word_len + 1);
 	return (str);
 }
 
-char	**ft_split(const char *s, char *c)
+char	**ft_split(const char *s, char *c,t_gc_collector **gc_head)
 {
 	char	**res;
 	int		k;
@@ -91,7 +91,7 @@ char	**ft_split(const char *s, char *c)
 
 	if (!s)
 		return (NULL);
-	res = (char **)malloc(sizeof(char *) * (counting_words(s, c) + 1));
+	res = (char **)gc_malloc(gc_head,sizeof(char *) * (counting_words(s, c) + 1));
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -100,7 +100,7 @@ char	**ft_split(const char *s, char *c)
 	{
 		if (!look_for_c(c, s[i]))
 		{
-			res[k] = fill((char *)s, c, &i);
+			res[k] = fill(gc_head,(char *)s, c, &i);
 			if (!res[k])
 				return (free_memory(res, k));
 			k++;

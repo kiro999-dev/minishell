@@ -6,13 +6,13 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 17:02:01 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/07 17:34:34 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/15 22:40:04 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char const *s, int start, int len)
+char	*ft_substr(t_gc_collector **gc_head,char const *s, int start, int len)
 {
 	char	*sub_str;
 	int	i;
@@ -22,13 +22,13 @@ char	*ft_substr(char const *s, int start, int len)
 	if (!s)
 		return (NULL);
 	if (start >= ft_strlen(s))
-		return (ft_strdup("\0"));
+		return (ft_strdup("\0",gc_head));
 	if (len > ft_strlen(s))
-		sub_str = (char *)malloc(ft_strlen(s + start) + 1);
+		sub_str = (char *)gc_malloc(gc_head,ft_strlen(s + start) + 1);
 	else if (ft_strlen(s) - start < len)
-		sub_str = malloc(ft_strlen(s) - start + 1);
+		sub_str = gc_malloc(gc_head,ft_strlen(s) - start + 1);
 	else
-		sub_str = (char *) malloc(len + 1);
+		sub_str = (char *) gc_malloc(gc_head,len + 1);
 	if (!sub_str)
 		return (NULL);
 	while (i < len && s[start])

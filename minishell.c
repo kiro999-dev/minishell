@@ -11,6 +11,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void *gc_malloc(t_gc_collector **gc_head,size_t size)
+{
+	t_gc_collector *node;
+	node = malloc(sizeof(t_gc_collector));
+	if(node == NULL)
+		return(NULL);
+	node->ptr=malloc(size);
+	if(node->ptr == NULL)
+	{
+		free(node);
+		return (NULL);
+	}
+	node->next = *gc_head;
+	*gc_head = node;
+	return (node->ptr);
+}
+void free_gc(t_gc_collector **gc_head)
+{
+	t_gc_collector *tmp;
+	int i = 0;
+	while (*gc_head)
+	{
+		tmp = (*gc_head);
+		(*gc_head)= (*gc_head)->next;
+		free(tmp->ptr);
+		tmp->ptr = NULL;
+		free(tmp);
+		tmp = NULL;
+		i++;
+	}
+}
 void free_list(t_toknes_list *head)
 {
 	t_toknes_list *tmp;
@@ -19,7 +50,7 @@ void free_list(t_toknes_list *head)
 		tmp = head;
 		head = head->next;
 		free(tmp->val);
-		free(tmp);
+		;
 	}
 }
 
@@ -46,17 +77,17 @@ static int count_cmd_tokens(t_toknes_list *token)
 	return count;
 }
 
-static char **copy_cmd_tokens(t_toknes_list *token, int count)
+static char **copy_cmd_tokens(t_toknes_list *token, int count,t_gc_collector **gc_head)
 {
 	t_toknes_list *current;
 	char **cmd;
 	int i;
 	int j;
 	char **split;
-	char *tmp;
+	
 
 	j = 0;
-	cmd = malloc(sizeof(char *) * (count + 1));
+	cmd = gc_malloc(gc_head,sizeof(char *) * (count + 1));
 	i = 0;
 	current = token;
 	if (!cmd)
@@ -68,17 +99,15 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 			if(current->split_it)
 			{
 				j = 0;
-				split = ft_split(current->val," \t\n");
+				split = ft_split(current->val," \t\n",gc_head);
 				printf("split me %d %s\n",current->split_it,current->val);
 				if(current->join_me)
 				{
 					i--;
-					tmp = cmd[i];
-					cmd[i] = ft_strjoin(cmd[i],split[0]);
+					cmd[i] = ft_strjoin(cmd[i],split[0],gc_head);
 					printf("the res %s\n",cmd[i]);
 					i++;
 					j++;
-					free(tmp);
 				}
 				while (split[j])
 				{
@@ -91,9 +120,8 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 				while (current && current->join_me && !current->split_it)
 				{
 					printf("split me %d %s\n",current->split_it,current->val);
-					tmp = cmd[i];
-					cmd[i] = ft_strjoin(cmd[i],current->val);	
-					free(tmp);
+					cmd[i] = ft_strjoin(cmd[i],current->val,gc_head);	
+					;
 					current = current->next;
 				}
 				i++;
@@ -102,17 +130,16 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 			else if(current->split_it2 && strcmp("export",cmd[0]))
 			{
 				j = 0;
-				split = ft_split(current->val," \t\n");
+				split = ft_split(current->val," \t\n",gc_head);
 				printf("split me %d %s\n",current->split_it,current->val);
 				if(current->join_me)
 				{
 					i--;
-					tmp = cmd[i];
-					cmd[i] = ft_strjoin(cmd[i],split[0]);
+					cmd[i] = ft_strjoin(cmd[i],split[0],gc_head);
 					printf("the res %s\n",cmd[i]);
 					i++;
 					j++;
-					free(tmp);
+					;
 				}
 				while (split[j])
 				{
@@ -125,9 +152,7 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 				while (current && current->join_me && !current->split_it)
 				{
 					printf("split me %d %s\n",current->split_it,current->val);
-					tmp = cmd[i];
-					cmd[i] = ft_strjoin(cmd[i],current->val);	
-					free(tmp);
+					cmd[i] = ft_strjoin(cmd[i],current->val,gc_head);	
 					current = current->next;
 				}
 				i++;
@@ -135,13 +160,11 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 			}
 			else 
 			{
-				cmd[i] = ft_strdup(current->val);
+				cmd[i] = ft_strdup(current->val,gc_head);
 				current = current->next;
 				while (current && current->join_me && !current->split_it)
 				{
-					tmp = cmd[i];
-					cmd[i] = ft_strjoin(cmd[i],current->val);	
-					free(tmp);
+					cmd[i] = ft_strjoin(cmd[i],current->val,gc_head);
 					current = current->next;
 				}
 				i++;
@@ -154,13 +177,11 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count)
 	return (cmd);
 }
 
-char **pars_cmd(t_toknes_list *token)
+char **pars_cmd(t_toknes_list *token,t_gc_collector **gc_head)
 {
-	t_toknes_list *tmp;
 
-	tmp = token;
 	int count = count_cmd_tokens(token);
-	return( copy_cmd_tokens(token, count));
+	return( copy_cmd_tokens(token, count,gc_head));
 }
 int isfile(t_TOKENS type)
 {
@@ -170,7 +191,7 @@ int isfile(t_TOKENS type)
 	return (0);
 }
 
-void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
+void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head,t_gc_collector **gc_head)
 {
 	t_exc_lits *node;
 	t_file *f_head; 
@@ -183,7 +204,7 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 		node = NULL;
 		if (tokenz_head->type == CMD)
 		{
-			cmd = pars_cmd(tokenz_head);
+			cmd = pars_cmd(tokenz_head,gc_head);
 			tokenz_head = tokenz_head->next;
 		}
 		else if(tokenz_head->type == HER_DOC)
@@ -191,7 +212,7 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 			tokenz_head = tokenz_head->next;
 			if(tokenz_head)
 			{
-				node = creat_node_exc(NULL,LIMTER,f_head,ft_strdup(tokenz_head->val));
+				node = creat_node_exc(NULL,LIMTER,f_head,ft_strdup(tokenz_head->val,gc_head),gc_head);
 				add_back_list(exc_head,node);
 				tokenz_head = tokenz_head->next;
 			}
@@ -200,10 +221,10 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 				||  tokenz_head->type == REDIR_OUT || tokenz_head->type == APPEND))
 		{
 			if (isfile(tokenz_head->type))
-				add_list_file(&f_head, tokenz_head->val, tokenz_head->type);
+				add_list_file(&f_head, tokenz_head->val, tokenz_head->type,gc_head);
 			tokenz_head = tokenz_head->next;
 		}
-		add_list_exc(exc_head, cmd, CMD, f_head);
+		add_list_exc(exc_head, cmd, CMD, f_head,gc_head);
 		if (tokenz_head && (tokenz_head->type == PIPE || tokenz_head->type == WORD))
 			tokenz_head = tokenz_head->next;
 	}
@@ -249,50 +270,36 @@ void print_exc_list(t_exc_lits **exc_head)
 		head = head->next;
 	}
 }
-void join_token(t_toknes_list *head,t_toknes_list **final_lits)
-{
-	char *tmp;
-	char *str;
-	t_TOKENS type;
 
-	while (head)
-	{
-		str = head->val;
-		type = head->type;
-		while (head && head->next && head->next->join_me)
-		{
-			tmp = head->val;
-			str = ft_strjoin(str,head->next->val);
-			free(tmp);
-			head = head->next;
-		}
-		add(final_lits,str,type,0);
-		head = head->next;
-	}
-}
 int main(int argc,char **argv,char **env)
 {
 	char *buff;
 	t_toknes_list *head = NULL;
 	t_exc_lits *exc_head = NULL;
+	t_gc_collector *gc_head = NULL;
 	argc = argc-1;
 	argv[0] = NULL;
 	while (1)
 	{
 		buff = readline("> ");
 		if(buff == NULL)
+		{
+			free_gc(&gc_head);
 			break;
+		}
 		add_history(buff);
-		lex(buff, &head,1); // handle file when its 'o''u''t' end every_case
+		lex(buff, &head,&gc_head);
 		check_syntax(head);
-		expanding(head,env);
+		expanding(head,env,&gc_head);
 		print_lits(head);
-		generate_list(head, &exc_head);
+		generate_list(head, &exc_head,&gc_head);
 		print_exc_list(&exc_head);
+		free_gc(&gc_head);
+		free(buff);
+		buff =NULL;
+		gc_head = NULL;
 		exc_head = NULL;
-		// free_list(head);
 		head = NULL;
-		// free(buff);
 		buff = NULL;
 	} 
 	return 0;

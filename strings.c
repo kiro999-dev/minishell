@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:48:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/02/26 16:16:25 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/15 22:27:34 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (len_src);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1,t_gc_collector **gc_head)
 {
 	char		*s1_cpy;
 	size_t		size;
 
 	size = ft_strlen(s1) + 1;
-	s1_cpy = malloc(size);
+	s1_cpy = gc_malloc(gc_head,size);
 	if (!s1_cpy)
 		return (NULL);
 	ft_strlcpy(s1_cpy, s1, size);
@@ -66,7 +66,7 @@ int ft_strlen(const char *s)
    return (i);
 }
 
-char *join_character(char *s,char c)
+char *join_character(char *s,char c,t_gc_collector **gc_head)
 {
    char *res;
    int   len;
@@ -74,7 +74,7 @@ char *join_character(char *s,char c)
 
    i = 0;
    len = ft_strlen(s);
-   res = malloc(len + 2);
+   res = gc_malloc(gc_head,len + 2);
    while (i < len)
    {
       res[i] = s[i];
