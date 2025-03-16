@@ -88,6 +88,7 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count,t_gc_collector **g
 
 	j = 0;
 	cmd = gc_malloc(gc_head,sizeof(char *) * (count + 1));
+	cmd[0] = NULL;
 	i = 0;
 	current = token;
 	if (!cmd)
@@ -125,7 +126,7 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count,t_gc_collector **g
 				i++;
 					
 			}
-			else if(current->split_it2 && strcmp("export",cmd[0]))
+			else if(current->split_it2 && cmd[0] && strcmp("export",cmd[0]))
 			{
 				j = 0;
 				split = ft_split(current->val," \t\n",gc_head);
