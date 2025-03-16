@@ -9,10 +9,14 @@ int main(int ac, char *av[], char *env[])
     e = init_env(env);
     if (ac > 1 && !ft_strncmp(av[1], "export", 7))
     {
-        
+
+        // char *p = "hello+=worlf";
+        // char *d = trim_plus_sign(p);
+        // printf("%s\n", d);
+
         f_export(av + 1, e);
-        // f_env(e);
-        // print_export(e);
+        // // f_env(e);
+        print_export(e);
     }
     if (ac > 1 && !ft_strncmp(av[1], "env", 4))
         f_env(e);

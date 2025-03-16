@@ -50,30 +50,33 @@ char *trim_plus_sign(char *key)
 {
     char *equal_pos;
     char *new_key;
+    int len_before_plus;
+    int total_len;
 
-    equal_pos = custom_strnstr(key, "+=", ft_strlen(key));
+    equal_pos = custom_strnstr(key, "+=", strlen(key));
     if (!equal_pos)
-        return (key); 
-
-    new_key = malloc(ft_strlen(key));
+        return key;
+    len_before_plus = equal_pos - key; 
+    total_len = strlen(key) - 1;     
+    new_key = malloc(total_len + 1);
     if (!new_key)
-        return (NULL);
-
-    ft_strlcpy(new_key, key, equal_pos - key + 1);
-    ft_strlcat(new_key, equal_pos + 1, ft_strlen(new_key));
-    printf("no + => %s\n", new_key);
-    return (new_key);
+        return NULL;
+    memcpy(new_key, key, len_before_plus); 
+    memcpy(new_key + len_before_plus, equal_pos + 1, strlen(equal_pos)); 
+    new_key[total_len] = '\0'; 
+    // free(key);
+    return new_key;
 }
 
 
 int replace_existing_key(t_env_list *env, char *key)
 {
     t_env_list *current;
-    char *declared;
+    char    *declared;
     
     current = env;
     if (custom_strnstr(key, "+=", ft_strlen(key)))
-        key = trim_plus_sign(key);
+        return (-1);
     
     declared = ft_strchr(key, '=');
     while (current)
@@ -141,12 +144,16 @@ int check_append(t_env_list *env, char *var)
 void add_var_2_env(char *cmd, t_env_list **env)
 {
     t_env_list *new;
+    int if_key_exist;
 
     if (check_append(*env, cmd))
-        return ;
-    if (replace_existing_key(*env, cmd))
+    return ;
+    if_key_exist = replace_existing_key(*env, cmd);
+    if (if_key_exist == 1)
         return;
-
+    else if (if_key_exist == -1)
+        cmd = trim_plus_sign(cmd);
+    // printf("%s\n", cmd);
     new = new_node(cmd);
     if (!new)
         return;

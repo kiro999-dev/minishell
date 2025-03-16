@@ -19,6 +19,9 @@ typedef struct s_env_list
     short undec;
 } t_env_list;
 
+
+char *trim_plus_sign(char *key);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 t_env_list *init_env(char *ev[]);
 int     equal_strcmp(const char *s1, const char *s2);
 // int     compare_key(char **array, char *key);
@@ -36,7 +39,6 @@ void    f_env(t_env_list *env);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_substr(char const *s, int start, int len);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 // env linked list functions
 void free_env_list(t_env_list *env);

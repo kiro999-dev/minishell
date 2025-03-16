@@ -159,26 +159,6 @@ char	*ft_substr(char const *s, int start, int len)
 	return (dest);
 }
 
-
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	src_len;
-
-	src_len = ft_strlen(src);
-	if (dstsize == 0 || dst == src)
-		return (src_len);
-	i = 0;
-	while (src[i] && i < dstsize - 1)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (src_len);
-}
-
 size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {
 	size_t	i;
@@ -201,4 +181,22 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 	}
 	dest[dest_len + i] = '\0';
 	return (src_len + dest_len);
+}
+
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (dst == src)
+		return (dst);
+	if (!dst && !src)
+		return (NULL);
+	while (i < n)
+	{
+		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
+		i++;
+	}
+	return ((void *)dst);
 }
