@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/16 20:57:35 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/17 08:47:33 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ static void expand_in_double_quotes(t_toknes_list *head, char **env, t_gc_collec
     (*i)++;
     if (head->val[*i] == '\"')
         dq = 0;
-    while (dq && head->val[*i]) {
+    while (dq && *i < ft_strlen(head->val) && head->val[*i]) {
         if (head->val[*i] == '$') {
             while (head->val[*i] && head->val[*i] == '$')
                 (*i)++;
@@ -220,12 +220,20 @@ int check_is_expandig(t_toknes_list *head, char **env, t_gc_collector **gc_head)
 }
 
 int check_expand(t_toknes_list *head, char **env, t_gc_collector **gc_head) {
-    int i = 0, flag = 0, len = ft_strlen(head->val);
-    while (head && i < len) {
-        if (head->val[i] == '$') {
+    
+    int i = 0;
+    int flag = 0; 
+    int len;
+
+    len = ft_strlen(head->val);
+    while (head && head->val && i < len) 
+    {
+        if (head->val[i] == '$') 
+        {
             i = check_is_expandig(head, env, gc_head);
             flag = 1;
         }
+        len = ft_strlen(head->val);
         i++;
     }
     return flag;

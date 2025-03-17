@@ -1,0 +1,15 @@
+a
+check_syntax.c
+execution
+expanding.c
+ft_split.c
+ft_strjoin.c
+ft_substr.c
+lexer.c
+linked_lists.c
+Makefile
+minishell
+minishell.c
+minishell.h
+strings.c
+tokenizer_list.c
