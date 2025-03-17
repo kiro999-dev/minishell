@@ -4,13 +4,10 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-typedef struct s_env
-{
-    char **env_arr;
-    char **undeclared;
-    int size;
-    int size_undec;
-}t_env;
+#include <unistd.h>
+#include <limits.h>
+
+
 
 typedef struct s_env_list
 {
@@ -20,6 +17,8 @@ typedef struct s_env_list
 } t_env_list;
 
 
+void f_unset(t_env_list **env, char **var);
+char	*ft_strdup(const char *s1);
 char *trim_plus_sign(char *key);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 t_env_list *init_env(char *ev[]);
@@ -39,6 +38,7 @@ void    f_env(t_env_list *env);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_substr(char const *s, int start, int len);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
+
 
 // env linked list functions
 void free_env_list(t_env_list *env);

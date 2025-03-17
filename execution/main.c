@@ -21,9 +21,15 @@ int main(int ac, char *av[], char *env[])
     if (ac > 1 && !ft_strncmp(av[1], "env", 4))
         f_env(e);
 
+    if (ac > 1 && !ft_strncmp(av[1], "unset", 6))
+    {
+        f_unset(&e, av);
+        print_export(e);
 
-    // if (ac > 1 && !ft_strncmp(av[1], "cd", 3))
-    //     f_cd(av[2], env);
+    }
+
+    if (ac > 1 && !ft_strncmp(av[1], "cd", 3))
+        f_cd(av[2], env);
     
     if (ac > 1 &&  !ft_strncmp(av[1], "echo", 5))  
         f_echo(av + 1);
