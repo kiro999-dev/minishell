@@ -247,71 +247,50 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 	}
 }
 
-void print_list_file(t_file *head)
-{
-	while (head)
-	{
-		print(head->file, head->type);
-		head = head->next;
-	}
-}
 
-void print_exc_list(t_exc_lits **exc_head)
-{
-	int i = 0;
-	t_exc_lits *head = *exc_head;
-	while (head)
-	{
-		i = 0;
-		if (head && head->cmd)
-		{
-			printf("[");
-			while (head->cmd[i])
-			{
-				printf("-%s- ", head->cmd[i]);
-				i++;
-			}
-			printf("]\n");
-		}
-		if (head->head_files)
-		{
-			printf("\nstart :\n");
-			print_list_file(head->head_files);
-			printf("end\n");
-		}
-		head = head->next;
-	}
-}
 
+void parsing(t_data_parsing *data,char **env)
+{
+	lex(data->buff, &data->head_toknez);
+		if(!check_syntax(data->head_toknez))
+		{
+			expanding(data->head_toknez, env);
+			generate_list(data->head_toknez, &data->head_exe);
+			free_gc(&data->gc_head);
+			free(data->buff);
+		}
+		data->buff = NULL;
+		data->gc_head = NULL;
+		data->head_exe = NULL;
+		data->head_toknez = NULL;
+}
+void data_init(t_data_parsing *data)
+{
+	data->buff=NULL;
+	data->head_exe = NULL;
+	data->gc_head = NULL;
+	data->e = NULL;
+	data->head_toknez = NULL;
+}
 int main(int argc, char **argv, char **env)
 {
-	char *buff;
-	t_toknes_list *head = NULL;
-	t_exc_lits *exc_head = NULL;
-	t_gc_collector *gc_head = NULL;
+	
+	t_data_parsing data;
+
+	data_init(&data);
 	argc = argc - 1;
 	argv[0] = NULL;
 	while (1)
 	{
-		buff = readline("> ");
-		if (buff == NULL)
+		data.buff = readline("> ");
+		if (data.buff == NULL)
 		{
-			free_gc(&gc_head);
+			free_gc(&data.gc_head);
 			break;
 		}
-		add_history(buff);
-		lex(buff, &head);
-		check_syntax(head);
-		expanding(head, env);
-		print_lits(head);
-		generate_list(head, &exc_head);
-		print_exc_list(&exc_head);
-		free_gc(&gc_head);
-		free(buff);
-		buff = NULL;
-		gc_head = NULL;
-		exc_head = NULL;
-		head = NULL;
+		add_history(data.buff);
+		parsing(&data,env);
+		
 	}
 	return 0;
 }

@@ -30,14 +30,14 @@ void    export_putstr(char *str);
 int     size_2d(char **arr);
 void    *free_array(char **s);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strjoin(char *s1, char *s2);
+// char	*ft_strjoin(char *s1, char *s2);
 void    f_cd(char *path, char *env[]);
 void    f_pwd(void);
 void    f_echo(char **av);
 void    f_env(t_env_list *env);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_substr(char const *s, int start, int len);
-size_t	ft_strlcat(char *dest, const char *src, size_t size);
+// size_t	ft_strlcat(char *dest, const char *src, size_t size);
 
 
 // env linked list functions

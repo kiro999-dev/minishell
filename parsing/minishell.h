@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 15:20:41 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 15:50:46 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "../execution/heper.h"
 typedef enum e_TOKENS
 {
 	PIPE
@@ -73,6 +74,15 @@ typedef struct s_gc_collector
 	struct s_gc_collector *next;
 }t_gc_collector;
 
+typedef struct s_data_parsing
+{
+	t_exc_lits *head_exe;
+	t_toknes_list *head_toknez;
+	t_env_list *e;
+	t_gc_collector *gc_head;
+	char *buff;
+}t_data_parsing;
+
 char 	*join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
@@ -84,7 +94,7 @@ int 	pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head);
 int		redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 void	add(t_toknes_list **head, char *val, t_TOKENS type,int join_me);
-void 	check_syntax(t_toknes_list *head);
+int 	check_syntax(t_toknes_list *head);
 int 	check_expand(t_toknes_list *head,char **env);
 int 	check_is_expandig(t_toknes_list *head, char **env);
 void 	expanding(t_toknes_list *token_head,char **env);

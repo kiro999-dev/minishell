@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:58:53 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/13 23:58:52 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:50:58 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,21 @@ int check_here_doc(t_toknes_list *head)
     return 0;
 }
 
-void check_syntax(t_toknes_list *head)
+int check_syntax(t_toknes_list *head)
 {
     while (head)
     {
         if (check_q(head->val))
-            break;
+            return (1);
         if (head->type == PIPE && check_pipe(head))
-            break;
+            return (1);
         if ((head->type == REDIR_IN || head->type == REDIR_OUT) &&
             check_redir(head))
-            break;
+            return (1);
         if (head->type == HER_DOC && check_here_doc(head))
-            break;
+            return (1);
         head = head->next;
     }
+    return(0);
 }
  
