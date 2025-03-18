@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 11:56:23 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:10:28 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int 	ft_isspace(int c);
 char	**ft_split(const char *s, char *c);
 size_t	counting_words(const char *s1, char *c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-// char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
 void 	*gc_malloc(size_t size);
 void	free_gc(t_gc_collector **gc_head);
 
