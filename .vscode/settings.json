@@ -4,6 +4,7 @@
         "compare": "c",
         "type_traits": "c",
         "stdlib.h": "c",
-        "heper.h": "c"
+        "heper.h": "c",
+        "numbers": "c"
     }
 }

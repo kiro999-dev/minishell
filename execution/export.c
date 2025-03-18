@@ -1,5 +1,4 @@
-#include "../parsing/minishell.h"
-
+#include "../minishell.h"
 void sort_env(t_env_list **head)
 {
     t_env_list *ptr;

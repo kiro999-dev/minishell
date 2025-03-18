@@ -1,4 +1,4 @@
-#include "../parsing/minishell.h"
+#include "../minishell.h"
 
 // char *get_path(char *av[], char *key, int len)
 // {

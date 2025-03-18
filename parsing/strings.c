@@ -6,11 +6,11 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:48:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 15:20:39 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:22:10 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {

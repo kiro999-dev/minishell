@@ -1,4 +1,4 @@
-#include "../parsing/minishell.h"
+#include "../minishell.h"
 
 // char	*ft_strdup(const char *s1)
 // {
@@ -25,6 +25,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	size_t	i;
 	int		check;
 
+	printf("stn\n");
 	i = 0;
 	check = 0;
 	while ((s1[i] || s2[i]) && (i < n))

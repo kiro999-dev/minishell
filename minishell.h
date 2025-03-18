@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:00:13 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:23:02 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_data_parsing
 	char *buff;
 }t_data_parsing;
 
+// parsing
 char 	*join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
@@ -145,6 +146,7 @@ void    f_echo(char **av);
 void    f_env(t_env_list *env);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_substr(char const *s, int start, int len);
+void execution(t_data_parsing *data_exec);
 
 void free_env_list(t_env_list *env);
 void add_back(t_env_list **lst, t_env_list *new);

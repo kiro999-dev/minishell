@@ -1,4 +1,4 @@
-#include "../parsing/minishell.h"
+#include "../minishell.h"
 
 int echo_flag(char *str)
 {

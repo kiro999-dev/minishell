@@ -1,4 +1,4 @@
-#include "../parsing/minishell.h"
+#include "../minishell.h"
 
 
 void pop_node(t_env_list **env, t_env_list *to_pop, t_env_list *prev)

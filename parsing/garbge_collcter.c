@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   garbge_collcter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 11:57:05 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 11:57:28 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:22:21 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void free_gc(t_gc_collector **gc_head)
 {

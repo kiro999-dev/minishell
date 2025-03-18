@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   linked_lists.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:01:50 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 11:52:31 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:22:15 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter)
 {
