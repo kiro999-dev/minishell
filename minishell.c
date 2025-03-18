@@ -23,22 +23,25 @@ void free_gc(t_gc_collector **gc_head)
 		free(tmp);
 		tmp = NULL;
 	}
+	*gc_head = NULL;
 }
 
-void *gc_malloc(t_gc_collector **gc_head, size_t size)
+void *gc_malloc(size_t size)
 {
+	static t_gc_collector *gc_head;
 	t_gc_collector *node;
+
 	node = malloc(sizeof(t_gc_collector));
 	if (node == NULL)
-		return (free_gc(gc_head), printf("Erorr malloc fail"),exit(1), NULL);
+		return (free_gc(&gc_head), printf("Erorr malloc fail"),exit(1), NULL);
 	node->ptr = malloc(size);
 	if (node->ptr == NULL)
 	{
 		free(node);
-		return (free_gc(gc_head), printf("Erorr malloc fail"),exit(1), NULL);
+		return (free_gc(&gc_head), printf("Erorr malloc fail"),exit(1), NULL);
 	}
-	node->next = *gc_head;
-	*gc_head = node;
+	node->next = gc_head;
+	gc_head = node;
 	return (node->ptr);
 }
 
@@ -80,13 +83,13 @@ int counting(char **spilt)
 	return (i);
 }
 
-static char **realloc_cmd_array(char **cmd, int current_count, int extra, t_gc_collector **gc_head)
+static char **realloc_cmd_array(char **cmd, int current_count, int extra)
 {
 	int new_size, i;
 	char **new_cmd;
 	i = 0;
 	new_size = current_count + extra + 1;
-	new_cmd = gc_malloc(gc_head, sizeof(char *) * new_size);
+	new_cmd = gc_malloc(sizeof(char *) * new_size);
 	if (!new_cmd)
 		return (NULL);
 	while (i < current_count)
@@ -98,21 +101,21 @@ static char **realloc_cmd_array(char **cmd, int current_count, int extra, t_gc_c
 	return (new_cmd);
 }
 
-static void process_split_it(t_toknes_list **current, char **cmd, int *i, t_gc_collector **gc_head)
+static void process_split_it(t_toknes_list **current, char **cmd, int *i)
 {
 	int j = 0;
-	char **split = ft_split((*current)->val, " \t\n", gc_head);
+	char **split = ft_split((*current)->val, " \t\n");
 	if ((*current)->join_me)
 	{
 		if (*i > 0)
 		{
 			(*i)--;
-			cmd[*i] = ft_strjoin(cmd[*i], split[0], gc_head);
+			cmd[*i] = ft_strjoin(cmd[*i], split[0]);
 			(*i)++;
 		}
 		else
 		{
-			cmd[*i] = ft_strdup(split[0], gc_head);
+			cmd[*i] = ft_strdup(split[0]);
 			(*i)++;
 		}
 		j++;
@@ -129,33 +132,33 @@ static void process_split_it(t_toknes_list **current, char **cmd, int *i, t_gc_c
 	{
 		if (*i < 0)
 			*i = 0;
-		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val, gc_head);
+		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val);
 		*current = (*current)->next;
 	}
 	(*i)++;
 }
 
-static char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count, t_gc_collector **gc_head)
+static char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count)
 {
 	int j = 0, re_count = 0;
-	char **split = ft_split((*current)->val, " \t\n", gc_head);
+	char **split = ft_split((*current)->val, " \t\n");
 	re_count = counting(split);
 	if ((*current)->join_me)
 	{
 		if (*i > 0)
 		{
 			(*i)--;
-			cmd[*i] = ft_strjoin(cmd[*i], split[0], gc_head);
+			cmd[*i] = ft_strjoin(cmd[*i], split[0]);
 			(*i)++;
 		}
 		else
 		{
-			cmd[*i] = ft_strdup(split[0], gc_head);
+			cmd[*i] = ft_strdup(split[0]);
 			(*i)++;
 		}
 		j++;
 	}
-	cmd = realloc_cmd_array(cmd, orig_count, re_count, gc_head);
+	cmd = realloc_cmd_array(cmd, orig_count, re_count);
 	while (split[j])
 	{
 		cmd[*i] = split[j];
@@ -166,33 +169,33 @@ static char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int
 	*current = (*current)->next;
 	while (*current && (*current)->join_me && !(*current)->split_it)
 	{
-		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val, gc_head);
+		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val);
 		*current = (*current)->next;
 	}
 	(*i)++;
 	return (cmd);
 }
 
-static void process_default(t_toknes_list **current, char **cmd, int *i, t_gc_collector **gc_head)
+static void process_default(t_toknes_list **current, char **cmd, int *i)
 {
 	if ((*current)->val)
-		cmd[*i] = ft_strdup((*current)->val, gc_head);
+		cmd[*i] = ft_strdup((*current)->val);
 	else
-		cmd[*i] = ft_strdup("", gc_head);
+		cmd[*i] = ft_strdup("");
 	*current = (*current)->next;
 	while (*current && (*current)->join_me && !(*current)->split_it)
 	{
-		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val, gc_head);
+		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val);
 		*current = (*current)->next;
 	}
 	(*i)++;
 }
 
-char **cmd_int(int count, t_gc_collector **gc_head)
+char **cmd_int(int count)
 {
 	char **cmd;
 	int k = 0;
-	cmd = gc_malloc(gc_head, sizeof(char *) * (count + 1));
+	cmd = gc_malloc(sizeof(char *) * (count + 1));
 	while (k < count)
 	{
 		cmd[k] = NULL;
@@ -201,23 +204,23 @@ char **cmd_int(int count, t_gc_collector **gc_head)
 	return (cmd);
 }
 
-static char **copy_cmd_tokens(t_toknes_list *token, int count, t_gc_collector **gc_head)
+static char **copy_cmd_tokens(t_toknes_list *token, int count)
 {
 	t_toknes_list *current;
 	char **cmd;
 	int i = 0;
-	cmd = cmd_int(count, gc_head);
+	cmd = cmd_int(count);
 	current = token;
 	while (current && current->type != PIPE)
 	{
 		if (current->type == WORD || current->type == CMD)
 		{
 			if (current->split_it)
-				process_split_it(&current, cmd, &i, gc_head);
+				process_split_it(&current, cmd, &i);
 			else if (current->split_it2 && cmd[0] && strcmp("export", cmd[0]))
-				cmd = process_split_it2(&current, cmd, &i, count, gc_head);
+				cmd = process_split_it2(&current, cmd, &i, count);
 			else
-				process_default(&current, cmd, &i, gc_head);
+				process_default(&current, cmd, &i);
 		}
 		else
 			current = current->next;
@@ -226,10 +229,10 @@ static char **copy_cmd_tokens(t_toknes_list *token, int count, t_gc_collector **
 	return (cmd);
 }
 
-char **pars_cmd(t_toknes_list *token, t_gc_collector **gc_head)
+char **pars_cmd(t_toknes_list *token)
 {
 	int count = count_cmd_tokens(token);
-	return (copy_cmd_tokens(token, count, gc_head));
+	return (copy_cmd_tokens(token, count));
 }
 
 int isfile(t_TOKENS type)
@@ -239,7 +242,7 @@ int isfile(t_TOKENS type)
 	return (0);
 }
 
-void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head, t_gc_collector **gc_head)
+void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 {
 	t_exc_lits *node;
 	t_file *f_head; 
@@ -251,7 +254,7 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head, t_gc_colle
 		node = NULL;
 		if (tokenz_head->type == CMD)
 		{
-			cmd = pars_cmd(tokenz_head, gc_head);
+			cmd = pars_cmd(tokenz_head);
 			tokenz_head = tokenz_head->next;
 		}
 		else if (tokenz_head->type == HER_DOC)
@@ -259,7 +262,7 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head, t_gc_colle
 			tokenz_head = tokenz_head->next;
 			if (tokenz_head)
 			{
-				node = creat_node_exc(NULL, LIMTER, f_head, ft_strdup(tokenz_head->val, gc_head), gc_head);
+				node = creat_node_exc(NULL, LIMTER, f_head, ft_strdup(tokenz_head->val));
 				add_back_list(exc_head, node);
 				tokenz_head = tokenz_head->next;
 			}
@@ -268,10 +271,10 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head, t_gc_colle
 			tokenz_head->type == REDIR_OUT || tokenz_head->type == APPEND))
 		{
 			if (isfile(tokenz_head->type))
-				add_list_file(&f_head, tokenz_head->val, tokenz_head->type, gc_head);
+				add_list_file(&f_head, tokenz_head->val, tokenz_head->type);
 			tokenz_head = tokenz_head->next;
 		}
-		add_list_exc(exc_head, cmd, CMD, f_head, gc_head);
+		add_list_exc(exc_head, cmd, CMD, f_head);
 		if (tokenz_head && (tokenz_head->type == PIPE || tokenz_head->type == WORD))
 			tokenz_head = tokenz_head->next;
 	}
@@ -330,11 +333,11 @@ int main(int argc, char **argv, char **env)
 			break;
 		}
 		add_history(buff);
-		lex(buff, &head, &gc_head);
+		lex(buff, &head);
 		check_syntax(head);
-		expanding(head, env, &gc_head);
+		expanding(head, env);
 		print_lits(head);
-		generate_list(head, &exc_head, &gc_head);
+		generate_list(head, &exc_head);
 		print_exc_list(&exc_head);
 		free_gc(&gc_head);
 		free(buff);

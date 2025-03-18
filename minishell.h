@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/17 17:16:14 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:49:26 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,34 +73,34 @@ typedef struct s_gc_collector
 	struct s_gc_collector *next;
 }t_gc_collector;
 
-char 	*join_character(char *s,char c,t_gc_collector **gc_head);
-char	*ft_strdup(const char *s1,t_gc_collector **gc_head);
+char 	*join_character(char *s,char c);
+char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
-void  	lex(char *s, t_toknes_list **head,t_gc_collector **gc_head);
-void 	single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head,t_gc_collector **gc_head);
-void 	double_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head,t_gc_collector **gc_head);
-int 	pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head,t_gc_collector **gc_head);
-int		redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d,t_gc_collector **gc_head);
-int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d,t_gc_collector **gc_head);
-void	add(t_toknes_list **head, char *val, t_TOKENS type,int join_me,t_gc_collector **gc_head);
+void  	lex(char *s, t_toknes_list **head);
+void 	single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head);
+void 	double_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head);
+int 	pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head);
+int		redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
+int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
+void	add(t_toknes_list **head, char *val, t_TOKENS type,int join_me);
 void 	check_syntax(t_toknes_list *head);
-int 	check_expand(t_toknes_list *head,char **env,t_gc_collector **gc_head);
-int 	check_is_expandig(t_toknes_list *head, char **env, t_gc_collector **gc_head);
-void 	expanding(t_toknes_list *token_head,char **env,t_gc_collector **gc_head);
-void 	add_list_file(t_file **head, char *name, t_TOKENS type,t_gc_collector **gc_head);
-void 	add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type, t_file *head_files,t_gc_collector **gc_head);
+int 	check_expand(t_toknes_list *head,char **env);
+int 	check_is_expandig(t_toknes_list *head, char **env);
+void 	expanding(t_toknes_list *token_head,char **env);
+void 	add_list_file(t_file **head, char *name, t_TOKENS type);
+void 	add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type, t_file *head_files);
 void 	add_back_list(t_exc_lits **head,t_exc_lits *node);
-t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter,t_gc_collector **gc_head);
+t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter);
 void 	print(char *s , t_TOKENS type);
 void    print_lits(t_toknes_list *head);
-char	*ft_substr(t_gc_collector **gc_head,char const *s, int start, int len);
+char	*ft_substr(char const *s, int start, int len);
 int 	ft_isspace(int c);
-char	**ft_split(const char *s, char *c,t_gc_collector **gc_head);
+char	**ft_split(const char *s, char *c);
 size_t	counting_words(const char *s1, char *c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-char	*ft_strjoin(char const *s1, char const *s2,t_gc_collector **gc_head);
-void 	*gc_malloc(t_gc_collector **gc_head,size_t size);
+char	*ft_strjoin(char const *s1, char const *s2);
+void 	*gc_malloc(size_t size);
 void	free_gc(t_gc_collector **gc_head);
 
 #endif

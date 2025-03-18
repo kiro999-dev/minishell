@@ -6,15 +6,15 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:04:45 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/15 22:29:02 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 11:53:03 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_toknes_list *creat_node(char *val, t_TOKENS type,int join_me,t_gc_collector **gc_head)
+t_toknes_list *creat_node(char *val, t_TOKENS type,int join_me)
 {
-    t_toknes_list *node = gc_malloc(gc_head,sizeof(t_toknes_list));
+    t_toknes_list *node = gc_malloc(sizeof(t_toknes_list));
     if (!node)
         return (printf("malloc fail\n"), NULL);
     node->val = val;
@@ -26,14 +26,14 @@ t_toknes_list *creat_node(char *val, t_TOKENS type,int join_me,t_gc_collector **
     return node;
 }
 
-void add(t_toknes_list **head, char *val, t_TOKENS type,int join_me,t_gc_collector **gc_head)
+void add(t_toknes_list **head, char *val, t_TOKENS type,int join_me)
 {
     t_toknes_list *node;
     t_toknes_list *tmp;
     
     if (head == NULL)
         return;
-    node = creat_node(val, type,join_me,gc_head);
+    node = creat_node(val, type,join_me);
     if (!node)
         return;
     if (*head == NULL)

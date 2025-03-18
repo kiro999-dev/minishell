@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/17 08:47:33 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 11:50:15 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,136 +45,136 @@ int strcmp_env(char *s1, char *s2, int n) {
     return 1;
 }
 
-static char *build_prefix(char *s2, int j, int n, t_gc_collector **gc_head) {
+static char *build_prefix(char *s2, int j, int n) {
     int i = 0;
-    char *res = ft_strdup("", gc_head);
+    char *res = ft_strdup("");
     while (s2[i] && i < j - n - 1) {
-        res = join_character(res, s2[i], gc_head);
+        res = join_character(res, s2[i]);
         i++;
     }
     return res;
 }
 
-static char *build_env_value(char *s, int flag, t_gc_collector **gc_head) {
+static char *build_env_value(char *s, int flag) {
     int i = 0;
-    char *res = ft_strdup("", gc_head);
+    char *res = ft_strdup("");
     while (s[i] && s[i] != '=')
         i++;
     if (s[i])
         i++;
     if (flag)
-        res = join_character(res, '\"', gc_head);
+        res = join_character(res, '\"');
     while (s[i]) {
-        res = join_character(res, s[i], gc_head);
+        res = join_character(res, s[i]);
         i++;
     }
     if (flag)
-        res = join_character(res, '\"', gc_head);
+        res = join_character(res, '\"');
     return res;
 }
 
-static char *build_suffix(char *s2, int j, t_gc_collector **gc_head) {
-    char *res = ft_strdup("", gc_head);
+static char *build_suffix(char *s2, int j) {
+    char *res = ft_strdup("");
     while (s2[j]) {
-        res = join_character(res, s2[j], gc_head);
+        res = join_character(res, s2[j]);
         j++;
     }
     return res;
 }
 
-static char *combine_parts(char *p, char *e, char *s, t_gc_collector **gc_head) {
-    char *res = ft_strdup("", gc_head);
+static char *combine_parts(char *p, char *e, char *s) {
+    char *res = ft_strdup("");
     int i = 0;
     while (p[i]) {
-	    res = join_character(res, p[i], gc_head); i++; }
+	    res = join_character(res, p[i]); i++; }
     i = 0;
-    while (e[i]) { res = join_character(res, e[i], gc_head); i++; }
+    while (e[i]) { res = join_character(res, e[i]); i++; }
     i = 0;
-    while (s[i]) { res = join_character(res, s[i], gc_head); i++; }
-    res = join_character(res, '\0', gc_head);
+    while (s[i]) { res = join_character(res, s[i]); i++; }
+    res = join_character(res, '\0');
     return res;
 }
 
-char* expand_val(char *s, char *s2, int j, int flag, int n, t_gc_collector **gc_head) {
-    char *p = build_prefix(s2, j, n, gc_head);
-    char *e = build_env_value(s, flag, gc_head);
-    char *suf = build_suffix(s2, j, gc_head);
-    return combine_parts(p, e, suf, gc_head);
+char* expand_val(char *s, char *s2, int j, int flag, int n) {
+    char *p = build_prefix(s2, j, n);
+    char *e = build_env_value(s, flag);
+    char *suf = build_suffix(s2, j);
+    return combine_parts(p, e, suf);
 }
 
-static void process_quote(char *s, int *i, char **cpy, t_gc_collector **gc_head, char quote) {
+static void process_quote(char *s, int *i, char **cpy, char quote) {
     (*i)++;
     while (s[*i] && s[*i] != quote) {
-        *cpy = join_character(*cpy, s[*i], gc_head);
+        *cpy = join_character(*cpy, s[*i]);
         (*i)++;
     }
     if (s[*i] == quote)
         (*i)++;
 }
 
-static char *process_unquoted(char *s, int *i, t_gc_collector **gc_head) {
-    char *cpy = ft_strdup("", gc_head);
+static char *process_unquoted(char *s, int *i) {
+    char *cpy = ft_strdup("");
     while (s[*i] && s[*i] != '\'' && s[*i] != '\"') {
-        cpy = join_character(cpy, s[*i], gc_head);
+        cpy = join_character(cpy, s[*i]);
         (*i)++;
     }
     return cpy;
 }
 
-void remove_q_d(t_toknes_list *head, t_gc_collector **gc_head) {
+void remove_q_d(t_toknes_list *head) {
     int i = 0;
-    char *cpy = ft_strdup("", gc_head);
+    char *cpy = ft_strdup("");
     while (head->val[i]) {
         if (head->val[i] == '\'')
-            process_quote(head->val, &i, &cpy, gc_head, '\'');
+            process_quote(head->val, &i, &cpy, '\'');
         else if (head->val[i] == '\"')
-            process_quote(head->val, &i, &cpy, gc_head, '\"');
+            process_quote(head->val, &i, &cpy, '\"');
         else {
-            char *temp = process_unquoted(head->val, &i, gc_head);
+            char *temp = process_unquoted(head->val, &i);
             int j = 0;
             while (temp[j])
-                cpy = join_character(cpy, temp[j++], gc_head);
+                cpy = join_character(cpy, temp[j++]);
         }
     }
     head->val = cpy;
 }
 
-static char *build_expand_string(int *i, t_toknes_list *head, int *flag, t_gc_collector **gc_head) {
-    char *expand = ft_strdup("", gc_head);
+static char *build_expand_string(int *i, t_toknes_list *head, int *flag) {
+    char *expand = ft_strdup("");
     *flag = 0;
     while (head->val[*i] && !ft_isspace(head->val[*i])) {
         if (not_character_expand(head->val[*i])) {
             *flag = 1;
             break;
         }
-        expand = join_character(expand, head->val[*i], gc_head);
+        expand = join_character(expand, head->val[*i]);
         (*i)++;
     }
     return expand;
 }
 
-static void handle_dollar_expansion(int *i, char **env, t_toknes_list *head, int flag3, t_gc_collector **gc_head) {
+static void handle_dollar_expansion(int *i, char **env, t_toknes_list *head, int flag3) {
     int flag;
-    char *expand = build_expand_string(i, head, &flag, gc_head);
+    char *expand = build_expand_string(i, head, &flag);
     int j = 0, found = 0;
     while (env && env[j]) {
         if (strcmp_env(env[j], expand, ft_strlen(expand))) {
             found = 1;
-            head->val = expand_val(env[j], head->val, *i, flag3, ft_strlen(expand), gc_head);
+            head->val = expand_val(env[j], head->val, *i, flag3, ft_strlen(expand));
             if (flag)
-                check_is_expandig(head, env, gc_head);
+                check_is_expandig(head, env);
             break;
         }
         j++;
     }
     if (!found) {
-        head->val = expand_val("", head->val, *i, flag3, ft_strlen(expand), gc_head);
+        head->val = expand_val("", head->val, *i, flag3, ft_strlen(expand));
         if (flag)
-            check_is_expandig(head, env, gc_head);
+            check_is_expandig(head, env);
     }
 }
 
-static void expand_in_double_quotes(t_toknes_list *head, char **env, t_gc_collector **gc_head, int *i) {
+static void expand_in_double_quotes(t_toknes_list *head, char **env, int *i) {
     int dq = 1;
     (*i)++;
     if (head->val[*i] == '\"')
@@ -185,7 +185,7 @@ static void expand_in_double_quotes(t_toknes_list *head, char **env, t_gc_collec
                 (*i)++;
             if (not_character_expand(head->val[*i]))
                 break;
-            handle_dollar_expansion(i, env, head, 0, gc_head);
+            handle_dollar_expansion(i, env, head, 0);
         } else if (head->val[*i] == '\"')
             dq = 0;
         else
@@ -193,7 +193,7 @@ static void expand_in_double_quotes(t_toknes_list *head, char **env, t_gc_collec
     }
 }
 
-static void expand_plain(t_toknes_list *head, char **env, t_gc_collector **gc_head, int *i) {
+static void expand_plain(t_toknes_list *head, char **env, int *i) {
     if (head->val[0] == '$' || head->val[0] == '=')
         head->split_it = 1;
     else
@@ -201,25 +201,25 @@ static void expand_plain(t_toknes_list *head, char **env, t_gc_collector **gc_he
     while (head->val[*i] && head->val[*i] == '$')
         (*i)++;
     if (!not_character_expand(head->val[*i]))
-        handle_dollar_expansion(i, env, head, 1, gc_head);
+        handle_dollar_expansion(i, env, head, 1);
 }
 
-int check_is_expandig(t_toknes_list *head, char **env, t_gc_collector **gc_head) {
+int check_is_expandig(t_toknes_list *head, char **env) {
     int i = 0, q = 0;
     while (i < ft_strlen(head->val) &&  head->val[i]) {
         if (head->val[i] == '\"')
-            expand_in_double_quotes(head, env, gc_head, &i);
+            expand_in_double_quotes(head, env, &i);
         else if (head->val[i] == '\'') {
             q = 1;
             skip_q_expand(head->val, &i, &q);
         } else if (head->val[i] == '$')
-            expand_plain(head, env, gc_head, &i);
+            expand_plain(head, env, &i);
         i++;
     }
     return i;
 }
 
-int check_expand(t_toknes_list *head, char **env, t_gc_collector **gc_head) {
+int check_expand(t_toknes_list *head, char **env) {
     
     int i = 0;
     int flag = 0; 
@@ -230,7 +230,7 @@ int check_expand(t_toknes_list *head, char **env, t_gc_collector **gc_head) {
     {
         if (head->val[i] == '$') 
         {
-            i = check_is_expandig(head, env, gc_head);
+            i = check_is_expandig(head, env);
             flag = 1;
         }
         len = ft_strlen(head->val);
@@ -239,11 +239,11 @@ int check_expand(t_toknes_list *head, char **env, t_gc_collector **gc_head) {
     return flag;
 }
 
-void expanding(t_toknes_list *token_head, char **env, t_gc_collector **gc_head) {
+void expanding(t_toknes_list *token_head, char **env) {
     t_toknes_list *head = token_head;
     while (head) {
-        check_expand(head, env, gc_head);
-        remove_q_d(head, gc_head);
+        check_expand(head, env);
+        remove_q_d(head);
         head = head->next;
     }
 }
