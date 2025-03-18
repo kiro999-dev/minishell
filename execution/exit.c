@@ -1,4 +1,3 @@
-#include "heper.h"
 #include "../parsing/minishell.h"
 
 static int	check_overflow(long long num, char digit, int is_neg)
@@ -52,8 +51,25 @@ int	ft_atoi(const char *nptr)
 	return (sum * sign);
 }
 
+int is_numeric(const char *str)
+{
+    int i = 0;
+
+    if (!str)
+        return (0);
+    if (str[i] == '-' || str[i] == '+')
+        i++;
+    while (str[i])
+    {
+        if (!is_num(str[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
 // void f_exit(char **cmd, t_env_list *env, t_garbage_collector *gc)
-void f_exit(char **cmd, t_env_list *env)
+void f_exit(char **cmd, t_data_parsing *data_exe)
 
 {
     int exit_status = 0;
@@ -74,6 +90,6 @@ void f_exit(char **cmd, t_env_list *env)
         else
             exit_status = ft_atoi(cmd[1]) % 256;
     }
-    // free_gc(env, gc);
+    free_gc(&data_exe->gc_head);
     exit(exit_status);
 }

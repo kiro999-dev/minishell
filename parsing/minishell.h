@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 16:03:15 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:00:13 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,17 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../execution/heper.h"
+#include <limits.h>
+
+
+
+typedef struct s_env_list
+{
+    char *var;
+    struct s_env_list *next;
+    short undec;
+} t_env_list;
+
 typedef enum e_TOKENS
 {
 	PIPE
@@ -112,5 +122,33 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 void 	*gc_malloc(size_t size);
 void	free_gc(t_gc_collector **gc_head);
+
+
+
+// execution
+void    f_exit(char **cmd, t_data_parsing *data_exe);
+void    f_unset(t_env_list **env, char **var);
+char	*ft_strdup(const char *s1);
+char    *trim_plus_sign(char *key);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+t_env_list *init_env(char *ev[]);
+int     equal_strcmp(const char *s1, const char *s2);
+void    print_export(t_env_list *e);
+void    f_export(char **cmd, t_env_list *ev);
+void    export_putstr(char *str);
+int     size_2d(char **arr);
+void    *free_array(char **s);
+int     ft_strncmp(const char *s1, const char *s2, size_t n);
+void    f_cd(char *path, t_env_list *env);
+void    f_pwd(void);
+void    f_echo(char **av);
+void    f_env(t_env_list *env);
+char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
+char	*ft_substr(char const *s, int start, int len);
+
+void free_env_list(t_env_list *env);
+void add_back(t_env_list **lst, t_env_list *new);
+t_env_list	*new_node(void *content);
+
 
 #endif

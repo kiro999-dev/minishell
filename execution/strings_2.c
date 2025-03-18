@@ -1,5 +1,4 @@
 #include "../parsing/minishell.h"
-#include "heper.h"
 
 // char	*ft_strdup(const char *s1)
 // {
@@ -64,43 +63,43 @@ void export_putstr(char *str)
 	printf("\n");
 }
 
-static void	set_prefix(char *dst, char const *src, size_t i, size_t s_len)
-{
-	while (i < s_len)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-}
+// static void	set_prefix(char *dst, char const *src, size_t i, size_t s_len)
+// {
+// 	while (i < s_len)
+// 	{
+// 		dst[i] = src[i];
+// 		i++;
+// 	}
+// }
 
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*dest;
-	size_t	len_s1;
-	size_t	len_s2;
-	size_t	i;
+// char	*ft_strjoin(char *s1, char *s2)
+// {
+// 	char	*dest;
+// 	size_t	len_s1;
+// 	size_t	len_s2;
+// 	size_t	i;
 
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1 && s2)
-		return (ft_strdup(s2));
-	if (!s2 && s1)
-		return (ft_strdup(s1));
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	dest = (char *)gc_malloc(len_s1 + len_s2 + 1);
-	if (!dest)
-		return (NULL);
-	i = 0;
-	set_prefix(dest, s1, i, len_s1);
-	while (i < len_s2)
-	{
-		dest[i + len_s1] = s2[i];
-		i++;
-	}
-	dest[len_s1 + len_s2] = '\0';
-	return (dest);
-}
+// 	if (!s1 && !s2)
+// 		return (NULL);
+// 	if (!s1 && s2)
+// 		return (ft_strdup(s2));
+// 	if (!s2 && s1)
+// 		return (ft_strdup(s1));
+// 	len_s1 = ft_strlen(s1);
+// 	len_s2 = ft_strlen(s2);
+// 	dest = (char *)gc_malloc(len_s1 + len_s2 + 1);
+// 	if (!dest)
+// 		return (NULL);
+// 	i = 0;
+// 	set_prefix(dest, s1, i, len_s1);
+// 	while (i < len_s2)
+// 	{
+// 		dest[i + len_s1] = s2[i];
+// 		i++;
+// 	}
+// 	dest[len_s1 + len_s2] = '\0';
+// 	return (dest);
+// }
 
 int	equal_strcmp(const char *s1, const char *s2)
 {
@@ -155,54 +154,54 @@ char	*custom_strnstr(const char *haystack, const char *needle, size_t len)
 	return (NULL);
 }
 
-char	*ft_substr(char const *s, int start, int len)
-{
-	char	*dest;
-	int	i;
+// char	*ft_substr(char const *s, int start, int len)
+// {
+// 	char	*dest;
+// 	int	i;
 
-	if (!s)
-		return (NULL);
-	if (start >= ft_strlen(s))
-		return (ft_strdup(""));
-	if (len > ft_strlen(s) - start)
-		len = ft_strlen(s) - start;
-	dest = (char *)gc_malloc(len + 1);
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (i < len && s[start])
-	{
-		dest[i] = s[start];
-		i++;
-		start++;
-	}
-	dest[len] = '\0';
-	return (dest);
-}
+// 	if (!s)
+// 		return (NULL);
+// 	if (start >= ft_strlen(s))
+// 		return (ft_strdup(""));
+// 	if (len > ft_strlen(s) - start)
+// 		len = ft_strlen(s) - start;
+// 	dest = (char *)gc_malloc(len + 1);
+// 	if (!dest)
+// 		return (NULL);
+// 	i = 0;
+// 	while (i < len && s[start])
+// 	{
+// 		dest[i] = s[start];
+// 		i++;
+// 		start++;
+// 	}
+// 	dest[len] = '\0';
+// 	return (dest);
+// }
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
-{
-	size_t	i;
-	size_t	dest_len;
-	size_t	src_len;
+// size_t	ft_strlcat(char *dest, const char *src, size_t size)
+// {
+// 	size_t	i;
+// 	size_t	dest_len;
+// 	size_t	src_len;
 
-	if (!dest && size == 0)
-		return (ft_strlen(src));
-	src_len = ft_strlen(src);
-	dest_len = ft_strlen(dest);
-	i = 0;
-	if (dest_len >= size)
-	{
-		return (src_len + size);
-	}
-	while (dest_len + i < size - 1 && src[i])
-	{
-		dest[dest_len + i] = src[i];
-		i++;
-	}
-	dest[dest_len + i] = '\0';
-	return (src_len + dest_len);
-}
+// 	if (!dest && size == 0)
+// 		return (ft_strlen(src));
+// 	src_len = ft_strlen(src);
+// 	dest_len = ft_strlen(dest);
+// 	i = 0;
+// 	if (dest_len >= size)
+// 	{
+// 		return (src_len + size);
+// 	}
+// 	while (dest_len + i < size - 1 && src[i])
+// 	{
+// 		dest[dest_len + i] = src[i];
+// 		i++;
+// 	}
+// 	dest[dest_len + i] = '\0';
+// 	return (src_len + dest_len);
+// }
 
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)

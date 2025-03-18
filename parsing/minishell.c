@@ -273,7 +273,11 @@ void data_init(t_data_parsing *data, char **env)
 	data->e = init_env(env);
 	data->head_toknez = NULL;
 }
+// void execution(t_exc_lits *head_exe ,t_env_list *e)
+// {
+	
 
+// }
 
 int main(int argc, char **argv, char **env)
 {
@@ -293,7 +297,7 @@ int main(int argc, char **argv, char **env)
 		}
 		add_history(data.buff);
 		parsing(&data);
-		
+		// execution(&data.head_exe,&data.e);
 	}
 	return 0;
 }

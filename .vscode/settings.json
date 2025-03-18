@@ -3,6 +3,7 @@
         "minishell.h": "c",
         "compare": "c",
         "type_traits": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "heper.h": "c"
     }
 }
