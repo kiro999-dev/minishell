@@ -58,7 +58,7 @@ char *trim_plus_sign(char *key)
         return key;
     len_before_plus = equal_pos - key; 
     total_len = strlen(key) - 1;     
-    new_key = malloc(total_len + 1);
+    new_key = gc_malloc(total_len + 1);
     if (!new_key)
         return NULL;
     memcpy(new_key, key, len_before_plus); 

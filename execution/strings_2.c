@@ -1,23 +1,23 @@
 #include "../minishell.h"
 
 
-char	*ft_strdup(const char *s1)
-{
-	char	*dest;
-	size_t	i;
+// char	*ft_strdup(const char *s1)
+// {
+// 	char	*dest;
+// 	size_t	i;
 
-	dest = (char *)malloc(ft_strlen(s1) + 1);
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
+// 	dest = (char *)malloc(ft_strlen(s1) + 1);
+// 	if (!dest)
+// 		return (NULL);
+// 	i = 0;
+// 	while (s1[i])
+// 	{
+// 		dest[i] = s1[i];
+// 		i++;
+// 	}
+// 	dest[i] = '\0';
+// 	return (dest);
+// }
 
 
 
@@ -88,7 +88,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (ft_strdup(s1));
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
-	dest = (char *)malloc(len_s1 + len_s2 + 1);
+	dest = (char *)gc_malloc(len_s1 + len_s2 + 1);
 	if (!dest)
 		return (NULL);
 	i = 0;
@@ -166,7 +166,7 @@ char	*ft_substr(char const *s, int start, int len)
 		return (ft_strdup(""));
 	if (len > ft_strlen(s) - start)
 		len = ft_strlen(s) - start;
-	dest = (char *)malloc(len + 1);
+	dest = (char *)gc_malloc(len + 1);
 	if (!dest)
 		return (NULL);
 	i = 0;

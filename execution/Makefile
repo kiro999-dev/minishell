@@ -1,5 +1,5 @@
 
-SRC = main.c cd.c echo.c export.c strings_2.c env_utils.c ../strings.c unset.c
+SRC = main.c cd.c echo.c export.c strings_2.c env_utils.c ../strings.c unset.c ../garbge_collcter.c
 
 OBJ = $(SRC:.c=.o)
 
