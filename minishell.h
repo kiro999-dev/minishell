@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 20:37:21 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:32:57 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,6 @@ void 	add_list_file(t_file **head, char *name, t_TOKENS type);
 void 	add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type, t_file *head_files);
 void 	add_back_list(t_exc_lits **head,t_exc_lits *node);
 t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter);
-void 	print(char *s , t_TOKENS type);
-void    print_lits(t_toknes_list *head);
 char	*ft_substr(char const *s, int start, int len);
 int 	ft_isspace(int c);
 char	**ft_split(const char *s, char *c);
@@ -124,9 +122,38 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 void 	*gc_malloc(size_t size);
 void	free_gc(t_gc_collector **gc_head);
-
-
-
+int 	is_token(char c);
+int 	isparam(t_tok *data_tok);
+int 	isfile(t_TOKENS type);
+int 	ft_isspace(int c);
+void 	token_add(t_toknes_list **head,t_tok *data_tok,t_TOKENS type);
+void 	add_token(t_tok *data_tok,t_toknes_list **head);
+void 	generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head);
+void	init_tok(t_tok *data_tok);
+void 	not_token_case(t_tok *data_tok,t_toknes_list **head,int *ptr_i,char *s);
+void  	lex(char *s, t_toknes_list **head);
+void 	gen_word(t_tok  *data_tok, char *s,int *ptr_i);
+void 	single_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head);
+void 	double_q(int *i_ptr,char *s,t_tok *data,t_toknes_list **head);
+int 	pipe_symbol(int *i_ptr,int *is_cmd,t_toknes_list **head);
+int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
+int 	redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
+int 	count_cmd_tokens(t_toknes_list *token);
+int		counting(char **spilt);
+char	 **realloc_cmd_array(char **cmd, int current_count, int extra);
+char 	**cmd_int(int count);
+char 	**pars_cmd(t_toknes_list *token);
+char 	**copy_cmd_tokens(t_toknes_list *token, int count);
+void 	process_default(t_toknes_list **current, char **cmd, int *i);
+char 	**process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count);
+void	 process_split_it(t_toknes_list **current, char **cmd, int *i);
+char* 	expand_val(char *s, char *s2, int j, int flag, int n);
+void 	handle_dollar_expansion(int *i, t_env_list  *e, t_toknes_list *head, int flag3);
+void 	remove_q_d(t_toknes_list *head);
+int 	not_character_expand(char c);
+void 	skip_q_expand(char *s, int *ptr_i, int *q_ptr);
+int		strcmp_env(char *s1, char *s2, int n);
+int 	ft_strcmp(char *s1 ,char *s2);
 // execution
 void    f_exit(char **cmd, t_data_parsing *data_exe);
 void    f_unset(t_env_list **env, char **var);
