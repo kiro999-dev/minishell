@@ -5,6 +5,10 @@
         "type_traits": "c",
         "stdlib.h": "c",
         "heper.h": "c",
-        "numbers": "c"
+        "numbers": "c",
+        "algorithm": "c",
+        "execution": "c",
+        "memory": "c",
+        "numeric": "c"
     }
 }

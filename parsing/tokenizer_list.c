@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_list.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:04:45 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:07 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 20:35:19 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_toknes_list *creat_node(char *val, t_TOKENS type,int join_me)
     node->split_it = 0;
     node->join_me = join_me;
     node->split_it2 = 0;
+
     return node;
 }
 

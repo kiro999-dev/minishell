@@ -17,7 +17,7 @@ static int count_cmd_tokens(t_toknes_list *token)
 {
 	int count = 0;
 	int flag = 0;
-	while (token && token->type != PIPE)
+	while ((token && token->type != PIPE ))
 	{
 		if (token->type == WORD || token->type == CMD)
 		{
@@ -247,9 +247,7 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 	}
 }
 
-
-
-void parsing(t_data_parsing *data)
+int parsing(t_data_parsing *data)
 {
 	lex(data->buff, &data->head_toknez);
 		if(!check_syntax(data->head_toknez))
@@ -258,19 +256,19 @@ void parsing(t_data_parsing *data)
 			generate_list(data->head_toknez, &data->head_exe);
 			free_gc(&data->gc_head);
 			free(data->buff);
+			return (1);
 		}
-		data->buff = NULL;
-		data->gc_head = NULL;
-		data->head_exe = NULL;
-		data->head_toknez = NULL;
+	return (0);
 }
 
-void data_init(t_data_parsing *data, char **env)
+void data_init(t_data_parsing *data, char **env,int flag)
 {
 	data->buff=NULL;
 	data->head_exe = NULL;
 	data->gc_head = NULL;
-	data->e = init_env(env);
+	data->head_file = NULL;
+	if(flag)
+		data->e = init_env(env);
 	data->head_toknez = NULL;
 }
 
@@ -279,7 +277,7 @@ int main(int argc, char **argv, char **env)
 	
 	t_data_parsing data;
 
-	data_init(&data, env);
+	data_init(&data, env,1);
 	argc = argc - 1;
 	argv[0] = NULL;
 	while (1)
@@ -290,11 +288,14 @@ int main(int argc, char **argv, char **env)
 			free_gc(&data.gc_head);
 			break;
 		}
+
 		add_history(data.buff);
-		parsing(&data);
-		if (data.head_exe->cmd != NULL)
-			printf("parsin\n");
-		execution(&data);
+		if(parsing(&data))
+		{
+			execution(&data);
+			free_gc(&data.gc_head);
+			data_init(&data,env,0);
+		}
 	}
 	return 0;
 }

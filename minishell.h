@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:23:02 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 20:37:21 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_data_parsing
 	t_env_list *e;
 	t_gc_collector *gc_head;
 	char *buff;
+	t_file *head_file;
 }t_data_parsing;
 
 // parsing
@@ -145,9 +146,7 @@ void    f_pwd(void);
 void    f_echo(char **av);
 void    f_env(t_env_list *env);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
-char	*ft_substr(char const *s, int start, int len);
-void execution(t_data_parsing *data_exec);
-
+void	execution(t_data_parsing *data_exec);
 void free_env_list(t_env_list *env);
 void add_back(t_env_list **lst, t_env_list *new);
 t_env_list	*new_node(void *content);

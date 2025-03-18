@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:37 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/18 20:35:16 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void skip_q_expand(char *s, int *ptr_i, int *q_ptr) {
     int i = *ptr_i, q = *q_ptr;
     
     i++;
-    printf("this -->%c",s[i]);
     while (q && s[i]) 
     {
         if (s[i] == '\'')
@@ -156,6 +155,7 @@ static char *build_expand_string(int *i, t_toknes_list *head, int *flag) {
 static void handle_dollar_expansion(int *i, t_env_list  *e, t_toknes_list *head, int flag3) {
     int flag;
     char *expand = build_expand_string(i, head, &flag);
+    
     int found = 0;
     while (e) {
         if (strcmp_env(e->var, expand, ft_strlen(expand))) {
@@ -193,7 +193,8 @@ static void expand_in_double_quotes(t_toknes_list *head, t_env_list  *e, int *i)
     }
 }
 
-static void expand_plain(t_toknes_list *head, t_env_list  *e, int *i) {
+static void expand_plain(t_toknes_list *head, t_env_list  *e, int *i)
+ {
     if (head->val[0] == '$' || head->val[0] == '=')
         head->split_it = 1;
     else
