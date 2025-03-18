@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../parsing/minishell.h"
 #include "heper.h"
 
 // char *get_path(char *av[], char *key, int len)
@@ -17,28 +17,29 @@
 //     return (NULL);
 // }
 
-void replace_key_value(char *av[], char *key, char *value)
+
+
+void replace_key_value(t_env_list *env, char *key, char *value)
 {
-    int i;
     int len;
 
-    i = 0;
-    if (!av || !key || !value)
+    if (!env || !key || !value)
         return ;
     len = ft_strlen(key);
-    while (av[i])
+    while (env)
     {
-        if (!ft_strncmp(av[i], key, len))
+        if (!ft_strncmp(env->var, key, len))
         {
-            av[i] = value;
+            free(env->var);
+            env->var = value;
             break;
         }
-        i++;
+        env = env->next;
     }
 }
 
 
-void verify_path(char *env[], char *path, char *current, char *old)
+void verify_path(t_env_list *env, char *path, char *current, char *old)
 {
     char *temp;
 
@@ -65,7 +66,7 @@ void verify_path(char *env[], char *path, char *current, char *old)
     }
 }
 
-void f_cd(char *path, char *env[])
+void f_cd(char *path, t_env_list *env)
 {
     char *old_pwd;
     char *new_pwd;
@@ -73,7 +74,6 @@ void f_cd(char *path, char *env[])
 
     if (!env || !path)
         return ;
-    
     current = getcwd(NULL, 0);
     new_pwd = NULL;
     verify_path(env, path, current, new_pwd);
@@ -110,4 +110,3 @@ void f_env(t_env_list *env)
         env = env->next;
     }
 }
-
