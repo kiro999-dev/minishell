@@ -1,5 +1,5 @@
-#include "../minishell.h"
-
+#include "../parsing/minishell.h"
+#include "heper.h"
 
 // char	*ft_strdup(const char *s1)
 // {

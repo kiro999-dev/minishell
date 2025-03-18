@@ -1,5 +1,7 @@
 SRC = parsing/minishell.c parsing/lexer.c parsing/strings.c parsing/linked_lists.c parsing/tokenizer_list.c \
- parsing/expanding.c parsing/check_syntax.c parsing/ft_substr.c parsing/ft_split.c parsing/ft_strjoin.c parsing/garbge_collcter.c
+ parsing/expanding.c parsing/check_syntax.c parsing/ft_substr.c parsing/ft_split.c parsing/ft_strjoin.c parsing/garbge_collcter.c \
+	
+
 OBJ = $(SRC:.c=.o)
 INC = minishell.h
 CC = cc

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 15:50:46 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:03:15 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ int		redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 void	add(t_toknes_list **head, char *val, t_TOKENS type,int join_me);
 int 	check_syntax(t_toknes_list *head);
-int 	check_expand(t_toknes_list *head,char **env);
-int 	check_is_expandig(t_toknes_list *head, char **env);
-void 	expanding(t_toknes_list *token_head,char **env);
+int 	check_expand(t_toknes_list *head,t_env_list *e);
+int 	check_is_expandig(t_toknes_list *head, t_env_list *e);
+void 	expanding(t_toknes_list *token_head,t_env_list *e);
 void 	add_list_file(t_file **head, char *name, t_TOKENS type);
 void 	add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type, t_file *head_files);
 void 	add_back_list(t_exc_lits **head,t_exc_lits *node);

@@ -249,12 +249,12 @@ void generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 
 
 
-void parsing(t_data_parsing *data,char **env)
+void parsing(t_data_parsing *data)
 {
 	lex(data->buff, &data->head_toknez);
 		if(!check_syntax(data->head_toknez))
 		{
-			expanding(data->head_toknez, env);
+			expanding(data->head_toknez, data->e);
 			generate_list(data->head_toknez, &data->head_exe);
 			free_gc(&data->gc_head);
 			free(data->buff);
@@ -264,20 +264,23 @@ void parsing(t_data_parsing *data,char **env)
 		data->head_exe = NULL;
 		data->head_toknez = NULL;
 }
-void data_init(t_data_parsing *data)
+
+void data_init(t_data_parsing *data, char **env)
 {
 	data->buff=NULL;
 	data->head_exe = NULL;
 	data->gc_head = NULL;
-	data->e = NULL;
+	data->e = init_env(env);
 	data->head_toknez = NULL;
 }
+
+
 int main(int argc, char **argv, char **env)
 {
 	
 	t_data_parsing data;
 
-	data_init(&data);
+	data_init(&data, env);
 	argc = argc - 1;
 	argv[0] = NULL;
 	while (1)
@@ -289,7 +292,7 @@ int main(int argc, char **argv, char **env)
 			break;
 		}
 		add_history(data.buff);
-		parsing(&data,env);
+		parsing(&data);
 		
 	}
 	return 0;

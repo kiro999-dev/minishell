@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 11:50:15 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:05:08 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,28 +153,28 @@ static char *build_expand_string(int *i, t_toknes_list *head, int *flag) {
     return expand;
 }
 
-static void handle_dollar_expansion(int *i, char **env, t_toknes_list *head, int flag3) {
+static void handle_dollar_expansion(int *i, t_env_list  *e, t_toknes_list *head, int flag3) {
     int flag;
     char *expand = build_expand_string(i, head, &flag);
-    int j = 0, found = 0;
-    while (env && env[j]) {
-        if (strcmp_env(env[j], expand, ft_strlen(expand))) {
+    int found = 0;
+    while (e) {
+        if (strcmp_env(e->var, expand, ft_strlen(expand))) {
             found = 1;
-            head->val = expand_val(env[j], head->val, *i, flag3, ft_strlen(expand));
+            head->val = expand_val(e->var, head->val, *i, flag3, ft_strlen(expand));
             if (flag)
-                check_is_expandig(head, env);
+                check_is_expandig(head, e);
             break;
         }
-        j++;
+        e = e->next;
     }
     if (!found) {
         head->val = expand_val("", head->val, *i, flag3, ft_strlen(expand));
         if (flag)
-            check_is_expandig(head, env);
+            check_is_expandig(head, e);
     }
 }
 
-static void expand_in_double_quotes(t_toknes_list *head, char **env, int *i) {
+static void expand_in_double_quotes(t_toknes_list *head, t_env_list  *e, int *i) {
     int dq = 1;
     (*i)++;
     if (head->val[*i] == '\"')
@@ -185,7 +185,7 @@ static void expand_in_double_quotes(t_toknes_list *head, char **env, int *i) {
                 (*i)++;
             if (not_character_expand(head->val[*i]))
                 break;
-            handle_dollar_expansion(i, env, head, 0);
+            handle_dollar_expansion(i, e, head, 0);
         } else if (head->val[*i] == '\"')
             dq = 0;
         else
@@ -193,7 +193,7 @@ static void expand_in_double_quotes(t_toknes_list *head, char **env, int *i) {
     }
 }
 
-static void expand_plain(t_toknes_list *head, char **env, int *i) {
+static void expand_plain(t_toknes_list *head, t_env_list  *e, int *i) {
     if (head->val[0] == '$' || head->val[0] == '=')
         head->split_it = 1;
     else
@@ -201,25 +201,25 @@ static void expand_plain(t_toknes_list *head, char **env, int *i) {
     while (head->val[*i] && head->val[*i] == '$')
         (*i)++;
     if (!not_character_expand(head->val[*i]))
-        handle_dollar_expansion(i, env, head, 1);
+        handle_dollar_expansion(i, e, head, 1);
 }
 
-int check_is_expandig(t_toknes_list *head, char **env) {
+int check_is_expandig(t_toknes_list *head, t_env_list  *e) {
     int i = 0, q = 0;
     while (i < ft_strlen(head->val) &&  head->val[i]) {
         if (head->val[i] == '\"')
-            expand_in_double_quotes(head, env, &i);
+            expand_in_double_quotes(head, e, &i);
         else if (head->val[i] == '\'') {
             q = 1;
             skip_q_expand(head->val, &i, &q);
         } else if (head->val[i] == '$')
-            expand_plain(head, env, &i);
+            expand_plain(head, e, &i);
         i++;
     }
     return i;
 }
 
-int check_expand(t_toknes_list *head, char **env) {
+int check_expand(t_toknes_list *head, t_env_list *e) {
     
     int i = 0;
     int flag = 0; 
@@ -230,7 +230,7 @@ int check_expand(t_toknes_list *head, char **env) {
     {
         if (head->val[i] == '$') 
         {
-            i = check_is_expandig(head, env);
+            i = check_is_expandig(head, e);
             flag = 1;
         }
         len = ft_strlen(head->val);
@@ -239,10 +239,10 @@ int check_expand(t_toknes_list *head, char **env) {
     return flag;
 }
 
-void expanding(t_toknes_list *token_head, char **env) {
+void expanding(t_toknes_list *token_head, t_env_list  *e) {
     t_toknes_list *head = token_head;
     while (head) {
-        check_expand(head, env);
+        check_expand(head, e);
         remove_q_d(head);
         head = head->next;
     }
