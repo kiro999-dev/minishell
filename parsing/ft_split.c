@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:17:18 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 21:10:35 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:26:18 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,6 @@ int	look_for_c(char *c, char ch)
 		i++;
 	}
 	return (0);
-}
-
-static void	*free_memory(char **res, int count)
-{
-	int	i;
-
-	i = 0;
-	while (i < count)
-	{
-		free(res[i]);
-		i++;
-	}
-	free(res);
-	return (NULL);
 }
 
 size_t	counting_words(const char *s1, char *c)
@@ -102,7 +88,7 @@ char	**ft_split(const char *s, char *c)
 		{
 			res[k] = fill((char *)s, c, &i);
 			if (!res[k])
-				return (free_memory(res, k));
+				return (NULL);
 			k++;
 		}
 		else

@@ -17,7 +17,6 @@ int parsing(t_data_parsing *data)
 		{
 			expanding(data->head_toknez, data->e);
 			generate_list(data->head_toknez, &data->head_exe);
-			free_gc(&data->gc_head);
 			free(data->buff);
 			return (1);
 		}
@@ -46,11 +45,8 @@ void print_list(t_exc_lits *h)
 			printf("cmd[%d]-->%s\n",i,h->cmd[i]);
 			i++;
 		}
-		h = h->next;
-		
+		h = h->next;	
 	}
-	
-
 }
 int main(int argc, char **argv, char **env)
 {
@@ -65,17 +61,16 @@ int main(int argc, char **argv, char **env)
 		data.buff = readline("$minishell> ");
 		if (data.buff == NULL)
 		{
-			gc_malloc(0,0);
 			break;
 		}
 		add_history(data.buff);
 		if(parsing(&data))
 		{
-			print_list(data.head_exe);
+			// print_list(data.head_exe);
 			execution(&data);
-			gc_malloc(0,0);
 			data_init(&data,env,0);
 		}
 	}
+	gc_malloc(0,0);
 	return 0;
 }

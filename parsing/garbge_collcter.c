@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 11:57:05 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 21:15:33 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:31:46 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void free_gc(t_gc_collector **gc_head)
 {
 	t_gc_collector *tmp;
-
+	int i = 0;
 	while (*gc_head)
 	{
-		printf("freed %p\n",(*gc_head)->ptr);
+		i++;
 		tmp = (*gc_head);
 		(*gc_head) = (*gc_head)->next;
 		free(tmp->ptr);

@@ -1,19 +1,7 @@
 #include "../minishell.h"
 
 
-void	*free_array(char **s)
-{
-	int	i;
 
-	i = 0;
-	while (s[i])
-	{
-		free(s[i]);
-		i++;
-	}
-	free(s);
-	return (NULL);
-}
 
 int size_2d(char **arr)
 {
@@ -63,20 +51,6 @@ t_env_list	*new_node(void *content)
 	dest->next = (NULL);
 	return (dest);
 }
-
-void free_env_list(t_env_list *env)
-{
-    t_env_list *temp;
-    
-    while (env->next)
-    {
-        temp = env;
-        env = env->next;
-        free(temp->var);
-        free(temp);
-    }
-}
-
 
 
 t_env_list *init_env(char *ev[])

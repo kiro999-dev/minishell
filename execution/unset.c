@@ -9,8 +9,6 @@ void pop_node(t_env_list **env, t_env_list *to_pop, t_env_list *prev)
         prev->next = to_pop->next;
     else 
         *env = to_pop->next;
-    free(to_pop->var);
-    free(to_pop);
 }
 
 t_env_list *find_env_node(t_env_list *env, char *key, t_env_list **prev)

@@ -131,7 +131,6 @@ void get_key_value(char *var, char **key, char **value)
     *value = ft_strdup(plus_pos + 2);
     if (!(*value))
     {
-        free(key);
         return ;
     }
     // printf("key : %s | value : %s | var : %s\n", *key, *value, var);
@@ -157,9 +156,6 @@ int check_append(t_env_list *env, char *var)
             if (!ft_strchr(env->var, '='))
                 value = ft_strjoin("=", value);
             tmp = ft_strjoin(env->var, value);
-            free(env->var);
-            free(key);
-            free(value);
             env->var = tmp;
 
             return (1);
@@ -223,7 +219,6 @@ void f_export(char **cmd, t_env_list *ev)
         tmp = copy_list(ev);
         sort_env(&tmp);
         print_export(tmp);
-        free_env_list(tmp);
     }
     else
     {

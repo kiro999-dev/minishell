@@ -12,7 +12,6 @@ void replace_key_value(t_env_list *env, char *key, char *value)
     {
         if (!ft_strncmp(env->var, key, len))
         {
-            free(env->var);
             env->var = value;
             break;
         }
