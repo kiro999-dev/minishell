@@ -1,22 +1,5 @@
 #include "../minishell.h"
 
-// char *get_path(char *av[], char *key, int len)
-// {
-//     int i;
-
-//     i = 0;
-//     if (!av || !key)
-//         return (NULL);
-//     while (av[i])
-//     {
-//         if (!ft_strncmp(av[i], key, len))
-//             return (ft_strdup(av[i]));
-//         i++;
-//     }
-//     return (NULL);
-// }
-
-
 
 void replace_key_value(t_env_list *env, char *key, char *value)
 {
@@ -44,46 +27,53 @@ void verify_path(t_env_list *env, char *path, char *current, char *old)
 
     if (!ft_strncmp(path, "-", 2))
     {
-        // old = get_path(env, "OLDPWD=", 7) + 7;
         old = getenv("OLDPWD");
         if (chdir(old) == -1)
-           ( printf("file or directory not found!"), exit(1));
+        {
+            printf("Xminishell: cd: %s: No such file or directory\n", old);
+            return ;
+        }
         temp = ft_strjoin("OLDPWD=", current);
         replace_key_value(env, "OLDPWD", temp);
         free(current);
         current = ft_strjoin("PWD=", old);
         replace_key_value(env, "PWD", current);
         printf("%s\n", old);
-        exit(0);
+        return ;
     }
     if (!ft_strncmp(path, "--", 3))
         path = getenv("HOME");
     if (chdir(path) == -1)
-    {
-        printf("%s file or directory not found!", path);
-        exit(1);
-    }
+        printf("minishell: cd: %s: No such file or directory\n", path);
 }
 
-void f_cd(char *path, t_env_list *env)
+void f_cd(char **cmd, t_env_list *env)
 {
     char *old_pwd;
     char *new_pwd;
     char *current;
+    int size;
 
-    if (!env || !path)
+    if (!env || !cmd)
         return ;
+    size = size_2d(cmd);
+    if (size > 2)
+    {
+        printf("bash: cd: too many arguments\n");
+        return ;
+    }
+    else if (size == 1)
+    {   
+        return  ;
+    }
     current = getcwd(NULL, 0);
     new_pwd = NULL;
-    verify_path(env, path, current, new_pwd);
+    verify_path(env, cmd[1], current, new_pwd);
     old_pwd = ft_strjoin("OLDPWD=", current);
-    free(current);
     current = getcwd(NULL, 0);
     new_pwd = ft_strjoin("PWD=", current);
-    free(current);
     replace_key_value(env, "PWD", new_pwd);
     replace_key_value(env, "OLDPWD", old_pwd);
-    printf("%s\n%s\n", old_pwd, new_pwd);
 }
 
 void f_pwd(void)

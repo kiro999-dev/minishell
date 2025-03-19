@@ -92,22 +92,49 @@ int replace_existing_key(t_env_list *env, char *key)
     return (0);
 }
 
+int valid_key(char *var)
+{
+	int		i;
+	int		key_len;
+	char	*equal;
+
+	if (!var || !var[0] || (!(ft_isalpha(var[0]) || var[0] == '_')))
+		return (0);
+	equal = ft_strchr(var, '=');
+	if (equal)
+		key_len = equal - var;
+	else
+		key_len = ft_strlen(var);
+	if (key_len > 1 && var[key_len - 1] == '+')
+		key_len--;
+	i = 1;
+	while (i < key_len)
+	{
+		if (!(ft_isalnum(var[i]) || var[i] == '_'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
 void get_key_value(char *var, char **key, char **value)
 {
     char *plus_pos;
 
     plus_pos = custom_strnstr(var, "+=", ft_strlen(var));
     if (!plus_pos)
-        return ;
+    return ;
     *key = ft_substr(var, 0, plus_pos - var);
     if (!(*key))
-    return ;
+        return ;
     *value = ft_strdup(plus_pos + 2);
     if (!(*value))
     {
         free(key);
         return ;
     }
+    // printf("key : %s | value : %s | var : %s\n", *key, *value, var);
 }
 
 
@@ -120,32 +147,35 @@ int check_append(t_env_list *env, char *var)
     key = NULL;
     value = NULL;
     get_key_value(var, &key, &value);
+    
     if (!key || !value)
         return (0);
     while (env)
     {
         if (!equal_strcmp(key, env->var))
         {
+            if (!ft_strchr(env->var, '='))
+                value = ft_strjoin("=", value);
             tmp = ft_strjoin(env->var, value);
-            // free(env->var);
-            env->var = tmp;
-            printf("----> %s\n", tmp);
+            free(env->var);
             free(key);
             free(value);
+            env->var = tmp;
+
             return (1);
         }
         env = env->next;
     }
     return (0);
 }
-
+// > export a+=" 007" ab bb+="come in" ab+="bitch" 
 void add_var_2_env(char *cmd, t_env_list **env)
 {
     t_env_list *new;
     int if_key_exist;
 
     if (check_append(*env, cmd))
-    return ;
+        return ;
     if_key_exist = replace_existing_key(*env, cmd);
     if (if_key_exist == 1)
         return;
@@ -187,6 +217,7 @@ void f_export(char **cmd, t_env_list *ev)
 
     if (!cmd)
         exit(1);
+    i = -1;
     if (size_2d(cmd) == 1)
     {
         tmp = copy_list(ev);
@@ -199,7 +230,10 @@ void f_export(char **cmd, t_env_list *ev)
         i = 1;
         while (cmd[i])
         {
-            add_var_2_env(cmd[i], &ev);
+            if (!valid_key(cmd[i]))
+                printf("minishell: export: `%s': not a valid identifier\n", cmd[i]);
+            else
+                add_var_2_env(cmd[i], &ev);
             i++;    
         }
     }

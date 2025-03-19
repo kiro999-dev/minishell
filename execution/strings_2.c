@@ -154,55 +154,20 @@ char	*custom_strnstr(const char *haystack, const char *needle, size_t len)
 	return (NULL);
 }
 
-// char	*ft_substr(char const *s, int start, int len)
-// {
-// 	char	*dest;
-// 	int	i;
+int	ft_isalpha(int c)
+{
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		return (1);
+	return (0);
+}
 
-// 	if (!s)
-// 		return (NULL);
-// 	if (start >= ft_strlen(s))
-// 		return (ft_strdup(""));
-// 	if (len > ft_strlen(s) - start)
-// 		len = ft_strlen(s) - start;
-// 	dest = (char *)gc_malloc(len + 1);
-// 	if (!dest)
-// 		return (NULL);
-// 	i = 0;
-// 	while (i < len && s[start])
-// 	{
-// 		dest[i] = s[start];
-// 		i++;
-// 		start++;
-// 	}
-// 	dest[len] = '\0';
-// 	return (dest);
-// }
-
-// size_t	ft_strlcat(char *dest, const char *src, size_t size)
-// {
-// 	size_t	i;
-// 	size_t	dest_len;
-// 	size_t	src_len;
-
-// 	if (!dest && size == 0)
-// 		return (ft_strlen(src));
-// 	src_len = ft_strlen(src);
-// 	dest_len = ft_strlen(dest);
-// 	i = 0;
-// 	if (dest_len >= size)
-// 	{
-// 		return (src_len + size);
-// 	}
-// 	while (dest_len + i < size - 1 && src[i])
-// 	{
-// 		dest[dest_len + i] = src[i];
-// 		i++;
-// 	}
-// 	dest[dest_len + i] = '\0';
-// 	return (src_len + dest_len);
-// }
-
+int	ft_isalnum(int ch)
+{
+	if ((ch >= 48 && ch <= 57) || ((ch >= 65 && ch <= 90)
+			|| (ch >= 97 && ch <= 122)))
+		return (1);
+	return (0);
+}
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {

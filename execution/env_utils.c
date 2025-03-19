@@ -19,7 +19,7 @@ int size_2d(char **arr)
 {
     int i;
 
-    if (!arr)
+    if (!arr || !(*arr))
         return (0);
     i = 0;
     while (arr[i])

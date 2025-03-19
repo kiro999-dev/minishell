@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 21:32:57 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:29:14 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ void 	skip_q_expand(char *s, int *ptr_i, int *q_ptr);
 int		strcmp_env(char *s1, char *s2, int n);
 int 	ft_strcmp(char *s1 ,char *s2);
 // execution
+int	ft_isalnum(int ch);
+int	ft_isalpha(int c);
 void    f_exit(char **cmd, t_data_parsing *data_exe);
 void    f_unset(t_env_list **env, char **var);
 char	*ft_strdup(const char *s1);
@@ -168,7 +170,7 @@ void    export_putstr(char *str);
 int     size_2d(char **arr);
 void    *free_array(char **s);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
-void    f_cd(char *path, t_env_list *env);
+void f_cd(char **cmd, t_env_list *env);
 void    f_pwd(void);
 void    f_echo(char **av);
 void    f_env(t_env_list *env);
