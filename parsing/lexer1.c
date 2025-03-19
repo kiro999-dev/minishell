@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:48:23 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 21:27:13 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:54:14 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,9 @@ void gen_word(t_tok  *data_tok, char *s,int *ptr_i)
 	data_tok->token = ft_strdup("");
 	while (s[i])
 	{
-		if(s[i] == '\'' && !data_tok->dq)
-			data_tok->q = !data_tok->q;
-		else if(s[i] == '\"' && !data_tok->q)
-			data_tok->dq = !data_tok->dq;
-	  	if(ft_isspace(s[i]) && !data_tok->q && !data_tok->dq)
+	  	if(ft_isspace(s[i]))
 			break;
-		if(is_token(s[i]) && (s[i] == '\'' || s[i] == '\"') && isparam(data_tok))
+		if(is_token(s[i]) && (s[i] == '\'' || s[i] == '\"') && isparam_for_file(data_tok))
 	  		data_tok->token = join_character(data_tok->token,s[i]);
 		else if(is_token(s[i]))
 	  		break;

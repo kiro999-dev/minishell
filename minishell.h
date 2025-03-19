@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 15:29:14 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/19 17:54:09 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 void 	*gc_malloc(size_t size);
 void	free_gc(t_gc_collector **gc_head);
 int 	is_token(char c);
-int 	isparam(t_tok *data_tok);
+int 	isparam_for_file(t_tok *data_tok);
 int 	isfile(t_TOKENS type);
 int 	ft_isspace(int c);
 void 	token_add(t_toknes_list **head,t_tok *data_tok,t_TOKENS type);

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 21:13:08 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:54:09 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	init_tok(t_tok *data_tok)
 	data_tok->join_me = 1;
 }
 
-int isparam(t_tok *data_tok)
+int isparam_for_file(t_tok *data_tok)
 {
 	if( data_tok->is_redir_out || data_tok->is_here_d || data_tok->is_append || data_tok->is_redir_in)	
 		return (1);
