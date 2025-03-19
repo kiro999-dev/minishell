@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbge_collcter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 11:57:05 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:21 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:15:33 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void free_gc(t_gc_collector **gc_head)
 {
 	t_gc_collector *tmp;
+
 	while (*gc_head)
 	{
+		printf("freed %p\n",(*gc_head)->ptr);
 		tmp = (*gc_head);
 		(*gc_head) = (*gc_head)->next;
 		free(tmp->ptr);
@@ -27,21 +29,26 @@ void free_gc(t_gc_collector **gc_head)
 	*gc_head = NULL;
 }
 
-void *gc_malloc(size_t size)
+void *gc_malloc(size_t size,int flag)
 {
 	static t_gc_collector *gc_head;
 	t_gc_collector *node;
-
-	node = malloc(sizeof(t_gc_collector));
-	if (node == NULL)
-		return (free_gc(&gc_head), printf("Erorr malloc fail"),exit(1), NULL);
-	node->ptr = malloc(size);
-	if (node->ptr == NULL)
+	if(flag)
 	{
-		free(node);
-		return (free_gc(&gc_head), printf("Erorr malloc fail"),exit(1), NULL);
+		node = malloc(sizeof(t_gc_collector));
+		if (node == NULL)
+			return (free_gc(&gc_head), printf("Erorr malloc fail"),exit(1), NULL);
+		node->ptr = malloc(size);
+		if (node->ptr == NULL)
+		{
+			free(node);
+			return (free_gc(&gc_head), printf("Erorr malloc fail"),exit(1), NULL);
+		}
+		node->next = gc_head;
+		gc_head = node;
+		return (node->ptr);
 	}
-	node->next = gc_head;
-	gc_head = node;
-	return (node->ptr);
+	else
+		free_gc(&gc_head);
+	return(NULL);
 }

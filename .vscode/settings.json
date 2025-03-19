@@ -9,6 +9,7 @@
         "algorithm": "c",
         "execution": "c",
         "memory": "c",
-        "numeric": "c"
+        "numeric": "c",
+        "ranges": "c"
     }
 }

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:42:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 21:28:33 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:11:10 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int ft_strcmp(char *s1 ,char *s2)
 	{
 		if(s1[i] != s2[i])
 			return(1);
+		i++;
 	}
 	if(s1[i] != s2[i])
 		return(1);
@@ -69,7 +70,7 @@ char **realloc_cmd_array(char **cmd, int current_count, int extra)
 	char **new_cmd;
 	i = 0;
 	new_size = current_count + extra + 1;
-	new_cmd = gc_malloc(sizeof(char *) * new_size);
+	new_cmd = gc_malloc(sizeof(char *) * new_size,1);
 	if (!new_cmd)
 		return (NULL);
 	while (i < current_count)
@@ -84,7 +85,7 @@ char **cmd_int(int count)
 {
 	char **cmd;
 	int k = 0;
-	cmd = gc_malloc(sizeof(char *) * (count + 1));
+	cmd = gc_malloc(sizeof(char *) * (count + 1),1);
 	while (k < count)
 	{
 		cmd[k] = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_lists.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:01:50 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:15 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:11:03 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter)
 {
-    t_exc_lits *node = gc_malloc(sizeof(t_exc_lits));
+    t_exc_lits *node = gc_malloc(sizeof(t_exc_lits),1);
     if (!node)
         return (printf("malloc fail\n"), NULL);
     node->cmd = cmd;
@@ -72,7 +72,7 @@ void add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type, t_file *head_fil
 
 t_file *creat_node_file(char *name, t_TOKENS type)
 {
-    t_file *node = gc_malloc(sizeof(t_file));
+    t_file *node = gc_malloc(sizeof(t_file),1);
     if (!node)
         return (printf("malloc fail\n"), NULL);
     node->type = type;

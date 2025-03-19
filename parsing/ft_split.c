@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:17:18 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:32 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:10:35 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*fill(char *s, char *c, int *ptr_i)
 	while (s[*ptr_i] && !look_for_c(c, s[*ptr_i]))
 		(*ptr_i)++;
 	word_len = *ptr_i - start;
-	str = (char *)gc_malloc(word_len + 1);
+	str = (char *)gc_malloc(word_len + 1,1);
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s + start, word_len + 1);
@@ -91,7 +91,7 @@ char	**ft_split(const char *s, char *c)
 
 	if (!s)
 		return (NULL);
-	res = (char **)gc_malloc(sizeof(char *) * (counting_words(s, c) + 1));
+	res = (char **)gc_malloc(sizeof(char *) * (counting_words(s, c) + 1),1);
 	if (!res)
 		return (NULL);
 	i = 0;

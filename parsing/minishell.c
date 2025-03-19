@@ -8,10 +8,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-
 
 
 int parsing(t_data_parsing *data)
@@ -38,7 +34,24 @@ void data_init(t_data_parsing *data, char **env,int flag)
 		data->e = init_env(env);
 	data->head_toknez = NULL;
 }
+void print_list(t_exc_lits *h)
+{
+	int 
+	i = 0;
+	while (h)
+	{
+		i = 0;
+		while (h && h->cmd && h->cmd[i] )
+		{
+			printf("cmd[%d]-->%s\n",i,h->cmd[i]);
+			i++;
+		}
+		h = h->next;
+		
+	}
+	
 
+}
 int main(int argc, char **argv, char **env)
 {
 	
@@ -49,17 +62,18 @@ int main(int argc, char **argv, char **env)
 	argv[0] = NULL;
 	while (1)
 	{
-		data.buff = readline("> ");
+		data.buff = readline("$minishell> ");
 		if (data.buff == NULL)
 		{
-			free_gc(&data.gc_head);
+			gc_malloc(0,0);
 			break;
 		}
 		add_history(data.buff);
 		if(parsing(&data))
 		{
+			print_list(data.head_exe);
 			execution(&data);
-			free_gc(&data.gc_head);
+			gc_malloc(0,0);
 			data_init(&data,env,0);
 		}
 	}

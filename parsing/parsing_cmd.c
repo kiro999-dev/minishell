@@ -6,31 +6,14 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:40:57 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 21:28:23 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/19 20:53:48 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void process_split_it(t_toknes_list **current, char **cmd, int *i)
+void copy_the_splited_string(char **split,char **cmd,int *i,int j)
 {
-	int j = 0;
-	char **split = ft_split((*current)->val, " \t\n");
-	if ((*current)->join_me)
-	{
-		if (*i > 0)
-		{
-			(*i)--;
-			cmd[*i] = ft_strjoin(cmd[*i], split[0]);
-			(*i)++;
-		}
-		else
-		{
-			cmd[*i] = ft_strdup(split[0]);
-			(*i)++;
-		}
-		j++;
-	}
 	while (split[j])
 	{
 		cmd[*i] = split[j];
@@ -38,6 +21,9 @@ void process_split_it(t_toknes_list **current, char **cmd, int *i)
 		j++;
 	}
 	(*i)--;
+}
+void	join_the_strings(t_toknes_list **current, char **cmd, int *i)
+{
 	*current = (*current)->next;
 	while (*current && (*current)->join_me && !(*current)->split_it)
 	{
@@ -48,12 +34,13 @@ void process_split_it(t_toknes_list **current, char **cmd, int *i)
 	}
 	(*i)++;
 }
-
-char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count)
+void process_split_it(t_toknes_list **current, char **cmd, int *i)
 {
-	int j = 0, re_count = 0;
-	char **split = ft_split((*current)->val, " \t\n");
-	re_count = counting(split);
+	int j;
+	char **split;
+
+	split = ft_split((*current)->val, " \t\n");
+	j = 0;
 	if ((*current)->join_me)
 	{
 		if (*i > 0)
@@ -69,21 +56,36 @@ char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_c
 		}
 		j++;
 	}
-	cmd = realloc_cmd_array(cmd, orig_count, re_count);
-	while (split[j])
+	copy_the_splited_string(split,cmd,i,j);
+	join_the_strings(current,cmd,i);
+}
+
+char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count)
+{
+	int		re_count;
+	char	**split;
+	int		j;
+	
+	re_count = 0;
+	split = NULL;
+	j = 0;
+	split = ft_split((*current)->val, " \t\n");
+	re_count = counting(split);
+	if ((*current)->join_me)
 	{
-		cmd[*i] = split[j];
-		(*i)++;
+		if (*i > 0)
+		{
+			(*i)--;
+			cmd[*i] = ft_strjoin(cmd[*i], split[0]);
+		}
+		else
+			cmd[*i] = ft_strdup(split[0]);
 		j++;
+		(*i)++;
 	}
-	(*i)--;
-	*current = (*current)->next;
-	while (*current && (*current)->join_me && !(*current)->split_it)
-	{
-		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val);
-		*current = (*current)->next;
-	}
-	(*i)++;
+	cmd = realloc_cmd_array(cmd, orig_count, re_count);
+	copy_the_splited_string(split,cmd,i,j);
+	join_the_strings(current,cmd,i);
 	return (cmd);
 }
 

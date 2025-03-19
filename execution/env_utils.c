@@ -56,7 +56,7 @@ t_env_list	*new_node(void *content)
 {
 	t_env_list	*dest;
 
-	dest = (t_env_list *)gc_malloc(sizeof(t_env_list));
+	dest = (t_env_list *)gc_malloc(sizeof(t_env_list),1);
 	if (!dest)
 		return (NULL);
 	dest->var = content;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strings.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:48:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/18 17:22:10 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:11:16 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_strdup(const char *s1)
 	size_t		size;
 
 	size = ft_strlen(s1) + 1;
-	s1_cpy = gc_malloc(size);
+	s1_cpy = gc_malloc(size,1);
 	if (!s1_cpy)
 		return (NULL);
 	ft_strlcpy(s1_cpy, s1, size);
@@ -74,7 +74,7 @@ char *join_character(char *s,char c)
 
    i = 0;
    len = ft_strlen(s);
-   res = gc_malloc(len + 2);
+   res = gc_malloc(len + 2,1);
    while (i < len)
    {
       res[i] = s[i];

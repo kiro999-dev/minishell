@@ -56,7 +56,7 @@ char *trim_plus_sign(char *key)
         return key;
     len_before_plus = equal_pos - key; 
     total_len = strlen(key) - 1;     
-    new_key = gc_malloc(total_len + 1);
+    new_key = gc_malloc(total_len + 1,1);
     if (!new_key)
         return NULL;
     memcpy(new_key, key, len_before_plus); 
@@ -82,7 +82,7 @@ int replace_existing_key(t_env_list *env, char *key)
         if (declared && equal_strcmp(current->var, key) == 0)
         {
             // free(current->var);
-            current->var = strdup(key);
+            current->var = ft_strdup(key);
             return (1);
         }
         if (!declared && equal_strcmp(current->var, key) == 0)
