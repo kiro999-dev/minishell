@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 21:08:12 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/20 01:07:54 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int		redir_out(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 int 	redir_in(int *i_ptr,char *s,t_toknes_list **head,t_tok *d);
 void	add(t_toknes_list **head, char *val, t_TOKENS type,int join_me);
 int 	check_syntax(t_toknes_list *head);
+int 	split_t2condi(char *s,int i);
 int 	check_expand(t_toknes_list *head,t_env_list *e);
 int 	check_is_expandig(t_toknes_list *head, t_env_list *e);
 void 	expanding(t_toknes_list *token_head,t_env_list *e);
@@ -147,13 +148,15 @@ char 	**copy_cmd_tokens(t_toknes_list *token, int count);
 void 	process_default(t_toknes_list **current, char **cmd, int *i);
 char 	**process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count);
 void	 process_split_it(t_toknes_list **current, char **cmd, int *i);
-char* 	expand_val(char *s, char *s2, int j, int flag, int n);
+char	*expand_val(char *s, char *s2, int j, int flag, int n);
 void 	handle_dollar_expansion(int *i, t_env_list  *e, t_toknes_list *head, int flag3);
 void 	remove_q_d(t_toknes_list *head);
 int 	not_character_expand(char c);
 void 	skip_q_expand(char *s, int *ptr_i, int *q_ptr);
 int		strcmp_env(char *s1, char *s2, int n);
 int 	ft_strcmp(char *s1 ,char *s2);
+void	join_the_strings(t_toknes_list **current, char **cmd, int *i);
+void 	copy_the_splited_string(char **split,char **cmd,int *i,int j);
 // execution
 int	ft_isalnum(int ch);
 int	ft_isalpha(int c);

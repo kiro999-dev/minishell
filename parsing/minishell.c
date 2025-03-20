@@ -9,20 +9,6 @@
 
 #include "../minishell.h"
 
-
-int parsing(t_data_parsing *data)
-{
-	lex(data->buff, &data->head_toknez);
-		if(!check_syntax(data->head_toknez))
-		{
-			expanding(data->head_toknez, data->e);
-			generate_list(data->head_toknez, &data->head_exe);
-			free(data->buff);
-			return (1);
-		}
-	return (0);
-}
-
 void data_init(t_data_parsing *data, char **env,int flag)
 {
 	data->buff=NULL;
@@ -33,6 +19,21 @@ void data_init(t_data_parsing *data, char **env,int flag)
 		data->e = init_env(env);
 	data->head_toknez = NULL;
 }
+int parsing(t_data_parsing *data)
+{
+	lex(data->buff, &data->head_toknez);
+		if(!check_syntax(data->head_toknez))
+		{
+			expanding(data->head_toknez, data->e);
+			generate_list(data->head_toknez, &data->head_exe);
+			free(data->buff);
+			
+			return (1);
+		}
+	return (0);
+}
+
+
 void print_list(t_exc_lits *h)
 {
 	int 
@@ -54,8 +55,8 @@ int main(int argc, char **argv, char **env)
 	t_data_parsing data;
 
 	data_init(&data, env,1);
-	argc = argc - 1;
-	argv[0] = NULL;
+	(void)argc;
+	(void)argv;
 	while (1)
 	{
 		data.buff = readline("$minishell> ");
@@ -70,6 +71,8 @@ int main(int argc, char **argv, char **env)
 			execution(&data);
 			data_init(&data,env,0);
 		}
+		else
+			data_init(&data,env,0);;
 	}
 	gc_malloc(0,0);
 	return 0;
