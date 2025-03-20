@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/20 01:07:54 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/20 01:36:40 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_toknes
 	int				split_it;
 	int				split_it2;
 	int				join_me;
+	int				ambiguous;
 }t_toknes_list;
 
 

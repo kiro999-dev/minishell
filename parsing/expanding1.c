@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:58:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/20 01:09:07 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/20 01:38:31 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ int check_is_expandig(t_toknes_list *head, t_env_list  *e)
 			skip_q_expand(head->val, &i, &q);
 		} 
 		else if (head->val[i] == '$')
+		{
 			expand_plain(head, e, &i);
+			head->ambiguous = 1;
+		}
 		i++;
 	}
 	return i;
