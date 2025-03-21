@@ -6,15 +6,15 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/20 00:51:07 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:02:32 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char *build_expand_string(int *i, t_toknes_list *head, int *flag)
+static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 {
-	char    *expand;
+	char	*expand;
 
 	expand = ft_strdup("");
 	*flag = 0;
@@ -23,7 +23,7 @@ static char *build_expand_string(int *i, t_toknes_list *head, int *flag)
 		if (not_character_expand(head->val[*i]))
 		{
 			*flag = 1;
-			break;
+			break ;
 		}
 		expand = join_character(expand, head->val[*i]);
 		(*i)++;
@@ -31,7 +31,7 @@ static char *build_expand_string(int *i, t_toknes_list *head, int *flag)
 	return (expand);
 }
 
-static void process_quote(char *s, int *i, char **cpy, char quote)
+static void	process_quote(char *s, int *i, char **cpy, char quote)
 {
 	(*i)++;
 	while (s[*i] && s[*i] != quote)
@@ -43,7 +43,7 @@ static void process_quote(char *s, int *i, char **cpy, char quote)
 		(*i)++;
 }
 
-static  char *process_unquoted(char *s, int *i)
+static char	*process_unquoted(char *s, int *i)
 {
 	char	*cpy;
 
@@ -56,23 +56,23 @@ static  char *process_unquoted(char *s, int *i)
 	return (cpy);
 }
 
-void remove_q_d(t_toknes_list *head)
+void	remove_q_d(t_toknes_list *head)
 {
-	int i;
-	char *cpy;
-	char *temp;
-	int j;
-	
+	int		i;
+	char	*cpy;
+	char	*temp;
+	int		j;
+
 	i = 0;
 	cpy = ft_strdup("");
 	j = 0;
-	while (head->val[i]) 
+	while (head->val[i])
 	{
 		if (head->val[i] == '\'')
 			process_quote(head->val, &i, &cpy, '\'');
 		else if (head->val[i] == '\"')
 			process_quote(head->val, &i, &cpy, '\"');
-		else 
+		else
 		{
 			temp = process_unquoted(head->val, &i);
 			while (temp[j])
@@ -82,26 +82,31 @@ void remove_q_d(t_toknes_list *head)
 	head->val = cpy;
 }
 
-void handle_dollar_expansion(int *i, t_env_list  *e, t_toknes_list *head, int flag3)
+void	handle_dollar_expansion(int *i, t_env_list *e,
+		t_toknes_list *head, int flag3)
 {
-	int flag;
-	char *expand;
-	int found ;
-	
+	int		flag;
+	char	*expand;
+	int		found;
+
 	found = 0;
 	expand = build_expand_string(i, head, &flag);
-	while (e) {
-		if (strcmp_env(e->var, expand, ft_strlen(expand))) {
+	while (e)
+	{
+		head->len_expand = ft_strlen(expand);
+		if (strcmp_env(e->var, expand, ft_strlen(expand)))
+		{
 			found = 1;
-			head->val = expand_val(e->var, head->val, *i, flag3, ft_strlen(expand));
+			head->val = expand_val(e->var, head, *i, flag3);
 			if (flag)
 				check_is_expandig(head, e);
-			break;
+			break ;
 		}
 		e = e->next;
 	}
-	if (!found) {
-		head->val = expand_val("", head->val, *i, flag3, ft_strlen(expand));
+	if (!found)
+	{
+		head->val = expand_val("", head, *i, flag3);
 		if (flag)
 			check_is_expandig(head, e);
 	}

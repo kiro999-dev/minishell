@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:17:18 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 21:26:18 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:19:02 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*fill(char *s, char *c, int *ptr_i)
 	while (s[*ptr_i] && !look_for_c(c, s[*ptr_i]))
 		(*ptr_i)++;
 	word_len = *ptr_i - start;
-	str = (char *)gc_malloc(word_len + 1,1);
+	str = (char *)gc_malloc(word_len + 1, 1);
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s + start, word_len + 1);
@@ -77,7 +77,7 @@ char	**ft_split(const char *s, char *c)
 
 	if (!s)
 		return (NULL);
-	res = (char **)gc_malloc(sizeof(char *) * (counting_words(s, c) + 1),1);
+	res = (char **)gc_malloc(sizeof(char *) * (counting_words(s, c) + 1), 1);
 	if (!res)
 		return (NULL);
 	i = 0;

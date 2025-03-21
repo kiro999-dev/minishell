@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 17:23:40 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 21:10:39 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:54:40 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,20 @@ size_t	ft_strlcat(char *dest, char *src, unsigned int size)
 	dest[j] = '\0';
 	return (len_src + len_dst);
 }
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*res;
 	size_t	len_res;
 
 	if (!s1 && s2)
-		return(ft_strdup(s2));
-	else if(!s2 && s1)
-		return(ft_strdup(s1));
-	else if(!s2 && !s1)
-		return(NULL);
+		return (ft_strdup(s2));
+	else if (!s2 && s1)
+		return (ft_strdup(s1));
+	else if (!s2 && !s1)
+		return (NULL);
 	len_res = ft_strlen(s1) + ft_strlen(s2) + 1;
-	res = gc_malloc(len_res,1);
+	res = gc_malloc(len_res, 1);
 	if (!res)
 		return (NULL);
 	res[0] = '\0';

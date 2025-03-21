@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:48:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 21:11:16 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:58:51 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ char	*ft_strdup(const char *s1)
 	size_t		size;
 
 	size = ft_strlen(s1) + 1;
-	s1_cpy = gc_malloc(size,1);
+	s1_cpy = gc_malloc(size, 1);
 	if (!s1_cpy)
 		return (NULL);
 	ft_strlcpy(s1_cpy, s1, size);
 	return (s1_cpy);
 }
+
 char	*ft_strchr(const char *s, int c)
 {
 	char	*ptr_s;
@@ -57,30 +58,32 @@ char	*ft_strchr(const char *s, int c)
 		return (ptr_s);
 	return (NULL);
 }
-int ft_strlen(const char *s)
-{
-   int i = 0;
 
-   while (s[i])
-      i++;
-   return (i);
+int	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
-char *join_character(char *s,char c)
+char	*join_character(char *s, char c)
 {
-   char *res;
-   int   len;
-   int   i;
+	char	*res;
+	int		len;
+	int		i;
 
-   i = 0;
-   len = ft_strlen(s);
-   res = gc_malloc(len + 2,1);
-   while (i < len)
-   {
-      res[i] = s[i];
-      i++;
-   }
-   res[i] = c;
-   res[i + 1] = '\0';
-   return (res);
+	i = 0;
+	len = ft_strlen(s);
+	res = gc_malloc(len + 2, 1);
+	while (i < len)
+	{
+		res[i] = s[i];
+		i++;
+	}
+	res[i] = c;
+	res[i + 1] = '\0';
+	return (res);
 }

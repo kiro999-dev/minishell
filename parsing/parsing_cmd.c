@@ -6,17 +6,16 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:40:57 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/19 23:56:39 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:17:51 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-void process_split_it(t_toknes_list **current, char **cmd, int *i)
+void	process_split_it(t_toknes_list **current, char **cmd, int *i)
 {
-	int j;
-	char **split;
+	int		j;
+	char	**split;
 
 	split = ft_split((*current)->val, " \t\n");
 	j = 0;
@@ -35,16 +34,17 @@ void process_split_it(t_toknes_list **current, char **cmd, int *i)
 		}
 		j++;
 	}
-	copy_the_splited_string(split,cmd,i,j);
-	join_the_strings(current,cmd,i);
+	copy_the_splited_string(split, cmd, i, j);
+	join_the_strings(current, cmd, i);
 }
 
-char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count)
+char	**process_split_it2(t_toknes_list **current,
+	char **cmd, int *i, int orig_count)
 {
 	int		re_count;
 	char	**split;
 	int		j;
-	
+
 	re_count = 0;
 	split = NULL;
 	j = 0;
@@ -63,12 +63,12 @@ char **process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_c
 		(*i)++;
 	}
 	cmd = realloc_cmd_array(cmd, orig_count, re_count);
-	copy_the_splited_string(split,cmd,i,j);
-	join_the_strings(current,cmd,i);
+	copy_the_splited_string(split, cmd, i, j);
+	join_the_strings(current, cmd, i);
 	return (cmd);
 }
 
-void process_default(t_toknes_list **current, char **cmd, int *i)
+void	process_default(t_toknes_list **current, char **cmd, int *i)
 {
 	if ((*current)->val)
 		cmd[*i] = ft_strdup((*current)->val);
@@ -83,11 +83,13 @@ void process_default(t_toknes_list **current, char **cmd, int *i)
 	(*i)++;
 }
 
-char **copy_cmd_tokens(t_toknes_list *token, int count)
+char	**copy_cmd_tokens(t_toknes_list *token, int count)
 {
-	t_toknes_list *current;
-	char **cmd;
-	int i = 0;
+	t_toknes_list	*current;
+	char			**cmd;
+	int				i;
+
+	i = 0;
 	cmd = cmd_int(count);
 	current = token;
 	while (current && current->type != PIPE)
@@ -96,7 +98,8 @@ char **copy_cmd_tokens(t_toknes_list *token, int count)
 		{
 			if (current->split_it)
 				process_split_it(&current, cmd, &i);
-			else if (current->split_it2 && cmd[0] && ft_strcmp("export", cmd[0]))
+			else if (current->split_it2 && cmd[0]
+				&& ft_strcmp("export", cmd[0]))
 				cmd = process_split_it2(&current, cmd, &i, count);
 			else
 				process_default(&current, cmd, &i);
@@ -108,8 +111,10 @@ char **copy_cmd_tokens(t_toknes_list *token, int count)
 	return (cmd);
 }
 
-char **pars_cmd(t_toknes_list *token)
+char	**pars_cmd(t_toknes_list *token)
 {
-	int count = count_cmd_tokens(token);
+	int	count;
+
+	count = count_cmd_tokens(token);
 	return (copy_cmd_tokens(token, count));
 }
