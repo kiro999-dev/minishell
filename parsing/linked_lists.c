@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:01:50 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 00:07:07 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:28:49 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	add_back_list(t_exc_lits **head, t_exc_lits *node)
 
 void	add_list_exc(t_exc_lits **head, char **cmd,
 	t_TOKENS type, t_file *head_files)
-{		
+{
 	t_exc_lits	*node;
 	t_exc_lits	*tmp;	
 

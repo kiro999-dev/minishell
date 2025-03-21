@@ -6,11 +6,11 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:58:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 21:12:27 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:29:51 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../minishell.h"
+#include "../minishell.h"
 
 static void	expand_in_double_quotes(t_toknes_list *head, t_env_list *e, int *i)
 {

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:51:49 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 21:17:22 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/21 21:28:32 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	redir_out(int *i_ptr, char *s, t_toknes_list **head, t_tok *d)
 		d->is_append = 1;
 	}
 	else
-	{	
+	{
 		add(head, ft_strdup(">"), REDIR_OUT, 0);
 		d->is_redir_out = 1;
 		i--;
