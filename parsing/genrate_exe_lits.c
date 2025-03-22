@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:44:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 20:44:35 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/22 20:52:57 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 			tokenz_head = tokenz_head->next;
 		}
 		add_list_exc(exc_head, cmd, CMD, f_head);
-		if (tokenz_head && (tokenz_head->type == PIPE
+		while(tokenz_head && (tokenz_head->type == PIPE
 				|| tokenz_head->type == WORD))
 			tokenz_head = tokenz_head->next;
 	}

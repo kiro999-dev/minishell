@@ -80,7 +80,7 @@ t_env_list *init_env(char *ev[])
 }
 
 
-int	cmds_size(t_exc_lits *lst)
+int cmds_size(t_exc_lits *lst)
 {
 	int		i;
 
@@ -92,7 +92,6 @@ int	cmds_size(t_exc_lits *lst)
 		lst = lst->next;
 		i++;
 	}
-    printf("%d\n", i);
 	return (i);
 }
 
