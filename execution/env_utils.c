@@ -80,7 +80,36 @@ t_env_list *init_env(char *ev[])
 }
 
 
+int	cmds_size(t_exc_lits *lst)
+{
+	int		i;
 
+	if (!lst)
+		return (0);
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+    printf("%d\n", i);
+	return (i);
+}
+
+int	env_size(t_env_list *lst)
+{
+	int		i;
+
+	if (!lst)
+		return (0);
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
 // int compare_key(char **array, char *key)
 // {
 //     int i;

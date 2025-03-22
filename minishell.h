@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/20 01:36:40 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/22 13:42:45 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
-
+# include <fcntl.h>
+# include <sys/wait.h>
 
 
 typedef struct s_env_list
@@ -46,6 +47,7 @@ typedef struct s_toknes
 	int				split_it2;
 	int				join_me;
 	int				ambiguous;
+	int 			len_expand;
 }t_toknes_list;
 
 
@@ -76,6 +78,8 @@ typedef struct s_exc_lits
 	t_file	*head_files;
 	char 	*limiter;
 	int		here_doc;
+	int		in;
+	int		out;
 	struct s_exc_lits *next;
 	
 }t_exc_lits;
@@ -149,7 +153,7 @@ char 	**copy_cmd_tokens(t_toknes_list *token, int count);
 void 	process_default(t_toknes_list **current, char **cmd, int *i);
 char 	**process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_count);
 void	 process_split_it(t_toknes_list **current, char **cmd, int *i);
-char	*expand_val(char *s, char *s2, int j, int flag, int n);
+char	*expand_val(char *s, t_toknes_list *head, int j, int flag);
 void 	handle_dollar_expansion(int *i, t_env_list  *e, t_toknes_list *head, int flag3);
 void 	remove_q_d(t_toknes_list *head);
 int 	not_character_expand(char c);
@@ -159,6 +163,8 @@ int 	ft_strcmp(char *s1 ,char *s2);
 void	join_the_strings(t_toknes_list **current, char **cmd, int *i);
 void 	copy_the_splited_string(char **split,char **cmd,int *i,int j);
 // execution
+int	env_size(t_env_list *lst);
+int	cmds_size(t_exc_lits *lst);
 int	ft_isalnum(int ch);
 int	ft_isalpha(int c);
 void    f_exit(char **cmd, t_data_parsing *data_exe);
@@ -169,18 +175,17 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 t_env_list *init_env(char *ev[]);
 int     equal_strcmp(const char *s1, const char *s2);
 void    print_export(t_env_list *e);
-void    f_export(char **cmd, t_env_list *ev);
+void f_export(char **cmd, t_env_list **ev);
 void    export_putstr(char *str);
 int     size_2d(char **arr);
-void    *free_array(char **s);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 void f_cd(char **cmd, t_env_list *env);
+
 void    f_pwd(void);
 void    f_echo(char **av);
 void    f_env(t_env_list *env);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
 void	execution(t_data_parsing *data_exec);
-void free_env_list(t_env_list *env);
 void add_back(t_env_list **lst, t_env_list *new);
 t_env_list	*new_node(void *content);
 

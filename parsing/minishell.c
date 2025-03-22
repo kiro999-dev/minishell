@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 21:16:57 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:18:54 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int	main(int argc, char **argv, char **env)
 		add_history(data.buff);
 		if (parsing(&data))
 		{
-			execution(&data);
+			// check parsin asat ewiwi
+			// execution(&data);
 			data_init(&data, env, 0);
 		}
 		else

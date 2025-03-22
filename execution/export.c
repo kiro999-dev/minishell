@@ -1,4 +1,5 @@
 #include "../minishell.h"
+
 void sort_env(t_env_list **head)
 {
     t_env_list *ptr;
@@ -164,6 +165,7 @@ int check_append(t_env_list *env, char *var)
     }
     return (0);
 }
+
 // > export a+=" 007" ab bb+="come in" ab+="bitch" 
 void add_var_2_env(char *cmd, t_env_list **env)
 {
@@ -206,7 +208,7 @@ t_env_list *copy_list(t_env_list *env)
     return new_list;
 }
 
-void f_export(char **cmd, t_env_list *ev)
+void f_export(char **cmd, t_env_list **ev)
 {
     int i;
     t_env_list *tmp;
@@ -216,7 +218,7 @@ void f_export(char **cmd, t_env_list *ev)
     i = -1;
     if (size_2d(cmd) == 1)
     {
-        tmp = copy_list(ev);
+        tmp = copy_list(*ev);
         sort_env(&tmp);
         print_export(tmp);
     }
@@ -228,7 +230,7 @@ void f_export(char **cmd, t_env_list *ev)
             if (!valid_key(cmd[i]))
                 printf("minishell: export: `%s': not a valid identifier\n", cmd[i]);
             else
-                add_var_2_env(cmd[i], &ev);
+                add_var_2_env(cmd[i], ev);
             i++;    
         }
     }
