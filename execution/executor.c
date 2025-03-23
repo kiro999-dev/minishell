@@ -15,7 +15,6 @@ char	*prepare_path(char *path, char *cmd)
 	{
 		temp = ft_strjoin(tmp[i], "/");
 		dest = ft_strjoin(temp, cmd);
-		/* Depending on your memory management you might want to free(temp) here */
 		if (access(dest, X_OK) == 0)
 			return (dest);
 		i++;
@@ -90,137 +89,194 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
 		f_pwd();
 }
 
-// void	handle_redirection(t_data_parsing *data)
-// {
-// 	if (!data->head_file)
-// 	{
-// 		printf("nofile\n");
-// 		return ;
-// 	}
-// 	printf("here\n");
-// 	while (data->head_file)
-// 	{
-// 		printf("%s [%u]\n", data->head_file->file, data->head_file->type);
-// 		data->head_file = data->head_file->next;
-// 	}
-// }
-
-/*
- * Revised execution() function to support pipelines.
- * It uses t_exc_lits for the command list and assumes that:
- * - cmds_size() returns the number of commands in data_exec->head_exe.
- * - data_exec->head_file holds redirection info (if any).
- */
-void	execution(t_data_parsing *data_exec)
+void apply_input_redirection(int *last_input_fd, const char *file)
 {
-	int			input_fd = 0;    // Initially standard input (fd 0)
-	t_exc_lits	*cmd_lst = data_exec->head_exe;
-	int			fd[2];
-	pid_t		pid;
-	int			status;
+    if (*last_input_fd != -1)
+        close(*last_input_fd);
 
-	if (!cmd_lst)
-		return;
+    *last_input_fd = open(file, O_RDONLY);
+    if (*last_input_fd == -1)
+        return ;
+}
 
-	/* Handle any redirections before launching commands */
-	// handle_redirection(data_exec);
+void apply_output_redirection(int *last_output_fd, const char *file, int type)
+{
+    if (*last_output_fd != -1)
+        close(*last_output_fd);
 
-	/* If there is only one command, run it without setting up a pipeline */
-	if (cmds_size(data_exec->head_exe) == 1)
-	{
-		if (is_builtin(cmd_lst->cmd[0]))
-		{
-			exec_builtin(cmd_lst, data_exec);
-			return;
-		}
-		pid = fork();
-		if (pid == 0)
-		{
-			char *path = get_path(data_exec->e, cmd_lst->cmd[0]);
-			char **env = env_list_to_array(data_exec->e);
-			if (!path || !env)
-			{
-				printf("Command not found or environment error!\n");
-				exit(EXIT_FAILURE);
-			}
-			execve(path, cmd_lst->cmd, env);
-			perror("execve");
-			exit(EXIT_FAILURE);
-		}
-		waitpid(pid, &status, 0);
-		return;
-	}
+    if (type == 10)  
+        *last_output_fd = open(file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+    else
+        *last_output_fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
 
-	/* Loop through all commands in the pipeline */
-	while (cmd_lst)
-	{
-		/* If there is a next command, create a pipe */
-		if (cmd_lst->next)
-		{
-			if (pipe(fd) == -1)
-			{
-				perror("pipe");
-				return;
-			}
-		}
+    if (*last_output_fd == -1)
+        return ;
+}
 
-		pid = fork();
-		if (pid < 0)
-		{
-			perror("fork");
-			return;
-		}
-		if (pid == 0)
-		{
-			/* Child process */
-			if (input_fd != 0)
-			{
-				if (dup2(input_fd, STDIN_FILENO) == -1)
-				{
-					perror("dup2 input");
-					exit(EXIT_FAILURE);
-				}
-				close(input_fd);
-			}
-			if (cmd_lst->next)
-			{
-				if (dup2(fd[1], STDOUT_FILENO) == -1)
-				{
-					perror("dup2 output");
-					exit(EXIT_FAILURE);
-				}
-				close(fd[0]);
-				close(fd[1]);
-			}
-			if (is_builtin(cmd_lst->cmd[0]))
-			{
-				exec_builtin(cmd_lst, data_exec);
-				exit(EXIT_SUCCESS);
-			}
-			else
-			{
-				char *path = get_path(data_exec->e, cmd_lst->cmd[0]);
-				char **env = env_list_to_array(data_exec->e);
-				if (!path || !env)
-				{
-					printf("Command not found or environment error!\n");
-					exit(EXIT_FAILURE);
-				}
-				execve(path, cmd_lst->cmd, env);
-				perror("execve");
-				exit(EXIT_FAILURE);
-			}
-		}
-		/* Parent process */
-		if (input_fd != 0)
-			close(input_fd);
-		if (cmd_lst->next)
-		{
-			close(fd[1]);
-			input_fd = fd[0];
-		}
-		cmd_lst = cmd_lst->next;
-	}
-	/* Wait for all child processes to finish */
-	while (wait(NULL) > 0);
+
+void set_final_redirections(int last_input_fd, int last_output_fd)
+{
+    if (last_input_fd != -1)
+    {
+        if (dup2(last_input_fd, STDIN_FILENO) == -1) {
+            return ;
+        }
+        close(last_input_fd);
+    }
+    if (last_output_fd != -1)
+    {
+        if (dup2(last_output_fd, STDOUT_FILENO) == -1) {
+            return ;
+        }
+        close(last_output_fd);
+    }
+}
+
+
+void handle_redirection(t_exc_lits *cmd)
+{
+    t_file *file;
+    int last_input_fd = -1;
+    int last_output_fd = -1;
+
+    if (!cmd || !cmd->head_files)
+        return;
+    
+    file = cmd->head_files;
+    while (file)
+    {
+        if (file->type == 9)
+            apply_input_redirection(&last_input_fd, file->file);
+        else if (file->type == 10 || file->type == 8)
+            apply_output_redirection(&last_output_fd, file->file, file->type);
+
+        file = file->next;
+    }
+    set_final_redirections(last_input_fd, last_output_fd);
+}
+
+
+void single_cmd(t_data_parsing *data_exec)
+{
+    t_exc_lits	*cmd;
+    int         pid;
+
+    cmd = data_exec->head_exe;
+    if (!cmd || !cmd->cmd || !cmd->cmd[0])
+        return;
+
+    
+    if (is_builtin(cmd->cmd[0]))
+    {
+        handle_redirection(cmd);
+        exec_builtin(cmd, data_exec);
+        return ;
+    }
+    pid = fork();
+    if (pid == 0)
+    {
+        handle_redirection(cmd);
+        char *path = get_path(data_exec->e, cmd->cmd[0]);
+        char **env = env_list_to_array(data_exec->e);
+        if (!path || !env)
+        {
+            printf("Command not found or environment error!\n");
+            return ;
+        }
+        execve(path, cmd->cmd, env);
+        printf("execve error!\n");
+        return ;
+    }
+    waitpid(pid, NULL, 0);
+}
+
+
+
+void execution(t_data_parsing *data_exec)
+{
+    int input_fd = 0;
+    t_exc_lits *cmd_lst = data_exec->head_exe;
+    int fd[2];
+    pid_t pid;
+
+    if (!cmd_lst)
+        return;
+
+    /* If only one command, run without pipes */
+    if (cmd_lst->next == NULL)
+    {
+        single_cmd(data_exec);
+        return;
+    }
+
+    while (cmd_lst)
+    {
+        /* Create a pipe if there's a next command */
+        if (cmd_lst->next)
+        {
+            if (pipe(fd) == -1)
+            {
+                perror("pipe");
+                return;
+            }
+        }
+
+        pid = fork();
+        if (pid < 0)
+        {
+            perror("fork");
+            return;
+        }
+
+        if (pid == 0)
+        {
+            handle_redirection(cmd_lst); 
+
+            if (input_fd != 0)
+            {
+                dup2(input_fd, STDIN_FILENO);
+                close(input_fd);
+            }
+
+            if (cmd_lst->next)
+            {
+                dup2(fd[1], STDOUT_FILENO);
+                close(fd[0]);
+                close(fd[1]);
+            }
+
+            if (is_builtin(cmd_lst->cmd[0]))
+            {
+                exec_builtin(cmd_lst, data_exec);
+                exit (0);
+            }
+            else
+            {
+                char *path = get_path(data_exec->e, cmd_lst->cmd[0]);
+                char **env = env_list_to_array(data_exec->e);
+                if (!path || !env)
+                {
+                    printf("Command not found or environment error!\n");
+                    return ;
+                }
+                execve(path, cmd_lst->cmd, env);
+                printf("execve error\n");
+                return;
+            }
+        }
+
+        /* Parent Process */
+        if (input_fd != 0)
+            close(input_fd);
+        if (cmd_lst->next)
+        {
+            close(fd[1]);  // Close write end in parent
+            input_fd = fd[0];
+        }
+
+        cmd_lst = cmd_lst->next;
+    }
+
+    /* Wait for all children */
+    while (wait(NULL) > 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/22 20:53:52 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/23 17:06:04 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,18 @@ void	print_list(t_exc_lits *h)
 	i = 0;
 	while (h)
 	{
-		i = 0;
-		while (h && h->cmd && h->cmd[i])
+		printf("*************\n cmd[%d]-->%s\n", i, h->cmd[0]);
+		if (h->head_files)
 		{
-			printf("cmd[%d]-->%s\n", i, h->cmd[i]);
-			i++;
+			printf("files found -> ");
+			while (h->head_files)
+			{
+				printf("[%s] ", h->head_files->file);
+				h->head_files = h->head_files->next;
+			}
 		}
+		printf("\n");
+	
 		h = h->next;
 	}
 }
@@ -69,6 +75,7 @@ int	main(int argc, char **argv, char **env)
 		if (parsing(&data))
 		{
 			// check parsin asat ewiwi
+			// print_list(data.head_exe);
 			execution(&data);
 			data_init(&data, env, 0);
 		}

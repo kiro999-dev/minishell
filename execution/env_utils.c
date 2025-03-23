@@ -87,11 +87,12 @@ int cmds_size(t_exc_lits *lst)
 	if (!lst)
 		return (0);
 	i = 0;
-	while (lst)
+	while (lst->next)
 	{
 		lst = lst->next;
 		i++;
 	}
+    printf("size --> %d\n", i);
 	return (i);
 }
 
