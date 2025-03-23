@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:44:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/22 20:52:57 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/23 21:39:10 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,7 @@ int	isfile(t_TOKENS type)
 	return (0);
 }
 
-void	here_doc_case(t_exc_lits **exc_head,
-		t_toknes_list **toknz_head_addres, t_file **f_head)
-{
-	t_toknes_list	*tokenz_head;
-	t_exc_lits		*node;
 
-	tokenz_head = *toknz_head_addres;
-	tokenz_head = tokenz_head->next;
-	node = NULL;
-	if (tokenz_head)
-	{
-		node = creat_node_exc(NULL, LIMTER,
-				*f_head, ft_strdup(tokenz_head->val));
-		add_back_list(exc_head, node);
-		tokenz_head = tokenz_head->next;
-	}
-	*toknz_head_addres = tokenz_head;
-}
 
 char	**cmd_case(t_toknes_list **toknz_head_addres)
 {
@@ -53,28 +36,36 @@ char	**cmd_case(t_toknes_list **toknz_head_addres)
 void	generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 {
 	t_file	*f_head;
+	t_list_here_doc *here_doc_head;
 	char	**cmd;
-
+	t_exc_lits *node;
+	
 	while (tokenz_head)
 	{
 		cmd = NULL;
 		f_head = NULL;
-		if (tokenz_head->type == CMD)
-			cmd = cmd_case(&tokenz_head);
-		else if (tokenz_head->type == HER_DOC)
-			here_doc_case(exc_head, &tokenz_head, &f_head);
-		while (tokenz_head && (isfile(tokenz_head->type)
-				|| tokenz_head->type == REDIR_IN
-				|| tokenz_head->type == REDIR_OUT
-				|| tokenz_head->type == APPEND))
+		node = gc_malloc(sizeof(t_exc_lits),1);
+		here_doc_head = NULL;
+		while(tokenz_head && (tokenz_head->type != PIPE))
 		{
-			if (isfile(tokenz_head->type))
+			if (tokenz_head && tokenz_head->type == CMD)
+			{
+				cmd = cmd_case(&tokenz_head);
+				node->cmd = cmd;
+			}
+			if (tokenz_head && isfile(tokenz_head->type))
 				add_list_file(&f_head, tokenz_head->val, tokenz_head->type);
-			tokenz_head = tokenz_head->next;
+			if( tokenz_head && tokenz_head->type == LIMTER)
+				here_doc_add(&here_doc_head,ft_strdup(tokenz_head->val),HER_DOC,1);
+			if(tokenz_head && tokenz_head->type == PIPE)
+				break;
+			else if (tokenz_head)
+				tokenz_head = tokenz_head->next;
 		}
-		add_list_exc(exc_head, cmd, CMD, f_head);
-		while(tokenz_head && (tokenz_head->type == PIPE
-				|| tokenz_head->type == WORD))
+		node->head_files = f_head;
+		node->head_here_doc = here_doc_head;
+		add_back_list(exc_head,node);
+		if(tokenz_head &&  tokenz_head->type == PIPE)
 			tokenz_head = tokenz_head->next;
 	}
 }

@@ -6,14 +6,14 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:01:50 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 21:28:49 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/23 21:17:56 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 t_exc_lits	*creat_node_exc(char **cmd, t_TOKENS type,
-	t_file *head_files, char *limiter)
+	t_file *head_files)
 {
 	t_exc_lits	*node;
 
@@ -24,13 +24,6 @@ t_exc_lits	*creat_node_exc(char **cmd, t_TOKENS type,
 	node->type = type;
 	node->next = NULL;
 	node->head_files = head_files;
-	if (limiter != NULL)
-	{
-		node->limiter = limiter;
-		node->here_doc = 1;
-	}
-	else
-		node->here_doc = 0;
 	return (node);
 }
 
@@ -61,7 +54,7 @@ void	add_list_exc(t_exc_lits **head, char **cmd,
 
 	if (head == NULL)
 		return ;
-	node = creat_node_exc(cmd, type, head_files, NULL);
+	node = creat_node_exc(cmd, type, head_files);
 	if (!node)
 		return ;
 	if (*head == NULL)

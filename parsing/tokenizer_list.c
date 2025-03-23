@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_list.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:04:45 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/22 08:19:36 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/23 21:11:30 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ t_toknes_list	*creat_node(char *val, t_TOKENS type, int join_me)
 	node->len_expand = 0;
 	return (node);
 }
+t_list_here_doc	*creat_node_here_doc(char *limtter, t_TOKENS type,int here_doc)
+{
+	t_list_here_doc	*node;
+
+	node = gc_malloc(sizeof(t_list_here_doc), 1);
+	node->type = type;
+	node->here_doc = here_doc;
+	node->limtter = limtter;
+	node->next = NULL;
+	return (node);
+}
 
 void	add(t_toknes_list **head, char *val, t_TOKENS type, int join_me)
 {
@@ -49,5 +60,25 @@ void	add(t_toknes_list **head, char *val, t_TOKENS type, int join_me)
 			tmp = tmp->next;
 		tmp->next = node;
 		node->prv = tmp;
+	}
+}
+void	here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type, int here_doc)
+{
+	t_list_here_doc	*node;
+	t_list_here_doc	*tmp;
+
+	if (head == NULL)
+		return ;
+	node = creat_node_here_doc(LIMTER, type, here_doc);
+	if (!node)
+		return ;
+	if (*head == NULL)
+		*head = node;
+	else
+	{
+		tmp = *head;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = node;
 	}
 }

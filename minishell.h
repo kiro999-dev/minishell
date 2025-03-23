@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/22 13:42:45 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/23 21:17:49 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,15 @@ typedef struct s_file
 	t_TOKENS type;
 	struct s_file *next;
 	
+	
 }t_file;
+typedef struct s_list_here_doc
+{
+	char	*limtter;
+	int		here_doc;	
+	struct s_list_here_doc *next; 
+	t_TOKENS type;
+}t_list_here_doc;
 
 typedef struct s_exc_lits
 {
@@ -77,7 +85,7 @@ typedef struct s_exc_lits
 	t_TOKENS type;
 	t_file	*head_files;
 	char 	*limiter;
-	int		here_doc;
+	t_list_here_doc *head_here_doc;
 	int		in;
 	int		out;
 	struct s_exc_lits *next;
@@ -119,7 +127,8 @@ void 	expanding(t_toknes_list *token_head,t_env_list *e);
 void 	add_list_file(t_file **head, char *name, t_TOKENS type);
 void 	add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type, t_file *head_files);
 void 	add_back_list(t_exc_lits **head,t_exc_lits *node);
-t_exc_lits *creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files,char *limiter);
+t_exc_lits	*creat_node_exc(char **cmd, t_TOKENS type,
+	t_file *head_files);
 char	*ft_substr(char const *s, int start, int len);
 int 	ft_isspace(int c);
 char	**ft_split(const char *s, char *c);
@@ -162,6 +171,7 @@ int		strcmp_env(char *s1, char *s2, int n);
 int 	ft_strcmp(char *s1 ,char *s2);
 void	join_the_strings(t_toknes_list **current, char **cmd, int *i);
 void 	copy_the_splited_string(char **split,char **cmd,int *i,int j);
+void	here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type, int here_doc);
 // execution
 int	env_size(t_env_list *lst);
 int	cmds_size(t_exc_lits *lst);

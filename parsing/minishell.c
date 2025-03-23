@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/23 17:06:04 by onajem           ###   ########.fr       */
+/*   Updated: 2025/03/23 21:37:02 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,29 @@ void	print_list(t_exc_lits *h)
 				h->head_files = h->head_files->next;
 			}
 		}
+		if(h->head_here_doc)
+		{
+			printf("here_doc found -> ");
+			while (h->head_here_doc)
+			{
+				printf(" limter :[%s] ", h->head_here_doc->limtter);
+				h->head_here_doc = h->head_here_doc->next;
+			}
+		}
 		printf("\n");
-	
 		h = h->next;
 	}
 }
-
+void list_szie(t_exc_lits *head)
+{
+	int i = 0;
+	while (head)
+	{
+		head = head->next;
+		i++;
+	}
+	printf("size :%d\n",i);
+}
 int	main(int argc, char **argv, char **env)
 {
 	t_data_parsing	data;
@@ -75,6 +92,7 @@ int	main(int argc, char **argv, char **env)
 		if (parsing(&data))
 		{
 			// check parsin asat ewiwi
+			// list_szie(data.head_exe);
 			// print_list(data.head_exe);
 			execution(&data);
 			data_init(&data, env, 0);
