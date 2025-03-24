@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/23 21:17:49 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/03/24 15:50:08 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ void	join_the_strings(t_toknes_list **current, char **cmd, int *i);
 void 	copy_the_splited_string(char **split,char **cmd,int *i,int j);
 void	here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type, int here_doc);
 // execution
+char *find_path(t_env_list *env, char *key, int len);
 int	env_size(t_env_list *lst);
 int	cmds_size(t_exc_lits *lst);
 int	ft_isalnum(int ch);
@@ -190,7 +191,7 @@ void    export_putstr(char *str);
 int     size_2d(char **arr);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 void f_cd(char **cmd, t_env_list *env);
-
+void	echo_putstr(char *s);
 void    f_pwd(void);
 void    f_echo(char **av);
 void    f_env(t_env_list *env);

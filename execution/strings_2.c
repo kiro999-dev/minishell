@@ -1,25 +1,5 @@
 #include "../minishell.h"
 
-// char	*ft_strdup(const char *s1)
-// {
-// 	char	*dest;
-// 	size_t	i;
-
-// 	dest = (char *)malloc(ft_strlen(s1) + 1);
-// 	if (!dest)
-// 		return (NULL);
-// 	i = 0;
-// 	while (s1[i])
-// 	{
-// 		dest[i] = s1[i];
-// 		i++;
-// 	}
-// 	dest[i] = '\0';
-// 	return (dest);
-// }
-
-
-
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
@@ -39,6 +19,21 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (check);
 }
 
+void	echo_putstr(char *s)
+{
+	size_t	i;
+
+	if (!s)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\\')
+			i++;
+		write(1, s + i, 1);
+		i++;
+	}
+}
 
 void export_putstr(char *str)
 {
@@ -63,43 +58,6 @@ void export_putstr(char *str)
 	printf("\n");
 }
 
-// static void	set_prefix(char *dst, char const *src, size_t i, size_t s_len)
-// {
-// 	while (i < s_len)
-// 	{
-// 		dst[i] = src[i];
-// 		i++;
-// 	}
-// }
-
-// char	*ft_strjoin(char *s1, char *s2)
-// {
-// 	char	*dest;
-// 	size_t	len_s1;
-// 	size_t	len_s2;
-// 	size_t	i;
-
-// 	if (!s1 && !s2)
-// 		return (NULL);
-// 	if (!s1 && s2)
-// 		return (ft_strdup(s2));
-// 	if (!s2 && s1)
-// 		return (ft_strdup(s1));
-// 	len_s1 = ft_strlen(s1);
-// 	len_s2 = ft_strlen(s2);
-// 	dest = (char *)gc_malloc(len_s1 + len_s2 + 1);
-// 	if (!dest)
-// 		return (NULL);
-// 	i = 0;
-// 	set_prefix(dest, s1, i, len_s1);
-// 	while (i < len_s2)
-// 	{
-// 		dest[i + len_s1] = s2[i];
-// 		i++;
-// 	}
-// 	dest[len_s1 + len_s2] = '\0';
-// 	return (dest);
-// }
 
 int	equal_strcmp(const char *s1, const char *s2)
 {

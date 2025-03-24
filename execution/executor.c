@@ -82,7 +82,8 @@ int	is_builtin(char *cmd)
 {
 	return (!ft_strncmp(cmd, "export", 7) || !ft_strncmp(cmd, "env", 4) ||
 			!ft_strncmp(cmd, "unset", 6) || !ft_strncmp(cmd, "cd", 3) ||
-			!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "pwd", 4));
+			!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "pwd", 4) ||
+            !ft_strncmp(cmd, "exit", 5));
 }
 
 void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
@@ -99,6 +100,8 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
 		f_echo(cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
 		f_pwd();
+    else if (!ft_strncmp(cmd->cmd[0], "exit", 5))
+        f_exit(cmd->cmd, data_exec);
 }
 
 void apply_input_redirection(int *last_input_fd, const char *file)
@@ -219,7 +222,6 @@ void execution(t_data_parsing *data_exec)
         single_cmd(data_exec);
         return;
     }
-
     while (cmd_lst)
     {
         /* Create a pipe if there's a next command */
@@ -231,7 +233,6 @@ void execution(t_data_parsing *data_exec)
                 return;
             }
         }
-
         pid = fork();
         if (pid < 0)
         {
@@ -242,20 +243,16 @@ void execution(t_data_parsing *data_exec)
         if (pid == 0)
         {
             handle_redirection(cmd_lst);
-
             if (input_fd != 0)
             {
                 dup2(input_fd, STDIN_FILENO);
                 close(input_fd);
             }
-
             /* Only use the pipe if there is a next command AND no explicit output redirection */
             if (cmd_lst->next)
             {
                 if (!cmd_has_output_redirection(cmd_lst))
-                {
                     dup2(fd[1], STDOUT_FILENO);
-                }
                 close(fd[0]);
                 close(fd[1]);
             }
@@ -298,7 +295,9 @@ void execution(t_data_parsing *data_exec)
 
 // Explanation
 // Helper Function:
-// The cmd_has_output_redirection function iterates through the command’s list of file redirections and returns true if any redirection type is either 10 (overwrite) or 8 (append). Adjust the file type checks if your definitions differ.
+// The cmd_has_output_redirection function iterates through the command’s list of file
+// redirections and returns true if any redirection type is either 10 (overwrite) or 8
+// (append). Adjust the file type checks if your definitions differ.
 
 // Modifying the Pipe Setup:
 // In the child process for a command in a pipeline, the code now checks:
@@ -306,10 +305,16 @@ void execution(t_data_parsing *data_exec)
 // If there’s a next command (i.e. a pipe is needed), and
 
 // If there is no explicit output redirection for the command.
-// Only then does it call dup2(fd[1], STDOUT_FILENO) to set the pipe’s write end as the stdout.
-// This prevents the pipe redirection from overwriting your file redirection (which was already applied in handle_redirection).
+// Only then does it call dup2(fd[1], STDOUT_FILENO) to set the pipe’s write end as
+// the stdout.
+// This prevents the pipe redirection from overwriting your file redirection 
+//(which was already applied in handle_redirection).
 
 // Maintaining Redirection Order:
-// The order now ensures that if a command specifies an output file (using >out or appending), that redirection remains active and the file gets the output even if the command is part of a pipeline.
+// The order now ensures that if a command specifies an output file (using >out or
+// appending), that redirection remains active and the file gets the output even if 
+//the command is part of a pipeline.
 
-// This modification should resolve the issue where, in a command like ls -l >out | wc, the file out remains empty because its redirection isn’t overridden by the pipe.
+// This modification should resolve the issue where, in a command like 
+//ls -l >out | wc, the file out remains empty because its redirection isn’t 
+//overridden by the pipe.

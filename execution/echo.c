@@ -33,7 +33,8 @@ void f_echo(char **cmd)
     }
     while (cmd[i])
     {
-        printf("%s", cmd[i]);
+        echo_putstr(cmd[i]);    
+        // printf("%s", cmd[i]);
         if (cmd[i + 1])
             printf(" ");
         i++;
