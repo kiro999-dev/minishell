@@ -21,13 +21,15 @@ char	*prepare_path(char *path, char *cmd)
 	}
 	exit(1);
 }
-/* Helper function to check if a command has an output redirection */
-int cmd_has_output_redirection(t_exc_lits *cmd)
+
+int cmd_in_out_redirection(t_exc_lits *cmd, int red)
 {
     t_file *file = cmd->head_files;
     while (file)
     {
-        if (file->type == IS_FILE_APPEND || file->type == IS_FILE_OUT)  // 10: overwrite, 8: append (as in your code)
+        if (red == 0 && file->type == IS_FILE_IN)
+            return (1);
+        if (red && (file->type == IS_FILE_APPEND || file->type == IS_FILE_OUT))
             return (1);
         file = file->next;
     }
@@ -49,6 +51,10 @@ char	*get_path(t_env_list *env, char *cmd)
 			break;
 		env = env->next;
 	}
+    if (!env)
+    {
+        printf("minishell : PATH not set up!\n");
+    }
 	return (prepare_path(env->var + 5, cmd));
 }
 
@@ -106,6 +112,7 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
 
 void apply_input_redirection(int *last_input_fd, const char *file)
 {
+    printf("handle input \n");
     if (*last_input_fd != -1)
         close(*last_input_fd);
 
@@ -160,14 +167,16 @@ void handle_redirection(t_exc_lits *cmd)
     file = cmd->head_files;
     while (file)
     {
-        if (file->type == 9)
+        if (file->type == IS_FILE_IN)
             apply_input_redirection(&last_input_fd, file->file);
-        else if (file->type == 10 || file->type == 8)
+        else if (file->type == IS_FILE_OUT || file->type == IS_FILE_APPEND)
             apply_output_redirection(&last_output_fd, file->file, file->type);
 
         file = file->next;
     }
     set_final_redirections(last_input_fd, last_output_fd);
+    // cmd->in = last_input_fd;
+    // cmd->out = last_output_fd;
 }
 
 
@@ -206,6 +215,7 @@ void single_cmd(t_data_parsing *data_exec)
 }
 
 
+
 void execution(t_data_parsing *data_exec)
 {
     int input_fd = 0;
@@ -216,7 +226,6 @@ void execution(t_data_parsing *data_exec)
     if (!cmd_lst)
         return;
 
-    /* If only one command, run without pipes */
     if (cmd_lst->next == NULL)
     {
         single_cmd(data_exec);
@@ -224,7 +233,6 @@ void execution(t_data_parsing *data_exec)
     }
     while (cmd_lst)
     {
-        /* Create a pipe if there's a next command */
         if (cmd_lst->next)
         {
             if (pipe(fd) == -1)
@@ -243,19 +251,18 @@ void execution(t_data_parsing *data_exec)
         if (pid == 0)
         {
             handle_redirection(cmd_lst);
-            if (input_fd != 0)
+            if (!cmd_in_out_redirection(cmd_lst, 0))
             {
                 dup2(input_fd, STDIN_FILENO);
                 close(input_fd);
             }
-            /* Only use the pipe if there is a next command AND no explicit output redirection */
             if (cmd_lst->next)
             {
-                if (!cmd_has_output_redirection(cmd_lst))
+                if (!cmd_in_out_redirection(cmd_lst, 1))
                     dup2(fd[1], STDOUT_FILENO);
-                close(fd[0]);
                 close(fd[1]);
             }
+            close(fd[0]);
 
             if (is_builtin(cmd_lst->cmd[0]))
             {
@@ -289,32 +296,6 @@ void execution(t_data_parsing *data_exec)
         cmd_lst = cmd_lst->next;
     }
 
-    /* Wait for all children */
     while (wait(NULL) > 0);
 }
 
-// Explanation
-// Helper Function:
-// The cmd_has_output_redirection function iterates through the command’s list of file
-// redirections and returns true if any redirection type is either 10 (overwrite) or 8
-// (append). Adjust the file type checks if your definitions differ.
-
-// Modifying the Pipe Setup:
-// In the child process for a command in a pipeline, the code now checks:
-
-// If there’s a next command (i.e. a pipe is needed), and
-
-// If there is no explicit output redirection for the command.
-// Only then does it call dup2(fd[1], STDOUT_FILENO) to set the pipe’s write end as
-// the stdout.
-// This prevents the pipe redirection from overwriting your file redirection 
-//(which was already applied in handle_redirection).
-
-// Maintaining Redirection Order:
-// The order now ensures that if a command specifies an output file (using >out or
-// appending), that redirection remains active and the file gets the output even if 
-//the command is part of a pipeline.
-
-// This modification should resolve the issue where, in a command like 
-//ls -l >out | wc, the file out remains empty because its redirection isn’t 
-//overridden by the pipe.
