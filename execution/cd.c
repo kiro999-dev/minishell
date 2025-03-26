@@ -3,93 +3,119 @@
 char *find_path(t_env_list *env, char *key, int len)
 {
     if (!env || !key)
-        return (NULL);
-    printf("hh\n");
+        return NULL;
+
     while (env)
     {
-        if (!ft_strncmp(env->var, key, len))
-            return (ft_strdup(env->var));
-    env = env->next;
-    }
-    return (NULL);
-}
-
-void replace_key_value(t_env_list *env, char *key, char *value)
-{
-    int len;
-
-    if (!env || !key || !value)
-        return ;
-    len = ft_strlen(key);
-    while (env)
-    {
-        if (!ft_strncmp(env->var, key, len))
-        {
-            env->var = value;
-            break;
-        }
+        if (ft_strncmp(env->var, key, len) == 0 && env->var[len] == '=')
+            return ft_strdup(env->var + len + 1);
         env = env->next;
     }
+    return NULL;
 }
 
 
-void verify_path(t_env_list *env, char *path, char *current, char *old)
+void replace_key_value(t_env_list **env, const char *key, const char *value)
 {
-    char *temp;
+    int len = ft_strlen(key);
+    t_env_list *head = *env;
+    char *new_var;
 
-    if (!ft_strncmp(path, "-", 2))
+    while (head)
     {
-        // old = getenv("OLDPWD");
-        old = find_path(env, "OLDPWD=", 7) + 7;
-        if (chdir(old) == -1)
+        if (ft_strncmp(head->var, key, len) == 0 && head->var[len] == '=')
         {
-            printf("minishell: cd: %s: No such file or directory\n", old);
-            return ;
+            new_var = ft_strjoin(key, "=");
+            new_var = ft_strjoin(new_var, value);
+            if (new_var)
+                head->var = new_var;
+            return;
         }
-        temp = ft_strjoin("OLDPWD=", current);
-        replace_key_value(env, "OLDPWD", temp);
-        current = ft_strjoin("PWD=", old);
-        replace_key_value(env, "PWD", current);
-        printf("%s\n", old);
-        return ;
+        head = head->next;
     }
-    if (!ft_strncmp(path, "--", 3) || !ft_strncmp(path, "~", 2))
-    {
-        path = find_path(env, "HOME=", 5) + 5;  
-    }
-    if (chdir(path) == -1)
-        printf("minishell: cd: %s: No such file or directory\n", path);
+
+    new_var = ft_strjoin(key, "=");
+    new_var = ft_strjoin(new_var, value);
+    if (new_var)
+        add_back(env, new_node(new_var));
 }
 
-void f_cd(char **cmd, t_env_list *env)
+void update_pwd(t_env_list **env, const char *old_pwd)
 {
+    char *current_pwd = getcwd(NULL, 0);
+    if (!current_pwd)
+    {
+        perror("minishell: cd: getcwd error");
+        return;
+    }
+
+    replace_key_value(env, "OLDPWD", old_pwd);
+    replace_key_value(env, "PWD", current_pwd);
+}
+
+
+void handle_cd_error(const char *path)
+{
+    if (access(path, F_OK) == -1)
+        printf("minishell: cd: %s: No such file or directory\n", path);
+    else if (access(path, X_OK) == -1)
+        printf("minishell: cd: %s: Permission denied\n", path);
+    else
+        printf("minishell: cd: %s: Not a directory\n", path);
+}
+
+void f_cd(char **cmd, t_env_list **env)
+{
+    char *path;
     char *old_pwd;
-    char *new_pwd;
-    char *current;
     int size;
 
-    if (!env || !cmd)
-        return ;
+    if (!cmd || !env || !*env)
+        return;
+
     size = size_2d(cmd);
     if (size > 2)
     {
-        printf("bash: cd: too many arguments\n");
-        return ;
+        printf("minishell: cd: too many arguments\n");
+        return;
     }
-    else if (size == 1)
-    {   
-        return  ;
+
+    old_pwd = getcwd(NULL, 0);
+    if (!old_pwd)
+    {
+        perror("minishell: cd");
+        return;
     }
-    current = getcwd(NULL, 0);
-    new_pwd = NULL;
-    verify_path(env, cmd[1], current, new_pwd);
-    old_pwd = ft_strjoin("OLDPWD=", current);
-    current = getcwd(NULL, 0);
-    new_pwd = ft_strjoin("PWD=", current);
-    replace_key_value(env, "PWD", new_pwd);
-    replace_key_value(env, "OLDPWD", old_pwd);
-    printf("PWD : %s | oldpwd : %s\n",new_pwd, old_pwd);
+
+    if (size == 1 || !ft_strncmp(cmd[1], "--", 3) || !ft_strncmp(cmd[1], "~", 2))
+    {
+        path = find_path(*env, "HOME", 4);
+        if (!path)
+        {
+            printf("minishell: cd: HOME not set\n");
+            return;
+        }
+    }
+    else if (ft_strcmp(cmd[1], "-") == 0)
+    {
+        path = find_path(*env, "OLDPWD", 6);
+        if (!path)
+        {
+            printf("minishell: cd: OLDPWD not set\n");
+            return;
+        }
+        printf("%s\n", path);
+    }
+    else
+        path = cmd[1];
+    if (chdir(path) == -1)
+    {
+        handle_cd_error(path);
+        return;
+    }
+    update_pwd(env, old_pwd);
 }
+
 
 void f_pwd(void)
 {

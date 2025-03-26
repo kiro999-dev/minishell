@@ -95,7 +95,7 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
 	else if (!ft_strncmp(cmd->cmd[0], "unset", 6))
 		f_unset(&data_exec->e, cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "cd", 3))
-		f_cd(cmd->cmd, data_exec->e);
+		f_cd(cmd->cmd, &data_exec->e);
 	else if (!ft_strncmp(cmd->cmd[0], "echo", 5))
 		f_echo(cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "pwd", 4))

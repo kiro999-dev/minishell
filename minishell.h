@@ -190,7 +190,7 @@ void f_export(char **cmd, t_env_list **ev);
 void    export_putstr(char *str);
 int     size_2d(char **arr);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
-void f_cd(char **cmd, t_env_list *env);
+void f_cd(char **cmd, t_env_list **env);
 void	echo_putstr(char *s);
 void    f_pwd(void);
 void    f_echo(char **av);
