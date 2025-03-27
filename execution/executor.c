@@ -1,25 +1,30 @@
 #include "../minishell.h"
 
-char	*prepare_path(char *path, char *cmd)
+char *prepare_path(char *path, char *cmd)
 {
-	char	**tmp;
-	char	*dest;
-	char	*temp;
-	int		i;
+    char **tmp;
+    char *dest;
+    char *temp;
+    int i;
 
-	tmp = ft_split(path, ":");
-	if (!tmp)
-		exit(1);
-	i = 0;
-	while (tmp[i])
-	{
-		temp = ft_strjoin(tmp[i], "/");
-		dest = ft_strjoin(temp, cmd);
-		if (access(dest, X_OK) == 0)
-			return (dest);
-		i++;
-	}
-	exit(1);
+    if (!path || !cmd)
+        return NULL;
+    tmp = ft_split(path, ":");
+    if (!tmp)
+        return NULL;
+    i = -1;
+    while (tmp[++i])
+    {
+        temp = ft_strjoin(tmp[i], "/");
+        dest = ft_strjoin(temp, cmd);  
+        if (access(dest, F_OK) == 0)
+        {
+            if (access(dest, X_OK) == 0)
+                return dest;
+            return NULL;
+        }
+    }
+    return NULL;
 }
 
 int cmd_in_out_redirection(t_exc_lits *cmd, int red)
@@ -105,20 +110,19 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
 	else if (!ft_strncmp(cmd->cmd[0], "echo", 5))
 		f_echo(cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
-		f_pwd();
+		f_pwd(data_exec->e);
     else if (!ft_strncmp(cmd->cmd[0], "exit", 5))
         f_exit(cmd->cmd, data_exec);
 }
 
 void apply_input_redirection(int *last_input_fd, const char *file)
 {
-    printf("handle input \n");
     if (*last_input_fd != -1)
         close(*last_input_fd);
 
     *last_input_fd = open(file, O_RDONLY);
     if (*last_input_fd == -1)
-        return ;
+        exit(1) ;
 }
 
 void apply_output_redirection(int *last_output_fd, const char *file, t_TOKENS type)
@@ -132,7 +136,7 @@ void apply_output_redirection(int *last_output_fd, const char *file, t_TOKENS ty
         *last_output_fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
 
     if (*last_output_fd == -1)
-        return ;
+        exit(1) ;
 }
 
 
@@ -140,16 +144,13 @@ void set_final_redirections(int last_input_fd, int last_output_fd)
 {
     if (last_input_fd != -1)
     {
-        if (dup2(last_input_fd, STDIN_FILENO) == -1) {
-            return ;
-        }
+        dup2(last_input_fd, STDIN_FILENO);
         close(last_input_fd);
     }
+    
     if (last_output_fd != -1)
     {
-        if (dup2(last_output_fd, STDOUT_FILENO) == -1) {
-            return ;
-        }
+        dup2(last_output_fd, STDOUT_FILENO);
         close(last_output_fd);
     }
 }
@@ -163,7 +164,6 @@ void handle_redirection(t_exc_lits *cmd)
 
     if (!cmd || !cmd->head_files)
         return;
-    
     file = cmd->head_files;
     while (file)
     {
@@ -175,8 +175,6 @@ void handle_redirection(t_exc_lits *cmd)
         file = file->next;
     }
     set_final_redirections(last_input_fd, last_output_fd);
-    // cmd->in = last_input_fd;
-    // cmd->out = last_output_fd;
 }
 
 
@@ -218,56 +216,61 @@ void single_cmd(t_data_parsing *data_exec)
 
 void execution(t_data_parsing *data_exec)
 {
-    int input_fd = 0;
     t_exc_lits *cmd_lst = data_exec->head_exe;
-    int fd[2];
+    int pipe_fd[2];
+    int prev_pipe_in = -1;
     pid_t pid;
-
+    
     if (!cmd_lst)
         return;
 
-    if (cmd_lst->next == NULL)
+    if (cmds_size(cmd_lst) == 1)
     {
         single_cmd(data_exec);
         return;
     }
+
     while (cmd_lst)
     {
         if (cmd_lst->next)
         {
-            if (pipe(fd) == -1)
+            if (pipe(pipe_fd) == -1)
             {
-                perror("pipe");
+                perror("minishell: pipe");
                 return;
             }
         }
+
         pid = fork();
-        if (pid < 0)
+        if (pid == -1)
         {
-            perror("fork");
+            perror("minishell: fork");
             return;
         }
 
-        if (pid == 0)
+        if (pid == 0) 
         {
-            handle_redirection(cmd_lst);
-            if (!cmd_in_out_redirection(cmd_lst, 0))
+            // Set up input from previous command
+            if (prev_pipe_in != -1)
             {
-                dup2(input_fd, STDIN_FILENO);
-                close(input_fd);
+                dup2(prev_pipe_in, STDIN_FILENO);
+                close(prev_pipe_in);
             }
+
+            // Set up output to next command (if not last command)
             if (cmd_lst->next)
             {
-                if (!cmd_in_out_redirection(cmd_lst, 1))
-                    dup2(fd[1], STDOUT_FILENO);
-                close(fd[1]);
+                close(pipe_fd[0]);
+                dup2(pipe_fd[1], STDOUT_FILENO);
+                close(pipe_fd[1]);
             }
-            close(fd[0]);
+
+            handle_redirection(cmd_lst);
 
             if (is_builtin(cmd_lst->cmd[0]))
             {
                 exec_builtin(cmd_lst, data_exec);
-                exit(0);
+                exit(1);
             }
             else
             {
@@ -275,27 +278,31 @@ void execution(t_data_parsing *data_exec)
                 char **env = env_list_to_array(data_exec->e);
                 if (!path || !env)
                 {
-                    printf("Command not found or environment error!\n");
-                    exit(1);
+                    printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
+                    exit(127);
                 }
                 execve(path, cmd_lst->cmd, env);
-                printf("execve error\n");
-                exit(1);
+                exit(126);
             }
         }
-
-        /* Parent Process */
-        if (input_fd != 0)
-            close(input_fd);
-        if (cmd_lst->next)
+        else 
         {
-            close(fd[1]);  // Close write end in parent
-            input_fd = fd[0];
-        }
+            if (prev_pipe_in != -1)
+                close(prev_pipe_in);
 
-        cmd_lst = cmd_lst->next;
+            // If not last command, save read end for next command
+            if (cmd_lst->next)
+            {
+                close(pipe_fd[1]); // Close write end
+                prev_pipe_in = pipe_fd[0];
+            }
+
+            cmd_lst = cmd_lst->next;
+        }
     }
+
+    if (prev_pipe_in != -1)
+        close(prev_pipe_in);
 
     while (wait(NULL) > 0);
 }
-

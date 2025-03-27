@@ -1,14 +1,29 @@
 #include "../minishell.h"
 
+void echo_putstr(char *s)
+{
+    size_t i;
+
+    if (!s)
+        return;
+    i = 0;
+    while (s[i])
+    {
+        if (s[i] == '\\')
+            i++;
+        write(1, s + i, 1);
+        i++;
+    }
+}
+
 int echo_flag(char *str)
 {
     int i;
 
-    i = 0;
-    if (str[i] == '-' && str[i + 1])
-        i++;
-    else 
+    if (!str || str[0] != '-')
         return (0);
+    
+    i = 1;
     while (str[i])
     {
         if (str[i] != 'n')
@@ -18,28 +33,34 @@ int echo_flag(char *str)
     return (1);
 }
 
-
 void f_echo(char **cmd)
 {
     int i;
     int nwl;
+    int has_content;
 
     i = 1;
     nwl = 0;
+    has_content = 0;
+    
+    // Check for -n flags
     while (cmd[i] && echo_flag(cmd[i]))
     {
         nwl = 1;
         i++;
     }
+    
+    // Print the arguments
     while (cmd[i])
     {
-        echo_putstr(cmd[i]);    
-        // printf("%s", cmd[i]);
-        if (cmd[i + 1])
-            printf(" ");
+        if (has_content)
+            write(1, " ", 1);
+        echo_putstr(cmd[i]);
+        has_content = 1;
         i++;
     }
-    if (nwl == 0 || !cmd[2])
-        printf("\n");
+    
+    // Print newline unless -n was specified
+    if (!nwl)
+        write(1, "\n", 1);
 }
-

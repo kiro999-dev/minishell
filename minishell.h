@@ -192,7 +192,7 @@ int     size_2d(char **arr);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 void f_cd(char **cmd, t_env_list **env);
 void	echo_putstr(char *s);
-void    f_pwd(void);
+void f_pwd(t_env_list *env);
 void    f_echo(char **av);
 void    f_env(t_env_list *env);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);

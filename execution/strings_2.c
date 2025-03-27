@@ -19,21 +19,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (check);
 }
 
-void	echo_putstr(char *s)
-{
-	size_t	i;
-
-	if (!s)
-		return ;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '\\')
-			i++;
-		write(1, s + i, 1);
-		i++;
-	}
-}
 
 void export_putstr(char *str)
 {

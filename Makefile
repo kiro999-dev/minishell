@@ -18,13 +18,14 @@ NAME = minishell
 
 all: $(NAME)
 
-
+# -fsanitize=address
+# -fsanitize=address
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)  
+	$(CC)  $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)  
 
 
 %.o: %.c $(INC)
-	$(CC) $(CFLAGS) -c $< -o $@ 
+	$(CC)  $(CFLAGS) -c $< -o $@ 
 
 
 clean:

@@ -4,14 +4,13 @@ char *find_path(t_env_list *env, char *key, int len)
 {
     if (!env || !key)
         return NULL;
-
     while (env)
     {
         if (ft_strncmp(env->var, key, len) == 0 && env->var[len] == '=')
             return ft_strdup(env->var + len + 1);
         env = env->next;
     }
-    return NULL;
+    return (NULL);
 }
 
 
@@ -51,6 +50,7 @@ void update_pwd(t_env_list **env, const char *old_pwd)
 
     replace_key_value(env, "OLDPWD", old_pwd);
     replace_key_value(env, "PWD", current_pwd);
+    free(current_pwd);
 }
 
 
@@ -114,17 +114,24 @@ void f_cd(char **cmd, t_env_list **env)
         return;
     }
     update_pwd(env, old_pwd);
+    free(old_pwd);
 }
 
 
-void f_pwd(void)
+void f_pwd(t_env_list *env)
 {
     char *pwd;
 
     pwd = getcwd(NULL, 0);
-    if (!pwd)
+    if (pwd)
+    {
+        printf("%s\n", pwd);
+        free(pwd);
         return ;
-    printf("%s\n", pwd);
+    }
+    pwd = find_path(env, "PWD", 3);
+    if (pwd)
+        printf("%s\n", pwd);
 }
 
 void f_env(t_env_list *env)
