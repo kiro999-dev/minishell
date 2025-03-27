@@ -39,6 +39,7 @@ t_exc_lits *processing_tokenz(t_toknes_list **tokenz_head,t_list_here_doc **here
 	
 	node = gc_malloc(sizeof(t_exc_lits),1);
 	here_doc_head = NULL;
+	node->next = NULL;
 	while(*tokenz_head && ((*tokenz_head)->type != PIPE))
 		{
 			cmd = NULL;
