@@ -1,8 +1,5 @@
 #include "../minishell.h"
 
-
-
-
 int size_2d(char **arr)
 {
     int i;
@@ -48,6 +45,7 @@ t_env_list	*new_node(void *content)
 	if (!dest)
 		return (NULL);
 	dest->var = content;
+    dest->undec = 0;
 	dest->next = (NULL);
 	return (dest);
 }

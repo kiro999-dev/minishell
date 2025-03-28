@@ -177,35 +177,57 @@ void handle_redirection(t_exc_lits *cmd)
     set_final_redirections(last_input_fd, last_output_fd);
 }
 
+void builtins_process(t_data_parsing *data)
+{
+    t_exc_lits *cmd = data->head_exe;
+    int saved_stdin = dup(STDIN_FILENO);
+    int saved_stdout = dup(STDOUT_FILENO);
+    
+    if (saved_stdin == -1 || saved_stdout == -1) {
+        perror("minishell: dup");
+        return;
+    }
+
+    handle_redirection(cmd);
+    
+    exec_builtin(cmd, data);
+    
+    if (dup2(saved_stdin, STDIN_FILENO) == -1)
+        perror("minishell: stdin restore");
+    if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+        perror("minishell: stdout restore");
+    
+    close(saved_stdin);
+    close(saved_stdout);
+}
+
 
 void single_cmd(t_data_parsing *data_exec)
 {
-    t_exc_lits	*cmd;
+    t_exc_lits	*head;
     int         pid;
-
-    cmd = data_exec->head_exe;
-    if (!cmd || !cmd->cmd || !cmd->cmd[0])
-        return;
-
     
-    if (is_builtin(cmd->cmd[0]))
+    head = data_exec->head_exe;
+    if (!head || !head->cmd)
+        return;
+    printf("gg\n"); 
+    if (is_builtin(head->cmd[0]))
     {
-        handle_redirection(cmd);
-        exec_builtin(cmd, data_exec);
+        builtins_process(data_exec);
         return ;
     }
     pid = fork();
     if (pid == 0)
     {
-        handle_redirection(cmd);
-        char *path = get_path(data_exec->e, cmd->cmd[0]);
+        handle_redirection(head);
+        char *path = get_path(data_exec->e, head->cmd[0]);
         char **env = env_list_to_array(data_exec->e);
         if (!path || !env)
         {
             printf("Command not found or environment error!\n");
             return ;
         }
-        execve(path, cmd->cmd, env);
+        execve(path, head->cmd, env);
         printf("execve error!\n");
         return ;
     }
@@ -270,7 +292,7 @@ void execution(t_data_parsing *data_exec)
             if (is_builtin(cmd_lst->cmd[0]))
             {
                 exec_builtin(cmd_lst, data_exec);
-                exit(1);
+                exit(0);
             }
             else
             {
