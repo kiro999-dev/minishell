@@ -210,7 +210,6 @@ void single_cmd(t_data_parsing *data_exec)
     head = data_exec->head_exe;
     if (!head || !head->cmd)
         return;
-    printf("gg\n"); 
     if (is_builtin(head->cmd[0]))
     {
         builtins_process(data_exec);
