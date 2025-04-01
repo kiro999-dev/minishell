@@ -189,7 +189,6 @@ void builtins_process(t_data_parsing *data)
     }
 
     handle_redirection(cmd);
-    
     exec_builtin(cmd, data);
     
     if (dup2(saved_stdin, STDIN_FILENO) == -1)
@@ -218,7 +217,6 @@ void single_cmd(t_data_parsing *data_exec)
     pid = fork();
     if (pid == 0)
     {
-        handle_redirection(head);
         char *path = get_path(data_exec->e, head->cmd[0]);
         char **env = env_list_to_array(data_exec->e);
         if (!path || !env)
@@ -226,13 +224,13 @@ void single_cmd(t_data_parsing *data_exec)
             printf("Command not found or environment error!\n");
             return ;
         }
+        handle_redirection(head);
         execve(path, head->cmd, env);
         printf("execve error!\n");
         return ;
     }
     waitpid(pid, NULL, 0);
 }
-
 
 
 void execution(t_data_parsing *data_exec)
@@ -286,10 +284,11 @@ void execution(t_data_parsing *data_exec)
                 close(pipe_fd[1]);
             }
 
-            handle_redirection(cmd_lst);
+            
 
             if (is_builtin(cmd_lst->cmd[0]))
             {
+                handle_redirection(cmd_lst);
                 exec_builtin(cmd_lst, data_exec);
                 exit(0);
             }
@@ -302,6 +301,7 @@ void execution(t_data_parsing *data_exec)
                     printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
                     exit(127);
                 }
+                handle_redirection(cmd_lst);
                 execve(path, cmd_lst->cmd, env);
                 exit(126);
             }
