@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			// check parsin asat ewiwi
 			// list_szie(data.head_exe);
-			print_list(data.head_exe);
+			// print_list(data.head_exe);
 			execution(&data);
 			data_init(&data, env, 0);
 		}

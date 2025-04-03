@@ -74,6 +74,7 @@ void	generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 		node = processing_tokenz(&tokenz_head,&here_doc_head,&f_head);
 		node->head_files = f_head;
 		node->head_here_doc = here_doc_head;
+		node->heredoc_filename = NULL;
 		add_back_list(exc_head,node);
 		if(tokenz_head &&  tokenz_head->type == PIPE)
 			tokenz_head = tokenz_head->next;

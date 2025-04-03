@@ -88,6 +88,7 @@ typedef struct s_exc_lits
 	t_list_here_doc *head_here_doc;
 	int		in;
 	int		out;
+	char  *heredoc_filename;
 	struct s_exc_lits *next;
 	
 }t_exc_lits;
@@ -173,6 +174,7 @@ void	join_the_strings(t_toknes_list **current, char **cmd, int *i);
 void 	copy_the_splited_string(char **split,char **cmd,int *i,int j);
 void	here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type, int here_doc);
 // execution
+char	*ft_itoa(int n);
 char *find_path(t_env_list *env, char *key, int len);
 int	env_size(t_env_list *lst);
 int	cmds_size(t_exc_lits *lst);

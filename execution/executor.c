@@ -171,9 +171,10 @@ void handle_redirection(t_exc_lits *cmd)
             apply_input_redirection(&last_input_fd, file->file);
         else if (file->type == IS_FILE_OUT || file->type == IS_FILE_APPEND)
             apply_output_redirection(&last_output_fd, file->file, file->type);
-
         file = file->next;
     }
+    if (cmd->heredoc_filename != NULL)
+        last_input_fd = open(cmd->heredoc_filename, O_RDONLY);
     set_final_redirections(last_input_fd, last_output_fd);
 }
 
@@ -233,6 +234,47 @@ void single_cmd(t_data_parsing *data_exec)
 }
 
 
+
+
+void process_heredocs(t_exc_lits *cmd)
+{
+    t_list_here_doc *herdoc_head;
+    int fd;
+    char *line;
+    char *filename;
+    int i;
+
+    i = 0;
+    while (cmd)
+    {
+        filename = ft_strjoin("/tmp/minishell_heredoc_", ft_itoa(i));
+        herdoc_head = cmd->head_here_doc;
+        while (herdoc_head)
+        {
+            fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (fd == -1)
+                return;
+            while (1)
+            {
+                line = readline("> ");
+                // add_history(line);
+                // lines need to be
+                if (!line || !ft_strcmp(line, herdoc_head->limtter))
+                    break;
+                write(fd, line, ft_strlen(line));
+                write(fd, "\n", 1);
+                free(line);
+            }
+            close(fd);    
+            herdoc_head = herdoc_head->next;
+            cmd->heredoc_filename = filename;
+        }
+        cmd = cmd->next;
+        i++;
+    }
+}
+
+
 void execution(t_data_parsing *data_exec)
 {
     t_exc_lits *cmd_lst = data_exec->head_exe;
@@ -243,13 +285,13 @@ void execution(t_data_parsing *data_exec)
     if (!cmd_lst)
         return;
 
+    process_heredocs(cmd_lst);
     if (cmds_size(cmd_lst) == 1)
     {
         single_cmd(data_exec);
         return;
     }
-
-    while (cmd_lst)
+    while (cmd_lst && cmd_lst->cmd)
     {
         if (cmd_lst->next)
         {
