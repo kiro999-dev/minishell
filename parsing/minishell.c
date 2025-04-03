@@ -38,12 +38,9 @@ int	parsing(t_data_parsing *data)
 
 void	print_list(t_exc_lits *h)
 {
-	int	i;
-
-	i = 0;
+	
 	while (h)
 	{
-		printf("*************\n cmd[%d]-->%s\n", i, h->cmd[0]);
 		if (h->head_files)
 		{
 			printf("files found -> ");
@@ -93,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			// check parsin asat ewiwi
 			// list_szie(data.head_exe);
-			// print_list(data.head_exe);
+			print_list(data.head_exe);
 			execution(&data);
 			data_init(&data, env, 0);
 		}
