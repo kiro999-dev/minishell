@@ -202,6 +202,26 @@ void builtins_process(t_data_parsing *data)
 }
 
 
+
+void run_command(t_env_list *e, t_exc_lits *cmd_lst)
+{
+    char *path;
+    char **env;
+
+    path = get_path(e, cmd_lst->cmd[0]);
+    env = env_list_to_array(e);
+    if (!path || !env)
+    {
+        printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
+        exit(127);
+    }
+    handle_redirection(cmd_lst);
+    execve(path, cmd_lst->cmd, env);
+    printf("execve error!\n");
+    return ;
+}
+
+
 void single_cmd(t_data_parsing *data_exec)
 {
     t_exc_lits	*head;
@@ -217,19 +237,7 @@ void single_cmd(t_data_parsing *data_exec)
     }
     pid = fork();
     if (pid == 0)
-    {
-        char *path = get_path(data_exec->e, head->cmd[0]);
-        char **env = env_list_to_array(data_exec->e);
-        if (!path || !env)
-        {
-            printf("Command not found or environment error!\n");
-            return ;
-        }
-        handle_redirection(head);
-        execve(path, head->cmd, env);
-        printf("execve error!\n");
-        return ;
-    }
+        run_command(data_exec->e, head);
     waitpid(pid, NULL, 0);
 }
 
@@ -278,103 +286,99 @@ void process_heredocs(t_exc_lits *cmd)
 }
 
 
-void execution(t_data_parsing *data_exec)
+static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_pipe_in, int pipe_fd[2])
 {
-    t_exc_lits *cmd_lst = data_exec->head_exe;
+    int hd_fd;
+
+    if (prev_pipe_in != -1)
+    {
+        dup2(prev_pipe_in, STDIN_FILENO);
+        close(prev_pipe_in);
+    }
+    else if (cmd->heredoc_filename)
+    {
+        hd_fd = open(cmd->heredoc_filename, O_RDONLY);
+        if (hd_fd != -1)
+        {
+            dup2(hd_fd, STDIN_FILENO);
+            close(hd_fd);
+        }
+    }
+    if (cmd->next)
+    {
+        close(pipe_fd[0]);
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        close(pipe_fd[1]);
+    }
+    if (is_builtin(cmd->cmd[0]))
+    {
+        handle_redirection(cmd);
+        exec_builtin(cmd, data_exec);
+        exit(0);
+    }
+    else
+        run_command(data_exec->e, cmd);
+}
+
+
+static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_lst)
+{
+    if (*prev_pipe_in != -1)
+        close(*prev_pipe_in);
+    if ((*cmd_lst)->next)
+    {
+        close(pipe_fd[1]);
+        *prev_pipe_in = pipe_fd[0];
+    }
+    *cmd_lst = (*cmd_lst)->next;
+}
+
+static void execute_pipeline(t_data_parsing *data_exec)
+{
+    t_exc_lits *cmd_lst ;
     int pipe_fd[2];
     int prev_pipe_in = -1;
     pid_t pid;
-    
-    if (!cmd_lst)
-        return;
 
-    process_heredocs(cmd_lst);
-    if (cmds_size(cmd_lst) == 1)
+    prev_pipe_in = -1;
+    cmd_lst = data_exec->head_exe;
+    while (cmd_lst)
     {
-        single_cmd(data_exec);
-        return;
-    }
-    while (cmd_lst )
-    {
-        if (cmd_lst->next)
+        if (cmd_lst->next && pipe(pipe_fd) == -1)
         {
-            if (pipe(pipe_fd) == -1)
-            {
-                perror("minishell: pipe");
-                return;
-            }
+            perror("minishell: pipe");
+            return;
         }
-
         pid = fork();
         if (pid == -1)
         {
             perror("minishell: fork");
             return;
         }
-
-        if (pid == 0) 
-        {
-            // Set up input from previous command
-            if (prev_pipe_in != -1)
-            {
-                dup2(prev_pipe_in, STDIN_FILENO);
-                close(prev_pipe_in);
-            }
-            else if (cmd_lst->heredoc_filename)
-            {
-                int hd_fd = open(cmd_lst->heredoc_filename, O_RDONLY);
-                if (hd_fd != -1) {
-                    dup2(hd_fd, STDIN_FILENO);
-                    close(hd_fd);
-                }
-            }
-
-            // Set up output to next command (if not last command)
-            if (cmd_lst->next)
-            {
-                close(pipe_fd[0]);
-                dup2(pipe_fd[1], STDOUT_FILENO);
-                close(pipe_fd[1]);
-            }
-    
-            if (is_builtin(cmd_lst->cmd[0]))
-            {
-                handle_redirection(cmd_lst);
-                exec_builtin(cmd_lst, data_exec);
-                exit(0);
-            }
-            else
-            {
-                char *path = get_path(data_exec->e, cmd_lst->cmd[0]);
-                char **env = env_list_to_array(data_exec->e);
-                if (!path || !env)
-                {
-                    printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
-                    exit(127);
-                }
-                handle_redirection(cmd_lst);
-                execve(path, cmd_lst->cmd, env);
-                exit(126);
-            }
-        }
-        else 
-        {
-            if (prev_pipe_in != -1)
-                close(prev_pipe_in);
-
-            // If not last command, save read end for next command
-            if (cmd_lst->next)
-            {
-                close(pipe_fd[1]); // Close write end
-                prev_pipe_in = pipe_fd[0];
-            }
-
-            cmd_lst = cmd_lst->next;
-        }
+        if (pid == 0)
+            child_process(cmd_lst, data_exec, prev_pipe_in, pipe_fd);
+        else
+            parent_process(&prev_pipe_in, pipe_fd, &cmd_lst);
     }
-
     if (prev_pipe_in != -1)
         close(prev_pipe_in);
-
     while (wait(NULL) > 0);
 }
+
+
+
+void execution(t_data_parsing *data_exec)
+{
+    t_exc_lits *cmd_lst;
+
+    cmd_lst = data_exec->head_exe;
+    if (!cmd_lst)
+        return;
+    process_heredocs(cmd_lst);
+    if (cmds_size(cmd_lst) == 1)
+        single_cmd(data_exec);
+    else
+        execute_pipeline(data_exec);
+}
+
+
