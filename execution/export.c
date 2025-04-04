@@ -134,7 +134,6 @@ void get_key_value(char *var, char **key, char **value)
     {
         return ;
     }
-    // printf("key : %s | value : %s | var : %s\n", *key, *value, var);
 }
 
 
@@ -166,7 +165,6 @@ int check_append(t_env_list *env, char *var)
     return (0);
 }
 
-// > export a+=" 007" ab bb+="come in" ab+="bitch" 
 void add_var_2_env(char *cmd, t_env_list **env)
 {
     t_env_list *new;

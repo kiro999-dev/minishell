@@ -162,7 +162,7 @@ void handle_redirection(t_exc_lits *cmd)
     int last_input_fd = -1;
     int last_output_fd = -1;
 
-    if (!cmd || !cmd->head_files)
+    if (!cmd)
         return;
     file = cmd->head_files;
     while (file)
@@ -260,14 +260,17 @@ void process_heredocs(t_exc_lits *cmd)
                 // add_history(line);
                 // lines need to be
                 if (!line || !ft_strcmp(line, herdoc_head->limtter))
+                {
+                    free(line);
                     break;
+                }
                 write(fd, line, ft_strlen(line));
                 write(fd, "\n", 1);
                 free(line);
             }
-            close(fd);    
+            close(fd);
+            cmd->heredoc_filename = filename; 
             herdoc_head = herdoc_head->next;
-            cmd->heredoc_filename = filename;
         }
         cmd = cmd->next;
         i++;
@@ -291,7 +294,7 @@ void execution(t_data_parsing *data_exec)
         single_cmd(data_exec);
         return;
     }
-    while (cmd_lst && cmd_lst->cmd)
+    while (cmd_lst )
     {
         if (cmd_lst->next)
         {
@@ -317,6 +320,14 @@ void execution(t_data_parsing *data_exec)
                 dup2(prev_pipe_in, STDIN_FILENO);
                 close(prev_pipe_in);
             }
+            else if (cmd_lst->heredoc_filename)
+            {
+                int hd_fd = open(cmd_lst->heredoc_filename, O_RDONLY);
+                if (hd_fd != -1) {
+                    dup2(hd_fd, STDIN_FILENO);
+                    close(hd_fd);
+                }
+            }
 
             // Set up output to next command (if not last command)
             if (cmd_lst->next)
@@ -325,9 +336,7 @@ void execution(t_data_parsing *data_exec)
                 dup2(pipe_fd[1], STDOUT_FILENO);
                 close(pipe_fd[1]);
             }
-
-            
-
+    
             if (is_builtin(cmd_lst->cmd[0]))
             {
                 handle_redirection(cmd_lst);
