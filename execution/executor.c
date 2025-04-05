@@ -203,7 +203,7 @@ void builtins_process(t_data_parsing *data)
 
 
 
-void run_command(t_env_list *e, t_exc_lits *cmd_lst)
+void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 {
     char *path;
     char **env;
@@ -217,7 +217,9 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst)
     }
     handle_redirection(cmd_lst);
     execve(path, cmd_lst->cmd, env);
-    printf("execve error!\n");
+    printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
+    if (pid == 0)
+        exit(1);
     return ;
 }
 
@@ -237,7 +239,7 @@ void single_cmd(t_data_parsing *data_exec)
     }
     pid = fork();
     if (pid == 0)
-        run_command(data_exec->e, head);
+        run_command(data_exec->e, head, pid);
     waitpid(pid, NULL, 0);
 }
 
@@ -317,7 +319,7 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
         exit(0);
     }
     else
-        run_command(data_exec->e, cmd);
+        run_command(data_exec->e, cmd, 0);
 }
 
 
