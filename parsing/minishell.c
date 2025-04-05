@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/23 21:37:02 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/05 17:46:16 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 void	data_init(t_data_parsing *data, char **env, int flag)
 {
@@ -73,6 +74,7 @@ void list_szie(t_exc_lits *head)
 	}
 	printf("size :%d\n",i);
 }
+
 int	main(int argc, char **argv, char **env)
 {
 	t_data_parsing	data;
@@ -80,11 +82,19 @@ int	main(int argc, char **argv, char **env)
 	data_init(&data, env, 1);
 	(void)argc;
 	(void)argv;
+	signals_handling();
 	while (1)
 	{
 		data.buff = readline("$minishell> ");
 		if (data.buff == NULL)
 			break ;
+		if (g_status == 1)  // Check the global status
+			{
+				g_status = 0;
+				gc_malloc(0, 0);
+				continue;
+			}
+			printf("sig --> %d\n", g_status);
 		add_history(data.buff);
 		if (parsing(&data))
 		{
