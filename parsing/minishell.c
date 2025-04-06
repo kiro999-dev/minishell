@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/05 19:50:42 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/06 20:45:34 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,14 @@ int	main(int argc, char **argv, char **env)
 	signals_handling();
 	while (1)
 	{
+		
 		data.buff = readline("$minishell> ");
 		if (data.buff == NULL)
+		{
+			printf("fuck\n");
 			break ;
-		if (g_status == 1)  // Check the global status
-			{
-				g_status = 0;
-				gc_malloc(0, 0);
-				continue;
-			}
+		}
+
 		add_history(data.buff);
 		if (parsing(&data))
 		{

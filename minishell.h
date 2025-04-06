@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/05 17:54:30 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/06 20:20:37 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,11 @@ typedef struct s_data_parsing
 	t_file *head_file;
 }t_data_parsing;
 
+
 void	handler(int sig);
 void	signals_handling(void);
+void 	heredoc_signals(void);
+int set_herdoc_delimeter(int exit, int flag);
 // parsing
 char 	*join_character(char *s,char c);
 char	*ft_strdup(const char *s1);

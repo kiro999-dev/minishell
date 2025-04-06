@@ -213,7 +213,10 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
     if (!path || !env)
     {
         printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
-        exit(127);
+        if (pid == 0)
+            exit(1);
+        else 
+            return ;
     }
     handle_redirection(cmd_lst);
     execve(path, cmd_lst->cmd, env);
@@ -255,6 +258,7 @@ void process_heredocs(t_exc_lits *cmd)
     int i;
 
     i = 0;
+    heredoc_signals();
     while (cmd)
     {
         filename = ft_strjoin("/tmp/minishell_heredoc_", ft_itoa(i));
@@ -263,12 +267,21 @@ void process_heredocs(t_exc_lits *cmd)
         {
             fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (fd == -1)
-                return;
+            {
+                // need to be handled !! it hang up
+                break;
+            }
             while (1)
             {
                 line = readline("> ");
-                // add_history(line);
-                // lines need to be
+                if (set_herdoc_delimeter(0, 0))
+                {
+                    close(fd);
+                    // unlink(filename);
+                    open(ttyname(2), O_RDWR, 0777);
+                    free(line); 
+                    return;
+                }
                 if (!line || !ft_strcmp(line, herdoc_head->limtter))
                 {
                     free(line);
@@ -285,6 +298,8 @@ void process_heredocs(t_exc_lits *cmd)
         cmd = cmd->next;
         i++;
     }
+    signals_handling();
+    
 }
 
 
@@ -377,6 +392,7 @@ void execution(t_data_parsing *data_exec)
     if (!cmd_lst)
         return;
     process_heredocs(cmd_lst);
+
     if (cmds_size(cmd_lst) == 1)
         single_cmd(data_exec);
     else

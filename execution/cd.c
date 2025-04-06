@@ -64,6 +64,10 @@ void handle_cd_error(const char *path)
         printf("minishell: cd: %s: Not a directory\n", path);
 }
 
+
+
+
+// leaks need to be heandled with getcwd asap !!!!!!!
 void f_cd(char **cmd, t_env_list **env)
 {
     char *path;

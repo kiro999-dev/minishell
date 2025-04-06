@@ -2,43 +2,51 @@
 
 int g_status = 0;
 
-void	handler(int sig)
+int set_herdoc_delimeter(int exit, int flag)
 {
-	(void)sig;
-	if (sig == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		g_status = 1;
-	}
+	static int x = 0;
+
+	if (flag == 1)
+		x = exit;
+	return (x);
 }
 
 
+void	handler(int sig)
+{
+	(void)sig;
+	printf("\n");
+	if (sig == SIGINT)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		g_status = SIGINT;
+	}
+}
 
 void	signals_handling(void)
 {
+	set_herdoc_delimeter(0, 1);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &handler);
 }
 
-static void heredoc_handler(int sig)
+
+
+void	handler_heredoc(int sig)
 {
-    (void)sig;
-    g_status = 1;
-    write(STDOUT_FILENO, "\n", 1);
-    close(STDIN_FILENO); // This will make readline() return NULL
+	if (sig == SIGINT)
+	{
+		set_herdoc_delimeter(1, 1);
+		// g_status = 130;      
+		write(1, "\n", 1);
+		close(0);
+	}
 }
 
-void setup_heredoc_signals(void)
+void heredoc_signals(void)
 {
-    signal(SIGINT, &heredoc_handler);
+    signal(SIGINT, handler_heredoc);
     signal(SIGQUIT, SIG_IGN);
-}
-
-void restore_default_signals(void)
-{
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
 }
