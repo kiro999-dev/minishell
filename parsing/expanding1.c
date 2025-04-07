@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:58:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 21:29:51 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/07 15:30:36 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	check_expand(t_toknes_list *head, t_env_list *e)
 	len = ft_strlen(head->val);
 	while (head && head->val && i < len)
 	{
-		if (head->val[i] == '$')
+		if (head->val[i] == '$' && head->type != LIMTER)
 		{
 			i = check_is_expandig(head, e);
 			flag = 1;

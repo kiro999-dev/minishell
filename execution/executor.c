@@ -59,6 +59,7 @@ char	*get_path(t_env_list *env, char *cmd)
     if (!env)
     {
         printf("minishell : PATH not set up!\n");
+        exit(1);
     }
 	return (prepare_path(env->var + 5, cmd));
 }
