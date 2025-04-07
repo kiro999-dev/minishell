@@ -6,13 +6,13 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 16:42:00 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/07 18:51:13 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:20:49 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	expand_in_double_quotes_h(char **val, t_env_list *e, int *i)
+static void	expand_in_double_quotes_h(char **val, t_env_list *e, int *i,int check)
 {
 	int	dq;
 
@@ -28,7 +28,7 @@ static void	expand_in_double_quotes_h(char **val, t_env_list *e, int *i)
 				(*i)++;
 			if (not_character_expand((*val)[*i]))
 				break ;
-			handle_dollar_expansion_h(i, e, val);
+			handle_dollar_expansion_h(i, e, val,check);
 		}
 		else if ((*val)[*i] == '\"')
 			dq = 0;
@@ -37,15 +37,15 @@ static void	expand_in_double_quotes_h(char **val, t_env_list *e, int *i)
 	}
 }
 
-static void	expand_plain_h(char **val, t_env_list *e, int *i)
+static void	expand_plain_h(char **val, t_env_list *e, int *i,int check)
 {
 	while ((*val)[*i] && (*val)[*i] == '$')
 		(*i)++;
 	if (!not_character_expand((*val)[*i]))
-		handle_dollar_expansion_h(i, e, val);
+		handle_dollar_expansion_h(i, e, val,check);
 }
 
-int	check_is_expandig_h(char **val, t_env_list *e)
+int	check_is_expandig_h(char **val, t_env_list *e,int check)
 {
 	int	i;
 	int	q;
@@ -55,14 +55,14 @@ int	check_is_expandig_h(char **val, t_env_list *e)
 	while (i < ft_strlen(*val) && (*val)[i])
 	{
 		if ((*val)[i] == '\"')
-			expand_in_double_quotes_h(val, e, &i);
+			expand_in_double_quotes_h(val, e, &i,check);
 		else if ((*val)[i] == '\'')
 		{
 			q = 1;
 			skip_q_expand(*val, &i, &q);
 		}
 		else if ((*val)[i] == '$')
-			expand_plain_h(val, e, &i);
+			expand_plain_h(val, e, &i,check);
 		i++;
 	}
   
@@ -82,8 +82,7 @@ int	check_expand_h(char **val, t_env_list *e)
 	{
 		if ((*val)[i] == '$')
 		{
-			i = check_is_expandig_h(val, e);
-            
+			i = check_is_expandig_h(val, e,0);
 			flag = 1;
 		}
 		len = ft_strlen(*val);
