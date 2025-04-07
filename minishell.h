@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/06 20:20:37 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/07 18:40:12 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,10 @@ int 	ft_strcmp(char *s1 ,char *s2);
 void	join_the_strings(t_toknes_list **current, char **cmd, int *i);
 void 	copy_the_splited_string(char **split,char **cmd,int *i,int j);
 void	here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type, int here_doc);
+char	*expand_val_h(char *s, char *val, int j, int flag);
+int		check_is_expandig_h(char **val, t_env_list *e);
+void	handle_dollar_expansion_h(int *i, t_env_list *e, char **val);
+int	check_expand_h(char **val, t_env_list *e);
 // execution
 char	*ft_itoa(int n);
 char *find_path(t_env_list *env, char *key, int len);

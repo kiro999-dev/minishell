@@ -248,9 +248,7 @@ void single_cmd(t_data_parsing *data_exec)
 }
 
 
-
-
-void process_heredocs(t_exc_lits *cmd)
+void process_heredocs(t_exc_lits *cmd,t_env_list *e)
 {
     t_list_here_doc *herdoc_head;
     int fd;
@@ -288,9 +286,20 @@ void process_heredocs(t_exc_lits *cmd)
                     free(line);
                     break;
                 }
-                write(fd, line, ft_strlen(line));
-                write(fd, "\n", 1);
-                free(line);
+                if(check_expand_h(&line,e))
+                {
+                    printf("%s\n",line);
+                    write(fd, line, ft_strlen(line));
+                    write(fd, "\n", 1);
+                    line = NULL;
+                }
+                else
+                {
+                    write(fd, line, ft_strlen(line));
+                    write(fd, "\n", 1);
+                    free(line);
+                    line = NULL;
+                }
             }
             close(fd);
             cmd->heredoc_filename = filename; 
@@ -392,7 +401,7 @@ void execution(t_data_parsing *data_exec)
     cmd_lst = data_exec->head_exe;
     if (!cmd_lst)
         return;
-    process_heredocs(cmd_lst);
+    process_heredocs(cmd_lst,data_exec->e);
 
     if (cmds_size(cmd_lst) == 1)
         single_cmd(data_exec);
