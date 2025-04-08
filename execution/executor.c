@@ -207,12 +207,12 @@ void builtins_process(t_data_parsing *data)
 }
 
 
-
 void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 {
     char *path;
     char **env;
 
+    default_signals();
     path = get_path(e, cmd_lst->cmd[0]);
     env = env_list_to_array(e);
     if (!path || !env)
@@ -245,10 +245,12 @@ void single_cmd(t_data_parsing *data_exec)
         builtins_process(data_exec);
         return ;
     }
+    signal(SIGINT, SIG_IGN);
     pid = fork();
     if (pid == 0)
         run_command(data_exec->e, head, pid);
-    waitpid(pid, NULL, 0);
+    else
+        check_exit(pid);
 }
 
 
@@ -352,8 +354,9 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
 }
 
 
-static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_lst)
+static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_lst, int pid)
 {
+    check_exit(pid);
     if (*prev_pipe_in != -1)
         close(*prev_pipe_in);
     if ((*cmd_lst)->next)
@@ -380,6 +383,7 @@ static void execute_pipeline(t_data_parsing *data_exec)
             perror("minishell: pipe");
             return;
         }
+        signal(SIGINT, SIG_IGN);
         pid = fork();
         if (pid == -1)
         {
@@ -389,7 +393,7 @@ static void execute_pipeline(t_data_parsing *data_exec)
         if (pid == 0)
             child_process(cmd_lst, data_exec, prev_pipe_in, pipe_fd);
         else
-            parent_process(&prev_pipe_in, pipe_fd, &cmd_lst);
+            parent_process(&prev_pipe_in, pipe_fd, &cmd_lst, pid);
     }
     if (prev_pipe_in != -1)
         close(prev_pipe_in);

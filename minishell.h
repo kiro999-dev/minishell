@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 16:49:32 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:38:57 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void	handler(int sig);
 void	signals_handling(void);
 void 	heredoc_signals(void);
 int exit_herdoc(int x, int flag);
+void check_exit(int pid);
+void default_signals(void);
 // parsing
 char 	*join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
