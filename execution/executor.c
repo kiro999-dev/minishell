@@ -92,6 +92,10 @@ char	**env_list_to_array(t_env_list *list)
 
 int	is_builtin(char *cmd)
 {
+    if(cmd == NULL)
+    {
+        return(0);
+    }
 	return (!ft_strncmp(cmd, "export", 7) || !ft_strncmp(cmd, "env", 4) ||
 			!ft_strncmp(cmd, "unset", 6) || !ft_strncmp(cmd, "cd", 3) ||
 			!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "pwd", 4) ||
