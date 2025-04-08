@@ -43,7 +43,28 @@ void verify_path(t_env_list *env, char *path, char *current, char *old)
 {
     char *temp;
 
+<<<<<<< Updated upstream
     if (!ft_strncmp(path, "-", 2))
+=======
+void f_cd(char **cmd, t_env_list **env)
+{
+    char *path;
+    char *old_pwd;
+    int size;
+
+    if (!cmd || !env || !*env)
+        return;
+
+    size = size_2d(cmd);
+    if (size > 2)
+    {
+        printf("minishell: cd: too many arguments\n");
+        return;
+    }
+
+    old_pwd = getcwd(NULL, 0);
+    if (!old_pwd)
+>>>>>>> Stashed changes
     {
         // old = get_path(env, "OLDPWD=", 7) + 7;
         old = getenv("OLDPWD");
@@ -57,12 +78,44 @@ void verify_path(t_env_list *env, char *path, char *current, char *old)
         printf("%s\n", old);
         exit(0);
     }
+<<<<<<< Updated upstream
     if (!ft_strncmp(path, "--", 3))
         path = getenv("HOME");
     if (chdir(path) == -1)
     {
         printf("%s file or directory not found!", path);
         exit(1);
+=======
+
+    if (size == 1 || !ft_strncmp(cmd[1], "--", 3) || !ft_strncmp(cmd[1], "~", 2))
+    {
+        path = find_path(*env, "HOME", 4);
+        if (!path)
+        {
+            printf("minishell: cd: HOME not set\n");
+            free(old_pwd);
+            return;
+        }
+    }
+    else if (ft_strcmp(cmd[1], "-") == 0)
+    {
+        path = find_path(*env, "OLDPWD", 6);
+        if (!path)
+        {
+            printf("minishell: cd: OLDPWD not set\n");
+            free(old_pwd);
+            return;
+        }
+        printf("%s\n", path);
+    }
+    else
+        path = cmd[1];
+    if (chdir(path) == -1)
+    {
+        handle_cd_error(path);
+        free(old_pwd);
+        return;
+>>>>>>> Stashed changes
     }
 }
 
