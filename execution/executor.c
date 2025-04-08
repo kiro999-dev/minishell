@@ -248,7 +248,7 @@ void single_cmd(t_data_parsing *data_exec)
 }
 
 
-void process_heredocs(t_exc_lits *cmd,t_env_list *e)
+int process_heredocs(t_exc_lits *cmd,t_env_list *e)
 {
     t_list_here_doc *herdoc_head;
     int fd;
@@ -258,11 +258,11 @@ void process_heredocs(t_exc_lits *cmd,t_env_list *e)
 
     i = 0;
     heredoc_signals();
-    while (cmd)
+    while (cmd && exit_herdoc(0, 0) != 1)
     {
         filename = ft_strjoin("/tmp/minishell_heredoc_", ft_itoa(i));
         herdoc_head = cmd->head_here_doc;
-        while (herdoc_head)
+        while (herdoc_head && exit_herdoc(0, 0) != 1)
         {
             fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (fd == -1)
@@ -273,13 +273,12 @@ void process_heredocs(t_exc_lits *cmd,t_env_list *e)
             while (1)
             {
                 line = readline("> ");
-                if (set_herdoc_delimeter(0, 0))
+                if (exit_herdoc(0, 0))
                 {
                     close(fd);
-                    // unlink(filename);
-                    open(ttyname(2), O_RDWR, 0777);
-                    free(line); 
-                    return;
+                    free(line);
+                    unlink(filename);
+                    break;
                 }
                 if (!line || !ft_strcmp(line, herdoc_head->limtter))
                 {
@@ -306,8 +305,12 @@ void process_heredocs(t_exc_lits *cmd,t_env_list *e)
         cmd = cmd->next;
         i++;
     }
+    if (exit_herdoc(0, 0) == 1)
+        i = 0;
+    else 
+        i = 1; 
     signals_handling();
-    
+    return (i); 
 }
 
 
@@ -399,8 +402,8 @@ void execution(t_data_parsing *data_exec)
     cmd_lst = data_exec->head_exe;
     if (!cmd_lst)
         return;
-    process_heredocs(cmd_lst,data_exec->e);
-
+    if (!process_heredocs(cmd_lst,data_exec->e))
+        return ;
     if (cmds_size(cmd_lst) == 1)
         single_cmd(data_exec);
     else

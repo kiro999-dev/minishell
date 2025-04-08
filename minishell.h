@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/07 19:20:22 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/08 14:17:00 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <limits.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 #include <signal.h>
 
 extern int g_status;

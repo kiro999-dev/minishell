@@ -2,15 +2,14 @@
 
 int g_status = 0;
 
-int set_herdoc_delimeter(int exit, int flag)
+int exit_herdoc(int x, int flag)
 {
-	static int x = 0;
+	static int stat = 0;
 
 	if (flag == 1)
-		x = exit;
-	return (x);
+		stat = x;
+	return (stat);
 }
-
 
 void	handler(int sig)
 {
@@ -27,26 +26,28 @@ void	handler(int sig)
 
 void	signals_handling(void)
 {
-	set_herdoc_delimeter(0, 1);
+	int tty_fd;
+	tty_fd = open("/dev/tty", O_RDONLY);
+	if (tty_fd != -1)
+		dup2(tty_fd, 0);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &handler);
 }
 
 
-
-void	handler_heredoc(int sig)
+void heredoc_handler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		set_herdoc_delimeter(1, 1);
-		// g_status = 130;      
-		write(1, "\n", 1);
-		close(0);
-	}
+    (void)sig;
+	exit_herdoc(1, 1);
+	ioctl(0, TIOCSTI, "\n");
+    rl_replace_line("", 0);
+    rl_on_new_line();          
+
 }
 
 void heredoc_signals(void)
 {
-    signal(SIGINT, handler_heredoc);
+	exit_herdoc(0, 1);
+    signal(SIGINT, heredoc_handler);
     signal(SIGQUIT, SIG_IGN);
 }
