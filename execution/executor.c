@@ -287,7 +287,6 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
                 }
                 if(check_expand_h(&line,e))
                 {
-                    printf("%s\n",line);
                     write(fd, line, ft_strlen(line));
                     write(fd, "\n", 1);
                 }
