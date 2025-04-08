@@ -6,44 +6,11 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:43:04 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 15:54:24 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:01:21 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	handle_dollar_expansion_h(int *i, t_env_list *e,
-	char **val, int check)
-{
-	int		flag;
-	char	*expand;
-	int		found;
-	char	*v;
-
-	v = ft_strdup(*val);
-	if (check == 0)
-		free(*val);
-	found = 0;
-	expand = build_expand_string_h(i, v, &flag);
-	while (e)
-	{
-		if (strcmp_env(e->var, expand, ft_strlen(expand)))
-		{
-			found = 1;
-			*val = expand_val_h(e->var, v, *i, ft_strlen(expand));
-			if (flag)
-				check_is_expandig_h(val, e,1);
-			break ;
-		}
-		e = e->next;
-	}
-	if (!found)
-	{
-		*val = expand_val_h("", v, *i, ft_strlen(expand));
-		if (flag)
-			check_is_expandig_h(val, e,1);
-	}
-}
 
 static char	*build_expand_string_h(int *i, char *val, int *flag)
 {
@@ -62,6 +29,56 @@ static char	*build_expand_string_h(int *i, char *val, int *flag)
 		(*i)++;
 	}
 	return (expand);
+}
+
+int	handle_dollar_expansion_h2(int *i, t_env_list *e,
+char **val, char *v)
+{
+	int		flag;
+	char	*expand;
+	int		found;
+
+	found = 0;
+	expand = build_expand_string_h(i, v, &flag);
+	while (e)
+	{
+		if (strcmp_env(e->var, expand, ft_strlen(expand)))
+		{
+			found = 1;
+			*val = expand_val_h(e->var, v, *i, ft_strlen(expand));
+			if (flag)
+				check_is_expandig_h(val, e, 1);
+			break ;
+		}
+		e = e->next;
+	}
+	return (found);
+}
+
+void	handle_dollar_expansion_h(int *i, t_env_list *e,
+	char **val, int check)
+{
+	int		flag;
+	char	*expand;
+	int		found;
+	char	*v;
+	int		j;
+
+	j = *i;
+	expand = build_expand_string_h(&j, *val, &flag);
+	v = ft_strdup(*val);
+	if (check == 0)
+	{
+		free(*val);
+		*val = NULL;
+	}
+	found = handle_dollar_expansion_h2(i, e, val, v);
+	if (!found)
+	{
+		*val = expand_val_h("", v, *i, ft_strlen(expand));
+		if (flag)
+			check_is_expandig_h(val, e, 1);
+	}
 }
 
 char	*expand_val_h(char *s, char *val, int j, int len_expand)

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/07 19:18:51 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:07:17 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,6 @@ static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 			break ;
 		}
 		expand = join_character(expand, head->val[*i]);
-		(*i)++;
-	}
-	return (expand);
-}
-
-static char	*build_expand_string_h(int *i, char *val, int *flag)
-{
-	char	*expand;
-
-	expand = ft_strdup("");
-	*flag = 0;
-	while (val[*i] && !ft_isspace(val[*i]))
-	{
-		if (not_character_expand(val[*i]))
-		{
-			*flag = 1;
-			break ;
-		}
-		expand = join_character(expand, val[*i]);
 		(*i)++;
 	}
 	return (expand);
@@ -99,42 +80,6 @@ void	remove_q_d(t_toknes_list *head)
 		}
 	}
 	head->val = cpy;
-}
-void	handle_dollar_expansion_h(int *i, t_env_list *e,
-	char **val,int check)
-{
-int		flag;
-char	*expand;
-int		found;
-char	*v;
-
-v = ft_strdup(*val);
-found = 0;
-if(check == 0)
-{
-	free(*val);
-	*val = NULL;
-}
-expand = build_expand_string_h(i, v, &flag);
-while (e)
-{
-	if (strcmp_env(e->var, expand, ft_strlen(expand)))
-	{
-		found = 1;
-		*val = expand_val_h(e->var, v, *i, ft_strlen(expand));
-		if (flag)
-			check_is_expandig_h(val, e,1);
-		break ;
-	}
-	e = e->next;
-}
-if (!found)
-{
-	*val = expand_val_h("", v, *i, ft_strlen(expand));
-	if (flag)
-		check_is_expandig_h(val, e,1);
-}
-
 }
 
 void	handle_dollar_expansion(int *i, t_env_list *e,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 14:17:00 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:49:32 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,10 @@ char	*expand_val_h(char *s, char *val, int j, int flag);
 int		check_is_expandig_h(char **val, t_env_list *e,int check);
 void	handle_dollar_expansion_h(int *i, t_env_list *e, char **val,int check);
 int		check_expand_h(char **val, t_env_list *e);
+char	*build_prefix(char *s2, int j, int n);
+char	*build_env_value(char *s, int flag);
+char	*build_suffix(char *s2, int j);
+char	*combine_parts(char *p, char *e, char *s);
 // execution
 char	*ft_itoa(int n);
 char *find_path(t_env_list *env, char *key, int len);

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/06 20:45:34 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:24:27 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 void	data_init(t_data_parsing *data, char **env, int flag)
 {
@@ -37,43 +36,42 @@ int	parsing(t_data_parsing *data)
 	return (0);
 }
 
-void	print_list(t_exc_lits *h)
-{
-	
-	while (h)
-	{
-		if (h->head_files)
-		{
-			printf("files found -> ");
-			while (h->head_files)
-			{
-				printf("[%s] ", h->head_files->file);
-				h->head_files = h->head_files->next;
-			}
-		}
-		if(h->head_here_doc)
-		{
-			printf("here_doc found -> ");
-			while (h->head_here_doc)
-			{
-				printf(" limter :[%s] ", h->head_here_doc->limtter);
-				h->head_here_doc = h->head_here_doc->next;
-			}
-		}
-		printf("\n");
-		h = h->next;
-	}
-}
-void list_szie(t_exc_lits *head)
-{
-	int i = 0;
-	while (head)
-	{
-		head = head->next;
-		i++;
-	}
-	printf("size :%d\n",i);
-}
+// void	print_list(t_exc_lits *h)
+// {
+// 	while (h)
+// 	{
+// 		if (h->head_files)
+// 		{
+// 			printf("files found -> ");
+// 			while (h->head_files)
+// 			{
+// 				printf("[%s] ", h->head_files->file);
+// 				h->head_files = h->head_files->next;
+// 			}
+// 		}
+// 		if(h->head_here_doc)
+// 		{
+// 			printf("here_doc found -> ");
+// 			while (h->head_here_doc)
+// 			{
+// 				printf(" limter :[%s] ", h->head_here_doc->limtter);
+// 				h->head_here_doc = h->head_here_doc->next;
+// 			}
+// 		}
+// 		printf("\n");
+// 		h = h->next;
+// 	}
+// }
+// void list_szie(t_exc_lits *head)
+// {
+// 	int i = 0;
+// 	while (head)
+// 	{
+// 		head = head->next;
+// 		i++;
+// 	}
+// 	printf("size :%d\n",i);
+// }
 
 int	main(int argc, char **argv, char **env)
 {
@@ -85,20 +83,15 @@ int	main(int argc, char **argv, char **env)
 	signals_handling();
 	while (1)
 	{
-		
 		data.buff = readline("$minishell> ");
 		if (data.buff == NULL)
 		{
 			printf("fuck\n");
 			break ;
 		}
-
 		add_history(data.buff);
 		if (parsing(&data))
 		{
-			// check parsin asat ewiwi
-			// list_szie(data.head_exe);
-			// print_list(data.head_exe);
 			execution(&data);
 			data_init(&data, env, 0);
 		}

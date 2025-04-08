@@ -6,13 +6,13 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/07 18:50:52 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:49:21 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*build_prefix(char *s2, int j, int n)
+char	*build_prefix(char *s2, int j, int n)
 {
 	int		i;
 	char	*res;
@@ -27,7 +27,7 @@ static char	*build_prefix(char *s2, int j, int n)
 	return (res);
 }
 
-static char	*build_env_value(char *s, int flag)
+char	*build_env_value(char *s, int flag)
 {
 	int		i;
 	char	*res;
@@ -50,7 +50,7 @@ static char	*build_env_value(char *s, int flag)
 	return (res);
 }
 
-static char	*build_suffix(char *s2, int j)
+char	*build_suffix(char *s2, int j)
 {
 	char	*res;
 
@@ -63,7 +63,7 @@ static char	*build_suffix(char *s2, int j)
 	return (res);
 }
 
-static char	*combine_parts(char *p, char *e, char *s)
+char	*combine_parts(char *p, char *e, char *s)
 {
 	char	*res;
 	int		i;
@@ -100,17 +100,5 @@ char	*expand_val(char *s, t_toknes_list *head, int j, int flag)
 	p = build_prefix(head->val, j, head->len_expand);
 	e = build_env_value(s, flag);
 	suf = build_suffix(head->val, j);
-	return (combine_parts(p, e, suf));
-}
-char	*expand_val_h(char *s, char *val, int j, int len_expand)
-{
-	char	*p;
-	char	*e;
-	char	*suf;
-	
-
-	p = build_prefix(val, j, len_expand);
-	e = build_env_value(s, 0);
-	suf = build_suffix(val, j);
 	return (combine_parts(p, e, suf));
 }

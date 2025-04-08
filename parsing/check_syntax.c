@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:58:53 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/07 16:37:51 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:28:39 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_redir(t_toknes_list *head)
 		if (head->next && head->type == APPEND && head->next->type == REDIR_OUT)
 			return (printf("syntax error '>'\n"), 1);
 		else
-			return (printf("syntax error '%s'\n",head->val), 1);
+			return (printf("syntax error '%s'\n", head->val), 1);
 	}
 	return (0);
 }
@@ -72,8 +72,8 @@ int	check_syntax(t_toknes_list *head)
 			return (1);
 		if (head->type == PIPE && check_pipe(head))
 			return (1);
-		if ((head->type == REDIR_IN || 
-			head->type == REDIR_OUT || head->type == APPEND)
+		if ((head->type == REDIR_IN
+				|| head->type == REDIR_OUT || head->type == APPEND)
 			&& check_redir(head))
 			return (1);
 		if (head->type == HER_DOC && check_here_doc(head))
