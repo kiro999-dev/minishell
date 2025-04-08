@@ -114,7 +114,7 @@ typedef struct s_data_parsing
 void	handler(int sig);
 void	signals_handling(void);
 void 	heredoc_signals(void);
-int set_herdoc_delimeter(int exit, int flag);
+int exit_herdoc(int x, int flag);
 // parsing
 char 	*join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
