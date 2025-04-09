@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/09 14:03:12 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:05:11 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char **argv, char **env)
 		data.buff = readline("$minishell> ");
 		if (data.buff == NULL)
 		{
-			printf("harb lik a ba oussama\n");
+			printf("exit\n");
 			break ;
 		}
 		add_history(data.buff);
