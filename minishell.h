@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 18:38:57 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/09 16:16:07 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,8 @@ void 	copy_the_splited_string(char **split,char **cmd,int *i,int j);
 void	here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type, int here_doc);
 char	*expand_val_h(char *s, char *val, int j, int flag);
 int		check_is_expandig_h(char **val, t_env_list *e,int check);
-void	handle_dollar_expansion_h(int *i, t_env_list *e, char **val,int check);
+int	handle_dollar_expansion_h(int *i, t_env_list *e,
+	char **val, int check);
 int		check_expand_h(char **val, t_env_list *e);
 char	*build_prefix(char *s2, int j, int n);
 char	*build_env_value(char *s, int flag);

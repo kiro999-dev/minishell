@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 16:07:17 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:50:04 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 
 	expand = ft_strdup("");
 	*flag = 0;
-	while (head->val[*i] && !ft_isspace(head->val[*i]))
+	while (head->val[*i])
 	{
 		if (not_character_expand(head->val[*i]))
 		{
+			printf("hi\n");
 			*flag = 1;
 			break ;
 		}

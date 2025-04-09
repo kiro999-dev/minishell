@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:43:04 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 17:01:21 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:34:08 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*build_expand_string_h(int *i, char *val, int *flag)
 
 	expand = ft_strdup("");
 	*flag = 0;
-	while (val[*i] && !ft_isspace(val[*i]))
+	while (val[*i])
 	{
 		if (not_character_expand(val[*i]))
 		{
@@ -55,7 +55,7 @@ char **val, char *v)
 	return (found);
 }
 
-void	handle_dollar_expansion_h(int *i, t_env_list *e,
+int	handle_dollar_expansion_h(int *i, t_env_list *e,
 	char **val, int check)
 {
 	int		flag;
@@ -79,6 +79,7 @@ void	handle_dollar_expansion_h(int *i, t_env_list *e,
 		if (flag)
 			check_is_expandig_h(val, e, 1);
 	}
+	return (1);
 }
 
 char	*expand_val_h(char *s, char *val, int j, int len_expand)
