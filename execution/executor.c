@@ -236,6 +236,7 @@ void single_cmd(t_data_parsing *data_exec)
 {
     t_exc_lits	*head;
     int         pid;
+    int         status;
     
     head = data_exec->head_exe;
     if (!head || !head->cmd)
@@ -250,7 +251,10 @@ void single_cmd(t_data_parsing *data_exec)
     if (pid == 0)
         run_command(data_exec->e, head, pid);
     else
-        check_exit(pid);
+    {
+        waitpid(pid, &status, 0);
+        check_exit(status);
+    }
 }
 
 
@@ -354,9 +358,8 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
 }
 
 
-static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_lst, int pid)
+static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_lst)
 {
-    check_exit(pid);
     if (*prev_pipe_in != -1)
         close(*prev_pipe_in);
     if ((*cmd_lst)->next)
@@ -367,16 +370,39 @@ static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_l
     *cmd_lst = (*cmd_lst)->next;
 }
 
+void wait_multiple_childs(t_exc_lits *lst, int *pids, int cmd_len)
+{
+    int status;
+    int i;
+
+    if (!lst || !pids || !cmd_len)
+        return ;
+    i = -1;
+    while (++i < cmd_len)
+    {
+        waitpid(pids[i], &status, 0);
+        if (check_exit(status))
+            break;
+    }
+}
+
 static void execute_pipeline(t_data_parsing *data_exec)
 {
     t_exc_lits *cmd_lst ;
     int pipe_fd[2];
     int prev_pipe_in = -1;
-    pid_t pid;
+    pid_t *pids;
+    int cmd_size;
+    int i;
 
     prev_pipe_in = -1;
     cmd_lst = data_exec->head_exe;
-    while (cmd_lst)
+    cmd_size = cmds_size(cmd_lst);
+    pids = gc_malloc(sizeof(int) * cmd_size, 1);
+    if (!pids)
+        return ;
+    i = -1;
+    while (cmd_lst && ++i < cmd_size)
     {
         if (cmd_lst->next && pipe(pipe_fd) == -1)
         {
@@ -384,20 +410,20 @@ static void execute_pipeline(t_data_parsing *data_exec)
             return;
         }
         signal(SIGINT, SIG_IGN);
-        pid = fork();
-        if (pid == -1)
+        pids[i] = fork();
+        if (pids[i] == -1)
         {
             perror("minishell: fork");
             return;
         }
-        if (pid == 0)
+        if (pids[i] == 0)
             child_process(cmd_lst, data_exec, prev_pipe_in, pipe_fd);
         else
-            parent_process(&prev_pipe_in, pipe_fd, &cmd_lst, pid);
+            parent_process(&prev_pipe_in, pipe_fd, &cmd_lst);
     }
     if (prev_pipe_in != -1)
         close(prev_pipe_in);
-    while (wait(NULL) > 0);
+    wait_multiple_childs(data_exec->head_exe, pids, cmd_size);
 }
 
 

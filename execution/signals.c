@@ -59,22 +59,21 @@ void default_signals(void)
     signal(SIGQUIT, SIG_DFL);
 }
 
-void check_exit(int pid)
+int check_exit(int status)
 {
-    int status;
+	int spec;
 
-    status = 0;
-    waitpid(pid, &status, 0);
-
+	spec = 0;
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
     {
         printf("\n");
         g_status = 128 + SIGINT;
+		spec = 1;
     }
     else if (WIFEXITED(status))
     {
         g_status = WEXITSTATUS(status);
     }
-
     signals_handling();
+	return (spec);
 }
