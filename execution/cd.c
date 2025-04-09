@@ -96,6 +96,7 @@ void f_cd(char **cmd, t_env_list **env)
         path = find_path(*env, "HOME", 4);
         if (!path)
         {
+            free(old_pwd);
             printf("minishell: cd: HOME not set\n");
             return;
         }
@@ -105,6 +106,7 @@ void f_cd(char **cmd, t_env_list **env)
         path = find_path(*env, "OLDPWD", 6);
         if (!path)
         {
+            free(old_pwd);
             printf("minishell: cd: OLDPWD not set\n");
             return;
         }
@@ -114,6 +116,7 @@ void f_cd(char **cmd, t_env_list **env)
         path = cmd[1];
     if (chdir(path) == -1)
     {
+        free(old_pwd);
         handle_cd_error(path);
         return;
     }

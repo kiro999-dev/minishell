@@ -33,7 +33,6 @@ void print_export(t_env_list *e)
 {
     if (!e)
     {
-        printf("varibales not found!\n");
         return ;
     }
     while (e)

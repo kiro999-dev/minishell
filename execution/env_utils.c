@@ -41,7 +41,9 @@ t_env_list	*new_node(void *content)
 {
 	t_env_list	*dest;
 
-	dest = (t_env_list *)gc_malloc(sizeof(t_env_list),1);
+    if (!content)
+        return (NULL);
+    dest = (t_env_list *)gc_malloc(sizeof(t_env_list), 1);
 	if (!dest)
 		return (NULL);
 	dest->var = content;
@@ -50,6 +52,17 @@ t_env_list	*new_node(void *content)
 	return (dest);
 }
 
+void handle_env_i(t_env_list **lst)
+{
+    t_env_list *new;
+
+    new = new_node(ft_strdup("PWD=/home/onajem/Desktop/minishell"));
+    add_back(lst, new);
+    new = new_node(ft_strdup("SHLVL=1"));
+    add_back(lst, new);
+    new = new_node(ft_strdup("_=/usr/bin/env"));
+    add_back(lst, new);    
+}
 
 t_env_list *init_env(char *ev[])
 {
@@ -58,20 +71,20 @@ t_env_list *init_env(char *ev[])
     t_env_list *new;
 
     if (!ev || !ev[0])
+        handle_env_i(&env_list);
+    else
     {
-        printf("env not found!\n");
-        exit(1);
-    }
-    while (ev[i])
-    {
-		new = new_node(ft_strdup(ev[i]));
-        if (!new)
+        while (ev[i])
         {
-			printf("Memory allocation failed!\n");
-            exit(1);
+            new = new_node(ft_strdup(ev[i]));
+            if (!new)
+            {
+                printf("Memory allocation failed!\n");
+                exit(1);
+            }
+            add_back(&env_list, new);
+            i++;
         }
-        add_back(&env_list, new);
-        i++;
     }
 
     return env_list;
