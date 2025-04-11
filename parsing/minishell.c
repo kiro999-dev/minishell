@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/09 14:05:11 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/11 15:50:21 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ int	parsing(t_data_parsing *data)
 		free(data->buff);
 		return (1);
 	}
-	return (0);
+	else
+	{
+		free(data->buff);
+		return (0);
+	}
 }
 
 // void	print_list(t_exc_lits *h)
