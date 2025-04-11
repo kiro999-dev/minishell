@@ -224,6 +224,7 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
             return ;
     }
     handle_redirection(cmd_lst);
+    printf("-> %s\n", path);
     execve(path, cmd_lst->cmd, env);
     printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
     if (pid == 0)
@@ -255,8 +256,50 @@ void single_cmd(t_data_parsing *data_exec)
         waitpid(pid, &status, 0);
         check_exit(status);
     }
+    if (head->heredoc_filename)
+        unlink(head->heredoc_filename);
 }
 
+
+static void	hexa_format(unsigned int value, char *output)
+{
+	const char	*hex_digits;
+	int			i;
+
+	i = 0;
+    hex_digits = "0123456789abcdef";
+	while (i < 8)
+	{
+		output[i] = hex_digits[(value >> (28 - i * 4)) & 0xF];
+		i++;
+	}
+	output[8] = '\0';
+}
+
+
+char *generate_random_filename(void)
+{
+    int         random_fd;
+    unsigned    random_value;
+    char        *filename;
+    char        random_str[9];
+
+    random_fd = open("/dev/random", O_RDONLY);
+    if (random_fd == -1)
+        return (NULL);
+    
+    if (read(random_fd, &random_value, sizeof(random_value)) != sizeof(random_value))
+    {
+        close(random_fd);
+        return (NULL);
+    }
+    close(random_fd);
+
+    hexa_format(random_value, random_str);
+
+    filename = ft_strjoin("/tmp/minishell_heredoc_", random_str);
+    return (filename);
+}
 
 int process_heredocs(t_exc_lits *cmd,t_env_list *e)
 {
@@ -270,7 +313,7 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
     heredoc_signals();
     while (cmd && exit_herdoc(0, 0) != 1)
     {
-        filename = ft_strjoin("/tmp/minishell_heredoc_", ft_itoa(i));
+        filename = generate_random_filename();
         herdoc_head = cmd->head_here_doc;
         while (herdoc_head && exit_herdoc(0, 0) != 1)
         {
@@ -367,6 +410,8 @@ static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_l
         close(pipe_fd[1]);
         *prev_pipe_in = pipe_fd[0];
     }
+    if ((*cmd_lst)->heredoc_filename)
+        unlink((*cmd_lst)->heredoc_filename);
     *cmd_lst = (*cmd_lst)->next;
 }
 

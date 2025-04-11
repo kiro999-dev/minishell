@@ -62,6 +62,8 @@ void handle_env_i(t_env_list **lst)
     add_back(lst, new);
     new = new_node(ft_strdup("_=/usr/bin/env"));
     add_back(lst, new);    
+    // new = new_node(ft_strdup("PATH=/home/onajem/bin:/usr/local/sbin:/usr/local/bin"));
+    // add_back(lst, new);  
 }
 
 t_env_list *init_env(char *ev[])
