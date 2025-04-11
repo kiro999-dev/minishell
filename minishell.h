@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/09 18:23:45 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/11 14:53:04 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,19 @@ char	*build_env_value(char *s, int flag);
 char	*build_suffix(char *s2, int j);
 char	*combine_parts(char *p, char *e, char *s);
 // execution
+char *prepare_path(char *path, char *cmd);
+char	*get_path(t_env_list *env, char *cmd);
+char	**env_list_to_array(t_env_list *list);
+int	is_builtin(char *cmd);
+void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec);
+
+int cmd_in_out_redirection(t_exc_lits *cmd, int red);
+void apply_input_redirection(int *last_input_fd, const char *file);
+void apply_output_redirection(int *last_output_fd, const char *file, t_TOKENS type);
+void	hexa_format(unsigned int value, char *output);
+int process_heredocs(t_exc_lits *cmd,t_env_list *e);
+void set_final_redirections(int last_input_fd, int last_output_fd);
+char *generate_random_filename(void);
 char	*ft_itoa(int n);
 char *find_path(t_env_list *env, char *key, int len);
 int	env_size(t_env_list *lst);
