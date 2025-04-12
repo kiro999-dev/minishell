@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/11 14:53:04 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/12 14:58:05 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_file
 	char *file;
 	t_TOKENS type;
 	struct s_file *next;
-	
 	
 }t_file;
 typedef struct s_list_here_doc
@@ -198,10 +197,9 @@ char	*get_path(t_env_list *env, char *cmd);
 char	**env_list_to_array(t_env_list *list);
 int	is_builtin(char *cmd);
 void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec);
-
-int cmd_in_out_redirection(t_exc_lits *cmd, int red);
-void apply_input_redirection(int *last_input_fd, const char *file);
-void apply_output_redirection(int *last_output_fd, const char *file, t_TOKENS type);
+void apply_input_redirection(int *last_input_fd, t_file *file);
+int cmd_in_out_redirection(t_file *file, int red);
+void apply_output_redirection(int *last_output_fd, t_file *file);
 void	hexa_format(unsigned int value, char *output);
 int process_heredocs(t_exc_lits *cmd,t_env_list *e);
 void set_final_redirections(int last_input_fd, int last_output_fd);

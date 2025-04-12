@@ -1,8 +1,7 @@
 #include "../minishell.h"
 
-int cmd_in_out_redirection(t_exc_lits *cmd, int red)
+int cmd_in_out_redirection(t_file *file, int red)
 {
-    t_file *file = cmd->head_files;
     while (file)
     {
         if (red == 0 && file->type == IS_FILE_IN)
@@ -14,28 +13,50 @@ int cmd_in_out_redirection(t_exc_lits *cmd, int red)
     return (0);
 }
 
-void apply_input_redirection(int *last_input_fd, const char *file)
+void apply_input_redirection(int *last_input_fd, t_file *file)
 {
-    if (*last_input_fd != -1)
-        close(*last_input_fd);
+    while (file)
+    {
+        if (file->type == IS_FILE_IN)
+        {
+            if (*last_input_fd != -1)
+                close(*last_input_fd);
+        
+            *last_input_fd = open(file->file, O_RDONLY);
+            if (*last_input_fd == -1)
+            {
+                write(2, "minishell: in: No such file or directory\n", 42);
+                return ;
+            }
+        }
+        file = file->next;
+    }
 
-    *last_input_fd = open(file, O_RDONLY);
-    if (*last_input_fd == -1)
-        exit(1) ;
 }
 
-void apply_output_redirection(int *last_output_fd, const char *file, t_TOKENS type)
+void apply_output_redirection(int *last_output_fd, t_file *file)
 {
-    if (*last_output_fd != -1)
-        close(*last_output_fd);
+    while (file)
+    {
+        if (file->type == IS_FILE_OUT || file->type == IS_FILE_APPEND)
+        {
+            if (*last_output_fd != -1)
+                close(*last_output_fd);
+        
+            if (file->type == IS_FILE_OUT)  
+                *last_output_fd = open(file->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+            else if(file->type == IS_FILE_APPEND)
+                *last_output_fd = open(file->file, O_RDWR | O_CREAT | O_APPEND, 0644);
+        
+            if (*last_output_fd == -1)
+            {
+                printf("minishell: Bad file descriptor\n");
+                return ;
+            }
+        }
+        file = file->next;
+    }
 
-    if (type == IS_FILE_OUT )  
-        *last_output_fd = open(file, O_RDWR | O_CREAT | O_TRUNC, 0644);
-    else if(type == IS_FILE_APPEND)
-        *last_output_fd = open(file, O_RDWR | O_CREAT | O_APPEND, 0644);
-
-    if (*last_output_fd == -1)
-        exit(1) ;
 }
 
 

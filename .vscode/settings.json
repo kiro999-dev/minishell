@@ -3,6 +3,15 @@
     "files.associations": {
         "minishell.h": "c",
         "limits.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "array": "c",
+        "charconv": "c",
+        "compare": "c",
+        "functional": "c",
+        "ratio": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c"
     }
 }

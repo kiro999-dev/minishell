@@ -1,27 +1,31 @@
 #include "../minishell.h"
 
 
-void handle_redirection(t_exc_lits *cmd)
+int handle_redirection(t_exc_lits *cmd)
 {
     t_file *file;
     int last_input_fd = -1;
     int last_output_fd = -1;
 
     if (!cmd)
-        return;
+        return (1);
     file = cmd->head_files;
-    while (file)
-    {
-        if (file->type == IS_FILE_IN)
-            apply_input_redirection(&last_input_fd, file->file);
-        else if (file->type == IS_FILE_OUT || file->type == IS_FILE_APPEND)
-            apply_output_redirection(&last_output_fd, file->file, file->type);
-        file = file->next;
-    }
+    apply_input_redirection(&last_input_fd, file);
+    if (cmd_in_out_redirection(file, 0) && last_input_fd == -1)
+        return (1);
+
+    apply_output_redirection(&last_output_fd, file);
+    
     if (cmd->heredoc_filename != NULL)
         last_input_fd = open(cmd->heredoc_filename, O_RDONLY);
     if (cmd->cmd)
         set_final_redirections(last_input_fd, last_output_fd);
+    else
+    {
+        close(last_input_fd);
+        close(last_output_fd);
+    }
+    return (0);
 }
 
 void builtins_process(t_data_parsing *data)
@@ -35,9 +39,11 @@ void builtins_process(t_data_parsing *data)
         return;
     }
 
-    handle_redirection(cmd);
+    if (handle_redirection(cmd))
+        return;
+
     exec_builtin(cmd, data);
-    
+
     if (dup2(saved_stdin, STDIN_FILENO) == -1)
         perror("minishell: stdin restore");
     if (dup2(saved_stdout, STDOUT_FILENO) == -1)
@@ -64,13 +70,27 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
         else 
             return ;
     }
-    handle_redirection(cmd_lst);
-    // printf("-> %s\n", path);
+    if(handle_redirection(cmd_lst))
+        exit(1);
+
     execve(path, cmd_lst->cmd, env);
     printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
     if (pid == 0)
         exit(1);
     return ;
+}
+
+
+int check_no_cmd(t_exc_lits *head)
+{
+    if (!head->cmd && !head->head_files)
+        return (0);
+    else if (!head->cmd && head->head_files)
+    {
+        handle_redirection(head);
+        return (0);
+    }
+    return (1);
 }
 
 
@@ -81,7 +101,7 @@ void single_cmd(t_data_parsing *data_exec)
     int         status;
     
     head = data_exec->head_exe;
-    if (!head || !head->cmd)
+    if (!head || check_no_cmd(head) == 0)
         return;
     if (is_builtin(head->cmd[0]))
     {
@@ -100,8 +120,6 @@ void single_cmd(t_data_parsing *data_exec)
     if (head->heredoc_filename)
         unlink(head->heredoc_filename);
 }
-
-
 
 
 
@@ -129,14 +147,20 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
         dup2(pipe_fd[1], STDOUT_FILENO);
         close(pipe_fd[1]);
     }
-    if (is_builtin(cmd->cmd[0]))
+    if (check_no_cmd(cmd))
     {
-        handle_redirection(cmd);
-        exec_builtin(cmd, data_exec);
-        exit(0);
+        if (is_builtin(cmd->cmd[0]))
+        {
+            if (handle_redirection(cmd))
+                exit(1);
+            exec_builtin(cmd, data_exec);
+            exit(0);
+        }
+        else if (check_no_cmd(cmd))
+            run_command(data_exec->e, cmd, 0);
     }
     else
-        run_command(data_exec->e, cmd, 0);
+        exit(0);
 }
 
 
