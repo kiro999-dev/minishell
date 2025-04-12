@@ -1,0 +1,63 @@
+tal7a test
+-------------------
+handle ./ls should be like this :
+bash: ./ls: Permission denied
+after chmod +x:
+should be return a empty line not command not found
+--------------------------------------------------------------
+ls | exit 54 54 
+exit <--- dont show this 
+minishell: exit: too many arguments
+bash :
+zkhourba@e1r7p1:~/minishell00$ ls | exit 45 54 
+bash: exit: too many arguments
+zkhourba@e1r7p1:~/minishell00$ 
+-------------------------------------------------------------------
+➜  minishell00 git:(main) ✗ env -i ./minishell 
+$minishell> export
+declare -x PWD="/home/onajem/Desktop/minishell"
+declare -x SHLVL="1"
+declare -x _="/usr/bin/env"
+$minishell> ls
+minishell: ls: command not found
+should the command work
+-------------------------------------------------------------------------------
+echo - 
+should the "-"printed
+------------------------------------------------------
+handle
+ exit 999999999999999999999999999999999999999999999
+exit
+exit
+bash: exit: 99999999999999999999999999999999999999: numeric argument required
+-------------------------------------------------------
+./minishell | ./minishell
+check is tty
+--------------------------------------------------------------------
+ cd 1/1/1/1/1/1/1/1/1/1/1/
+ then :
+ rm -rf 1./
+ the bash:
+ cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+ pwd:
+ /1/1/1/1/1/1/1/1/1/1/1/..
+ our minishell:
+ cd ..
+minishell: cd: No such file or directory
+pwd
+/home/zkhourba/minishell00/1/1/1/1/1/1/1/1/1/1/1
+cd
+minishell: cd: No such file or directory
+the cd dose not work when the chdir fail bruhhh
+---------------------------------------------------------------------------------------
+env rifj
+bash: env: No such file or directory
+our minishell:
+work hhh
+---------------------------------------------------------------------------
+handle ambigous 
+----------------------------
+$minishell> execution/
+minishell: execution/: command not found
+zkhourba@e1r7p1:~/minishell00$ execution/
+bash: execution/: Is a directory
