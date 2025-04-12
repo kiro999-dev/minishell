@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:04:45 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 16:29:41 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:42:52 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_toknes_list	*creat_node(char *val, t_TOKENS type, int join_me)
 	node->split_it2 = 0;
 	node->ambiguous = 0;
 	node->len_expand = 0;
+
 	return (node);
 }
 

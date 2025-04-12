@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/12 14:58:05 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/12 18:31:38 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,8 @@ char	*build_prefix(char *s2, int j, int n);
 char	*build_env_value(char *s, int flag);
 char	*build_suffix(char *s2, int j);
 char	*combine_parts(char *p, char *e, char *s);
+void	process_quote(char *s, int *i, char **cpy, char quote);
+char	*process_unquoted(char *s, int *i);
 // execution
 char *prepare_path(char *path, char *cmd);
 char	*get_path(t_env_list *env, char *cmd);

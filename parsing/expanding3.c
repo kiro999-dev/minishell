@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/09 16:50:04 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:31:30 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 	return (expand);
 }
 
-static void	process_quote(char *s, int *i, char **cpy, char quote)
+void	process_quote(char *s, int *i, char **cpy, char quote)
 {
 	(*i)++;
 	while (s[*i] && s[*i] != quote)
@@ -44,7 +44,7 @@ static void	process_quote(char *s, int *i, char **cpy, char quote)
 		(*i)++;
 }
 
-static char	*process_unquoted(char *s, int *i)
+char	*process_unquoted(char *s, int *i)
 {
 	char	*cpy;
 
@@ -64,6 +64,8 @@ void	remove_q_d(t_toknes_list *head)
 	char	*temp;
 	int		j;
 
+	if(head->type == LIMTER)
+		return;
 	i = 0;
 	cpy = ft_strdup("");
 	j = 0;

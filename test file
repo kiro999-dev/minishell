@@ -61,3 +61,22 @@ $minishell> execution/
 minishell: execution/: command not found
 zkhourba@e1r7p1:~/minishell00$ execution/
 bash: execution/: Is a directory
+
+$minishell> << a
+> asd
+> asd
+> a
+$minishell> << a
+> asd
+> asd
+> asd
+> ss
+> s
+> c
+> x
+> x
+> a
+$minishell> 
+$minishell> 
+$minishell> s
+minishell: s: command not found

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:48:22 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 00:52:31 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/12 16:55:02 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ void	init_tok(t_tok *data_tok)
 
 int	isparam_for_file(t_tok *data_tok)
 {
+	
 	if (data_tok->is_redir_out || data_tok->is_here_d
 		|| data_tok->is_append || data_tok->is_redir_in)
-		return (1);
+			return (1);
 	else
 		return (0);
+	
 }
 
 void	not_token_case(t_tok *data_tok,

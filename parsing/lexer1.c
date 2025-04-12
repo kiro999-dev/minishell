@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:48:23 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 21:17:29 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/12 16:58:47 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ void	gen_word(t_tok *data_tok, char *s, int *ptr_i)
 			break ;
 		if (is_token(s[i]) && (s[i] == '\''
 				|| s[i] == '\"') && isparam_for_file(data_tok))
+		{
 			data_tok->token = join_character(data_tok->token, s[i]);
+		}
 		else if (is_token(s[i]))
 			break ;
 		else

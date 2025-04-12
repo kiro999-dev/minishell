@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 00:37:51 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 00:12:27 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:03:21 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	single_q(int *i_ptr, char *s, t_tok *data, t_toknes_list **head)
 void	double_q(int *i_ptr, char *s, t_tok *data, t_toknes_list **head)
 {
 	char	*token;
-
 	token = gen_double_q_str(i_ptr, s, data, 0);
 	data->token = token;
 	add_token(data, head);
