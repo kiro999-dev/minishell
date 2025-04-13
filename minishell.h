@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/12 18:31:38 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/13 17:00:13 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ void f_cd(char **cmd, t_env_list **env);
 void	echo_putstr(char *s);
 void f_pwd(t_env_list *env);
 void    f_echo(char **av);
-void    f_env(t_env_list *env);
+void f_env(t_env_list *env, t_exc_lits *cmd);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
 void	execution(t_data_parsing *data_exec);
 void add_back(t_env_list **lst, t_env_list *new);

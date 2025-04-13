@@ -50,7 +50,7 @@ cd
 minishell: cd: No such file or directory
 the cd dose not work when the chdir fail bruhhh
 ---------------------------------------------------------------------------------------
-env rifj
+env rifj  ✅
 bash: env: No such file or directory
 our minishell:
 work hhh

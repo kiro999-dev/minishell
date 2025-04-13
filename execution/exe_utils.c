@@ -47,8 +47,7 @@ char	*get_path(t_env_list *env, char *cmd)
 	}
     if (!env)
     {
-        printf("minishell : PATH not set up!\n");
-        exit(1);
+        return (NULL);
     }
 	return (prepare_path(env->var + 5, cmd));
 }
@@ -97,7 +96,7 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
 	if (!ft_strncmp(cmd->cmd[0], "export", 7))
 		f_export(cmd->cmd, &data_exec->e);
 	else if (!ft_strncmp(cmd->cmd[0], "env", 4))
-		f_env(data_exec->e);
+		f_env(data_exec->e, cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "unset", 6))
 		f_unset(&data_exec->e, cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "cd", 3))

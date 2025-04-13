@@ -64,7 +64,7 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
     env = env_list_to_array(e);
     if (!path || !env)
     {
-        printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
+        printf("minishell: %s: No such file or directory\n", cmd_lst->cmd[0]);
         if (pid == 0)
             exit(1);
         else 
@@ -74,21 +74,28 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
         exit(1);
 
     execve(path, cmd_lst->cmd, env);
-    printf("minishell: %s: command not found\n", cmd_lst->cmd[0]);
+    printf("minishell: %s: No such file or directory\n", cmd_lst->cmd[0]);
     if (pid == 0)
         exit(1);
     return ;
 }
 
 
-int check_no_cmd(t_exc_lits *head)
+int check_no_cmd(t_exc_lits *head, t_env_list *e)
 {
+    int out;
+
     if (!head->cmd && !head->head_files)
         return (0);
     else if (!head->cmd && head->head_files)
     {
         handle_redirection(head);
         return (0);
+    }
+    if (head->cmd && !get_path(e, head->cmd[0]))
+    {
+        apply_output_redirection(&out, head->head_files);
+        close(out);
     }
     return (1);
 }
@@ -101,7 +108,7 @@ void single_cmd(t_data_parsing *data_exec)
     int         status;
     
     head = data_exec->head_exe;
-    if (!head || check_no_cmd(head) == 0)
+    if (!head || check_no_cmd(head, data_exec->e) == 0)
         return;
     if (is_builtin(head->cmd[0]))
     {
@@ -147,7 +154,7 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
         dup2(pipe_fd[1], STDOUT_FILENO);
         close(pipe_fd[1]);
     }
-    if (check_no_cmd(cmd))
+    if (check_no_cmd(cmd, data_exec->e))
     {
         if (is_builtin(cmd->cmd[0]))
         {
@@ -156,7 +163,7 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
             exec_builtin(cmd, data_exec);
             exit(0);
         }
-        else if (check_no_cmd(cmd))
+        else
             run_command(data_exec->e, cmd, 0);
     }
     else
