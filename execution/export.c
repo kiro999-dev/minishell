@@ -163,7 +163,6 @@ int check_append(t_env_list *env, char *var)
     }
     return (0);
 }
-
 void add_var_2_env(char *cmd, t_env_list **env)
 {
     t_env_list *new;
@@ -176,7 +175,6 @@ void add_var_2_env(char *cmd, t_env_list **env)
         return;
     else if (if_key_exist == -1)
         cmd = trim_plus_sign(cmd);
-    // printf("%s\n", cmd);
     new = new_node(cmd);
     if (!new)
         return;

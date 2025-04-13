@@ -4,8 +4,8 @@ SRC = parsing/minishell.c parsing/lexer.c parsing/strings.c parsing/linked_lists
  parsing/genrate_exe_lits.c parsing/expanding2.c \
  parsing/expanding1.c parsing/expanding_utilis.c  parsing/expanding3.c \
  execution/cd.c execution/echo.c execution/export.c execution/strings_2.c execution/env_utils.c execution/unset.c \
- execution/exit.c execution/executor.c  execution/itoa.c  execution/signals.c parsing/expanding_here_doc1.c parsing/expanding_here_doc2.c \
- execution/files_utils.c execution/herdoc.c execution/exe_utils.c
+ execution/exit.c execution/executor.c  execution/signals.c parsing/expanding_here_doc1.c parsing/expanding_here_doc2.c \
+ execution/files_utils.c execution/herdoc.c execution/exe_utils.c execution/itoa.c execution/ft_atoi.c
 
 OBJ = $(SRC:.c=.o)
 INC = parsing/minishell.h 

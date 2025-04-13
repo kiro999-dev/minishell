@@ -66,6 +66,29 @@ void handle_env_i(t_env_list **lst)
     add_back(lst, new);  
 }
 
+char *handle_shlvl(char *lvl)
+{
+    char *equal_sign;
+    char *value_str;
+    int value;
+    char *new_value_str;
+    char *result;
+
+    equal_sign = ft_strchr(lvl, '=');
+    if (!equal_sign || !*(equal_sign + 1))
+        return ft_strdup("SHLVL=1");
+
+    value_str = equal_sign + 1;
+    value = ft_atoi(value_str);
+    value++;
+
+    new_value_str = ft_itoa(value);
+    result = ft_strjoin("SHLVL=", new_value_str);
+
+    return result;
+}
+
+
 t_env_list *init_env(char *ev[])
 {
     int i = 0;
@@ -78,7 +101,10 @@ t_env_list *init_env(char *ev[])
     {
         while (ev[i])
         {
-            new = new_node(ft_strdup(ev[i]));
+            if (equal_strcmp(ev[i], "SHLVL") == 0)
+                new = new_node(handle_shlvl(ev[i]));
+            else 
+                new = new_node(ft_strdup(ev[i]));
             if (!new)
             {
                 printf("Memory allocation failed!\n");

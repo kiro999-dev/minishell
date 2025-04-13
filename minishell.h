@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/13 17:00:13 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/13 19:08:33 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,10 @@ char	*combine_parts(char *p, char *e, char *s);
 void	process_quote(char *s, int *i, char **cpy, char quote);
 char	*process_unquoted(char *s, int *i);
 // execution
+void add_var_2_env(char *cmd, t_env_list **env);
+int	is_num(char c);
+int	ft_atoi(const char *nptr); 
+void get_key_value(char *var, char **key, char **value);
 char *prepare_path(char *path, char *cmd);
 char	*get_path(t_env_list *env, char *cmd);
 char	**env_list_to_array(t_env_list *list);
