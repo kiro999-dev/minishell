@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/13 19:08:33 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/14 11:46:40 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <sys/ioctl.h>
 #include <signal.h>
 
-extern int g_status;
 
 typedef struct s_env_list
 {

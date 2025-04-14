@@ -77,11 +77,14 @@ char *handle_shlvl(char *lvl)
     equal_sign = ft_strchr(lvl, '=');
     if (!equal_sign || !*(equal_sign + 1))
         return ft_strdup("SHLVL=1");
-
     value_str = equal_sign + 1;
     value = ft_atoi(value_str);
     value++;
-
+    if (value > 9998)
+    {
+        printf("bash: warning: shell level %d too high, resetting to 1\n", value);
+        value = 1;
+    }
     new_value_str = ft_itoa(value);
     result = ft_strjoin("SHLVL=", new_value_str);
 

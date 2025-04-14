@@ -13,6 +13,7 @@
         "type_traits": "c",
         "utility": "c",
         "variant": "c",
-        "numbers": "c"
+        "numbers": "c",
+        "ioctl.h": "c"
     }
 }

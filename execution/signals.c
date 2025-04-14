@@ -1,6 +1,15 @@
 #include "../minishell.h"
 
-int g_status = 0;
+
+int exit_status(int stat, int flag)
+{
+	static int e_status = 0;
+	
+	if (flag == 1)
+		e_status = stat;
+	return (e_status);
+}
+
 
 int exit_herdoc(int x, int flag)
 {
@@ -20,16 +29,11 @@ void	handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		g_status = SIGINT;
 	}
 }
 
 void	signals_handling(void)
 {
-	// int tty_fd;
-	// tty_fd = open("/dev/tty", O_RDONLY);
-	// if (tty_fd != -1)
-	// 	dup2(tty_fd, 0);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &handler);
 }
@@ -39,6 +43,7 @@ void heredoc_handler(int sig)
 {
     (void)sig;
 	exit_herdoc(1, 1);
+	exit_status(130, )
 	ioctl(0, TIOCSTI, "\n");
     rl_replace_line("", 0);
     rl_on_new_line();          
@@ -67,12 +72,12 @@ int check_exit(int status)
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
     {
         printf("\n");
-        g_status = 128 + SIGINT;
+        exit_status(128 + WTERMSIG(status), 1);
 		spec = 1;
     }
     else if (WIFEXITED(status))
     {
-        g_status = WEXITSTATUS(status);
+        exit_status(WEXITSTATUS(status), 1);
     }
     signals_handling();
 	return (spec);

@@ -163,6 +163,7 @@ int check_append(t_env_list *env, char *var)
     }
     return (0);
 }
+
 void add_var_2_env(char *cmd, t_env_list **env)
 {
     t_env_list *new;
@@ -230,3 +231,4 @@ void f_export(char **cmd, t_env_list **ev)
         }
     }
 }
+

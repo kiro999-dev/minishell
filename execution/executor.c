@@ -40,7 +40,10 @@ void builtins_process(t_data_parsing *data)
     }
 
     if (handle_redirection(cmd))
+    {
+        exit_status(1, 1);
         return;
+    }
 
     exec_builtin(cmd, data);
 

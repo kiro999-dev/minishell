@@ -18,7 +18,7 @@ int is_numeric(const char *str)
     return (1);
 }
 
-// void f_exit(char **cmd, t_env_list *env, t_garbage_collector *gc)
+
 void f_exit(char **cmd, t_data_parsing *data_exe)
 
 {

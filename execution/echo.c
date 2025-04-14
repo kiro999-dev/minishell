@@ -9,8 +9,6 @@ void echo_putstr(char *s)
     i = 0;
     while (s[i])
     {
-        if (s[i] == '\\')
-            i++;
         write(1, s + i, 1);
         i++;
     }
@@ -43,14 +41,12 @@ void f_echo(char **cmd)
     nwl = 0;
     has_content = 0;
     
-    // Check for -n flags
     while (cmd[i] && echo_flag(cmd[i]))
     {
         nwl = 1;
         i++;
     }
-    
-    // Print the arguments
+
     while (cmd[i])
     {
         if (has_content)
@@ -59,8 +55,7 @@ void f_echo(char **cmd)
         has_content = 1;
         i++;
     }
-    
-    // Print newline unless -n was specified
+
     if (!nwl)
         write(1, "\n", 1);
 }
