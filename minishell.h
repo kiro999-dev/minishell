@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/14 11:46:40 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/14 17:15:29 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,11 @@ typedef struct s_data_parsing
 	t_gc_collector *gc_head;
 	char *buff;
 	t_file *head_file;
+	char *p_pwd;
 }t_data_parsing;
 
 
+int exit_status(int stat, int flag);
 void	handler(int sig);
 void	signals_handling(void);
 void 	heredoc_signals(void);
@@ -223,13 +225,13 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 t_env_list *init_env(char *ev[]);
 int     equal_strcmp(const char *s1, const char *s2);
 void    print_export(t_env_list *e);
-void f_export(char **cmd, t_env_list **ev);
+void f_export(char **cmd, t_env_list **ev, int i);
 void    export_putstr(char *str);
 int     size_2d(char **arr);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
-void f_cd(char **cmd, t_env_list **env);
+void f_cd(char **cmd, t_data_parsing *data);
 void	echo_putstr(char *s);
-void f_pwd(t_env_list *env);
+void f_pwd(t_data_parsing *data);
 void    f_echo(char **av);
 void f_env(t_env_list *env, t_exc_lits *cmd);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);

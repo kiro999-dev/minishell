@@ -75,7 +75,7 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
             fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (fd == -1)
             {
-                // need to be handled !! it hang up
+                exit_status(1, 1);
                 break;
             }
             while (1)
@@ -117,7 +117,7 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
     }
     if (exit_herdoc(0, 0) == 1)
         i = 0;
-    else 
+    else
         i = 1; 
     signals_handling();
     return (i); 

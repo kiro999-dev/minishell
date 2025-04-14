@@ -89,15 +89,19 @@ int check_no_cmd(t_exc_lits *head, t_env_list *e)
     int out;
 
     if (!head->cmd && !head->head_files)
+    {
+        exit_status(0, 1);
         return (0);
+    }
     else if (!head->cmd && head->head_files)
     {
-        handle_redirection(head);
+        exit_status(handle_redirection(head), 1);
         return (0);
     }
     if (head->cmd && !get_path(e, head->cmd[0]))
     {
         apply_output_redirection(&out, head->head_files);
+        exit_status(127, 1);
         close(out);
     }
     return (1);
@@ -253,7 +257,7 @@ void execution(t_data_parsing *data_exec)
     cmd_lst = data_exec->head_exe;
     if (!cmd_lst)
         return;
-    if (!process_heredocs(cmd_lst,data_exec->e))
+    if (!process_heredocs(cmd_lst, data_exec->e))
         return ;
     if (cmds_size(cmd_lst) == 1)
         single_cmd(data_exec);

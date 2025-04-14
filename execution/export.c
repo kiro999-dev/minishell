@@ -204,14 +204,46 @@ t_env_list *copy_list(t_env_list *env)
     return new_list;
 }
 
-void f_export(char **cmd, t_env_list **ev)
+char *get_key(char *str)
 {
+    char *tmp = ft_strchr(str, '=');
+    *tmp = '\0';
+
+    return(str);
+}
+
+
+void handle_unvalid_key(char *cmd, t_env_list **env)
+{
+    char **splited_value;
+    char *tmp;
     int i;
+
+    tmp = ft_strchr(cmd, '=');
+    if (!tmp)
+    {
+        printf("bash: export: `%s': not a valid identifier\n", cmd);
+        return ;
+    }
+    splited_value = ft_split(tmp + 1, " ");
+    if (!splited_value)
+        return ;
+    i = 1;
+    if (ft_isspace(*(tmp + 1)) == 1)
+        i--;
+    while (splited_value[i])
+    {
+        add_var_2_env(splited_value[i], env);
+        i++;
+    }
+}
+
+void f_export(char **cmd, t_env_list **ev, int i)
+{
     t_env_list *tmp;
 
     if (!cmd)
         exit(1);
-    i = -1;
     if (size_2d(cmd) == 1)
     {
         tmp = copy_list(*ev);
@@ -220,15 +252,13 @@ void f_export(char **cmd, t_env_list **ev)
     }
     else
     {
-        i = 1;
         while (cmd[i])
         {
             if (!valid_key(cmd[i]))
-                printf("minishell: export: `%s': not a valid identifier\n", cmd[i]);
+                handle_unvalid_key(cmd[i], ev);
             else
                 add_var_2_env(cmd[i], ev);
             i++;    
         }
     }
 }
-

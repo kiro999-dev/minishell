@@ -26,6 +26,7 @@ void	handler(int sig)
 	printf("\n");
 	if (sig == SIGINT)
 	{
+		exit_status(130, 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
@@ -43,7 +44,7 @@ void heredoc_handler(int sig)
 {
     (void)sig;
 	exit_herdoc(1, 1);
-	exit_status(130, )
+	exit_status(130, 1);
 	ioctl(0, TIOCSTI, "\n");
     rl_replace_line("", 0);
     rl_on_new_line();          

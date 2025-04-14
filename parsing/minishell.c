@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/11 15:50:21 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/14 16:38:10 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	signals_handling();
+	char *tmp = getcwd(NULL, 0);
+	data.p_pwd = ft_strdup(tmp);
+	free(tmp);
 	while (1)
 	{
 		data.buff = readline("$minishell> ");
@@ -103,5 +106,6 @@ int	main(int argc, char **argv, char **env)
 			data_init(&data, env, 0);
 	}
 	gc_malloc(0, 0);
+	// free(data.p_pwd);
 	return (0);
 }
