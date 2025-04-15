@@ -103,7 +103,7 @@ int check_no_cmd(t_exc_lits *head, t_env_list *e)
         apply_output_redirection(&out, head->head_files);
         exit_status(127, 1);
         close(out);
-        printf("%s: command not found\n", head->cmd[0]);
+        write(2, "minishell: command not found\n", 30);
         return (0);
     }
     return (1);

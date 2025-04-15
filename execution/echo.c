@@ -40,13 +40,11 @@ void f_echo(char **cmd)
     i = 1;
     nwl = 0;
     has_content = 0;
-    
     while (cmd[i] && echo_flag(cmd[i]))
     {
         nwl = 1;
         i++;
     }
-
     while (cmd[i])
     {
         if (has_content)
@@ -55,7 +53,7 @@ void f_echo(char **cmd)
         has_content = 1;
         i++;
     }
-
     if (!nwl)
         write(1, "\n", 1);
+    exit_status(0, 1);
 }

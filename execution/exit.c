@@ -21,26 +21,27 @@ int is_numeric(const char *str)
 
 void f_exit(char **cmd, t_data_parsing *data_exe, int child)
 {
-    int exit_status;
+    int e_status;
     
-    exit_status = 0;
+    e_status = 0;
     if (child != 1)
         printf("exit\n");
     if (cmd[1])
     {
+        if (cmd[2])
+        {
+            write(2, "minishell : exit : too many arguments\n", 39);
+            exit_status(1, 1);
+            return;
+        }
         if (!is_numeric(cmd[1]))
         {
             write(2, "minishell : exit : numeric argument required\n", 46);
-            exit_status = 255;
-        }
-        else if (cmd[2])
-        {
-            write(2, "minishell : exit : too many arguments\n", 39);
-            return;
+            e_status = 2;
         }
         else
-        exit_status = ft_atoi(cmd[1]) % 256;
+        e_status = ft_atoi(cmd[1]) % 256;
     }
     free_gc(&data_exe->gc_head);
-    exit(exit_status);
+    exit(e_status);
 }

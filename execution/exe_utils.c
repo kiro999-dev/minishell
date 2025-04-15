@@ -93,7 +93,7 @@ int	is_builtin(char *cmd)
 
 void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child)
 {
-	if (!ft_strncmp(cmd->cmd[0], "export", 7))
+	if (!ft_strncmp(cmd->cmd[0], "export", 7)) //done
 		f_export(cmd->cmd, &data_exec->e, 1);
 	else if (!ft_strncmp(cmd->cmd[0], "env", 4)) //done
 		f_env(data_exec->e, cmd);

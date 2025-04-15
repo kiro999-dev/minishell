@@ -46,26 +46,24 @@ void update_pwd(t_data_parsing *data, const char *old_pwd, char *new)
         perror("minishell: cd: getcwd error");
         return;
     }
+    exit_status(0, 1);
     replace_key_value(&data->e, "OLDPWD", old_pwd);
     replace_key_value(&data->e, "PWD", new);
-
 }
 
 
 void handle_cd_error(const char *path)
 {
     if (access(path, F_OK) == -1)
-        printf("minishell: cd: %s: No such file or directory\n", path);
+        write(2, "minishell: cd: No such file or directory\n", 42);
     else if (access(path, X_OK) == -1)
-        printf("minishell: cd: %s: Permission denied\n", path);
+        write(2, "minishell: cd: Permission denied\n", 34);
     else
-        printf("minishell: cd: %s: Not a directory\n", path);
+        write(2, "minishell: cd: Not a directory\n", 32);
+    exit_status(1, 1);
 }
 
 
-
-
-// leaks need to be heandled with getcwd asap !!!!!!!
 void f_cd(char **cmd, t_data_parsing *data)
 {
     char *path;
@@ -79,7 +77,8 @@ void f_cd(char **cmd, t_data_parsing *data)
     size = size_2d(cmd);
     if (size > 2)
     {
-        printf("minishell: cd: too many arguments\n");
+        write(2, "minishell: cd: too many arguments\n", 35);
+        exit_status(1, 1);
         return;
     }
     old_pwd = getcwd(NULL, 0);
@@ -89,7 +88,14 @@ void f_cd(char **cmd, t_data_parsing *data)
         data->p_pwd = ft_strjoin(data->p_pwd, ft_strjoin("/", cmd[1]));
         update_pwd(data, old_tmp, data->p_pwd);
         chdir(cmd[1]);
-        printf("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
+        tmp = getcwd(NULL, 0);
+        if (tmp)
+        {
+            data->p_pwd = ft_strdup(tmp);
+            free(tmp);
+        }
+        else
+            write(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 109);
         return;
     }
     path = cmd[1];
@@ -111,22 +117,23 @@ void f_pwd(t_data_parsing *data)
 {
 
     printf("%s\n", data->p_pwd);
+    exit_status(0, 1);
 
 }
 
 void f_env(t_env_list *env, t_exc_lits *cmd)
 {
-    if (!cmd || !env) 
+    if (!cmd || !env)
         return ;
     if (cmd->cmd[1] != NULL)
     {
-        printf("minishell: '%s': NO such file or directory\n", cmd->cmd[1]);
+        write(2, "minishell: NO such file or directory\n", 38);
         exit_status(127, 1);
         return ;
     }
     if (!env)
     {
-        printf("env not found!\n");
+        write(2, "env not found!\n", 16);
         exit_status(127, 1);
         return ;
     }
@@ -136,4 +143,5 @@ void f_env(t_env_list *env, t_exc_lits *cmd)
             printf("%s\n", env->var);
         env = env->next;
     }
+    exit_status(0, 1);
 }

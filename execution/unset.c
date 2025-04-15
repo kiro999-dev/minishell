@@ -50,4 +50,5 @@ void f_unset(t_env_list **env, char **var)
         if (target)
             pop_node(env, target, prev);
     }
+    exit_status(0, 1);
 }
