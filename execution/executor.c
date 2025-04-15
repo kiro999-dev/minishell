@@ -13,8 +13,8 @@ int handle_redirection(t_exc_lits *cmd)
     apply_input_redirection(&last_input_fd, file);
     if (cmd_in_out_redirection(file, 0) && last_input_fd == -1)
         return (1);
-
-    apply_output_redirection(&last_output_fd, file);
+    if (apply_output_redirection(&last_output_fd, file))
+        return (1);
     
     if (cmd->heredoc_filename != NULL)
         last_input_fd = open(cmd->heredoc_filename, O_RDONLY);
@@ -45,7 +45,7 @@ void builtins_process(t_data_parsing *data)
         return;
     }
 
-    exec_builtin(cmd, data);
+    exec_builtin(cmd, data, 0);
 
     if (dup2(saved_stdin, STDIN_FILENO) == -1)
         perror("minishell: stdin restore");
@@ -70,7 +70,7 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
         printf("minishell: %s: No such file or directory\n", cmd_lst->cmd[0]);
         if (pid == 0)
             exit(1);
-        else 
+        else
             return ;
     }
     if(handle_redirection(cmd_lst))
@@ -98,11 +98,13 @@ int check_no_cmd(t_exc_lits *head, t_env_list *e)
         exit_status(handle_redirection(head), 1);
         return (0);
     }
-    if (head->cmd && !get_path(e, head->cmd[0]))
+    if (head->cmd && !is_builtin(head->cmd[0]) && !get_path(e, head->cmd[0]))
     {
         apply_output_redirection(&out, head->head_files);
         exit_status(127, 1);
         close(out);
+        printf("%s: command not found\n", head->cmd[0]);
+        return (0);
     }
     return (1);
 }
@@ -167,7 +169,7 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
         {
             if (handle_redirection(cmd))
                 exit(1);
-            exec_builtin(cmd, data_exec);
+            exec_builtin(cmd, data_exec, 1);
             exit(0);
         }
         else

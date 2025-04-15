@@ -121,11 +121,13 @@ void f_env(t_env_list *env, t_exc_lits *cmd)
     if (cmd->cmd[1] != NULL)
     {
         printf("minishell: '%s': NO such file or directory\n", cmd->cmd[1]);
+        exit_status(127, 1);
         return ;
     }
     if (!env)
     {
         printf("env not found!\n");
+        exit_status(127, 1);
         return ;
     }
     while (env)

@@ -5,7 +5,7 @@ bash: ./ls: Permission denied
 after chmod +x:
 should be return a empty line not command not found
 --------------------------------------------------------------
-ls | exit 54 54 
+ls | exit 54 54  ✅
 exit <--- dont show this 
 minishell: exit: too many arguments
 bash :
@@ -13,7 +13,7 @@ zkhourba@e1r7p1:~/minishell00$ ls | exit 45 54
 bash: exit: too many arguments
 zkhourba@e1r7p1:~/minishell00$ 
 -------------------------------------------------------------------
-➜  minishell00 git:(main) ✗ env -i ./minishell 
+➜  minishell00 git:(main) ✗ env -i ./minishell ✅
 $minishell> export
 declare -x PWD="/home/onajem/Desktop/minishell"
 declare -x SHLVL="1"
@@ -25,7 +25,7 @@ should the command work
 echo - 
 should the "-"printed
 ------------------------------------------------------
-handle
+handle ✅
  exit 999999999999999999999999999999999999999999999
 exit
 exit
@@ -34,7 +34,7 @@ bash: exit: 99999999999999999999999999999999999999: numeric argument required
 ./minishell | ./minishell
 check is tty
 --------------------------------------------------------------------
- cd 1/1/1/1/1/1/1/1/1/1/1/
+ cd 1/1/1/1/1/1/1/1/1/1/1/ 
  then :
  rm -rf 1./
  the bash:

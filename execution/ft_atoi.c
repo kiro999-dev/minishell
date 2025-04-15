@@ -41,13 +41,18 @@ int	ft_atoi(const char *nptr)
 {
 	int			sign;
 	long long	sum;
+	const char *tmp;
 
 	sum = 0;
+	tmp = nptr;
 	sign = num_start(&nptr);
 	while (is_num(*nptr))
 	{
 		if (check_overflow(sum, *nptr, sign) != 1)
-			return (check_overflow(sum, *nptr, sign));
+		{
+			printf("minishell: exit: %s: numeric argument required\n", tmp);
+			exit(2);
+		}
 		sum = sum * 10 + (*nptr - '0');
 		nptr++;
 	}

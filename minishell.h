@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/14 17:15:29 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/15 17:21:55 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,10 +203,10 @@ char *prepare_path(char *path, char *cmd);
 char	*get_path(t_env_list *env, char *cmd);
 char	**env_list_to_array(t_env_list *list);
 int	is_builtin(char *cmd);
-void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec);
+void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child);
 void apply_input_redirection(int *last_input_fd, t_file *file);
 int cmd_in_out_redirection(t_file *file, int red);
-void apply_output_redirection(int *last_output_fd, t_file *file);
+int apply_output_redirection(int *last_output_fd, t_file *file);
 void	hexa_format(unsigned int value, char *output);
 int process_heredocs(t_exc_lits *cmd,t_env_list *e);
 void set_final_redirections(int last_input_fd, int last_output_fd);
@@ -217,7 +217,7 @@ int	env_size(t_env_list *lst);
 int	cmds_size(t_exc_lits *lst);
 int	ft_isalnum(int ch);
 int	ft_isalpha(int c);
-void    f_exit(char **cmd, t_data_parsing *data_exe);
+void    f_exit(char **cmd, t_data_parsing *data_exe, int child);
 void    f_unset(t_env_list **env, char **var);
 char	*ft_strdup(const char *s1);
 char    *trim_plus_sign(char *key);

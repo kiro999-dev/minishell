@@ -5,9 +5,9 @@ void pop_node(t_env_list **env, t_env_list *to_pop, t_env_list *prev)
 {
     if (!to_pop)
         return ;
-    if (!equal_strcmp(to_pop->var, "SHLVL"))
+    if (!equal_strcmp(to_pop->var, "_"))
     {
-        to_pop->var = ft_strdup("SHLVL=0");
+        // to_pop->var = ft_strdup("SHLVL=0");
         return;
     }
     if (prev)

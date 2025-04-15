@@ -117,7 +117,7 @@ t_env_list *init_env(char *ev[])
             i++;
         }
     }
-
+    
     return env_list;
 }
 

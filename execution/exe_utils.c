@@ -91,22 +91,22 @@ int	is_builtin(char *cmd)
             !ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "stat", 4));
 }
 
-void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec)
+void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child)
 {
 	if (!ft_strncmp(cmd->cmd[0], "export", 7))
 		f_export(cmd->cmd, &data_exec->e, 1);
-	else if (!ft_strncmp(cmd->cmd[0], "env", 4))
+	else if (!ft_strncmp(cmd->cmd[0], "env", 4)) //done
 		f_env(data_exec->e, cmd);
-	else if (!ft_strncmp(cmd->cmd[0], "unset", 6))
+	else if (!ft_strncmp(cmd->cmd[0], "unset", 6)) //done
 		f_unset(&data_exec->e, cmd->cmd);
 	else if (!ft_strncmp(cmd->cmd[0], "cd", 3))
 		f_cd(cmd->cmd, data_exec);
-	else if (!ft_strncmp(cmd->cmd[0], "echo", 5))
+	else if (!ft_strncmp(cmd->cmd[0], "echo", 5)) //done
 		f_echo(cmd->cmd);
-	else if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
+	else if (!ft_strncmp(cmd->cmd[0], "pwd", 4)) //done
 		f_pwd(data_exec);
-    else if (!ft_strncmp(cmd->cmd[0], "exit", 5))
-        f_exit(cmd->cmd, data_exec);
+    else if (!ft_strncmp(cmd->cmd[0], "exit", 5)) // done
+        f_exit(cmd->cmd, data_exec, child);
 	else if (!ft_strncmp(cmd->cmd[0], "stat", 5))
         printf("-> %d\n", exit_status(0, 0));
 }

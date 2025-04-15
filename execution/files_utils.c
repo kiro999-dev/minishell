@@ -34,7 +34,7 @@ void apply_input_redirection(int *last_input_fd, t_file *file)
 
 }
 
-void apply_output_redirection(int *last_output_fd, t_file *file)
+int apply_output_redirection(int *last_output_fd, t_file *file)
 {
     while (file)
     {
@@ -51,12 +51,12 @@ void apply_output_redirection(int *last_output_fd, t_file *file)
             if (*last_output_fd == -1)
             {
                 printf("minishell: Bad file descriptor\n");
-                return ;
+                return (1);
             }
         }
         file = file->next;
     }
-
+    return (0);
 }
 
 
