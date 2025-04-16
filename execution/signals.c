@@ -70,7 +70,7 @@ int check_exit(int status)
 	int spec;
 
 	spec = 0;
-    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+    if (WIFSIGNALED(status))
     {
         printf("\n");
         exit_status(128 + WTERMSIG(status), 1);

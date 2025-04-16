@@ -31,7 +31,6 @@ void apply_input_redirection(int *last_input_fd, t_file *file)
         }
         file = file->next;
     }
-
 }
 
 int apply_output_redirection(int *last_output_fd, t_file *file)

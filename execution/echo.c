@@ -22,6 +22,8 @@ int echo_flag(char *str)
         return (0);
     
     i = 1;
+    if (str[0] == '-' && !str[1])
+        return (0);
     while (str[i])
     {
         if (str[i] != 'n')

@@ -214,6 +214,7 @@ void handle_unvalid_key(char *cmd, t_env_list **env)
     if (!tmp)
     {
         write(2, "minishell: export: not a valid identifier\n", 43);
+        exit_status(1, 1);
         return ;
     }
     splited_value = ft_split(tmp + 1, " ");

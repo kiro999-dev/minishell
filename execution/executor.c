@@ -10,6 +10,7 @@ int handle_redirection(t_exc_lits *cmd)
     if (!cmd)
         return (1);
     file = cmd->head_files;
+
     apply_input_redirection(&last_input_fd, file);
     if (cmd_in_out_redirection(file, 0) && last_input_fd == -1)
         return (1);
@@ -73,8 +74,6 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
         else
             return ;
     }
-    if(handle_redirection(cmd_lst))
-        exit(1);
 
     execve(path, cmd_lst->cmd, env);
     printf("minishell: %s: No such file or directory\n", cmd_lst->cmd[0]);
@@ -127,56 +126,54 @@ void single_cmd(t_data_parsing *data_exec)
     signal(SIGINT, SIG_IGN);
     pid = fork();
     if (pid == 0)
+    {
+        if(handle_redirection(head))
+            exit(1);
         run_command(data_exec->e, head, pid);
+    }
     else
     {
         waitpid(pid, &status, 0);
         check_exit(status);
     }
-    if (head->heredoc_filename)
-        unlink(head->heredoc_filename);
+    // if (head->heredoc_filename)
+    //     unlink(head->heredoc_filename);
 }
 
 
 
 static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_pipe_in, int pipe_fd[2])
 {
-    int hd_fd;
 
-    if (prev_pipe_in != -1)
+    if (handle_redirection(cmd))
+        exit(1);
+
+    if (!cmd->heredoc_filename && !cmd_in_out_redirection(data_exec->head_file, 0) && prev_pipe_in != -1)
     {
         dup2(prev_pipe_in, STDIN_FILENO);
         close(prev_pipe_in);
     }
-    else if (cmd->heredoc_filename)
-    {
-        hd_fd = open(cmd->heredoc_filename, O_RDONLY);
-        if (hd_fd != -1)
-        {
-            dup2(hd_fd, STDIN_FILENO);
-            close(hd_fd);
-        }
-    }
-    if (cmd->next)
+
+    if (cmd->next && !cmd_in_out_redirection(data_exec->head_file, 1))
     {
         close(pipe_fd[0]);
         dup2(pipe_fd[1], STDOUT_FILENO);
         close(pipe_fd[1]);
     }
-    if (check_no_cmd(cmd, data_exec->e))
+   
+    if (!check_no_cmd(cmd, data_exec->e))
+        exit(0);
+    
+    if (is_builtin(cmd->cmd[0]))
     {
-        if (is_builtin(cmd->cmd[0]))
-        {
-            if (handle_redirection(cmd))
-                exit(1);
-            exec_builtin(cmd, data_exec, 1);
-            exit(0);
-        }
-        else
-            run_command(data_exec->e, cmd, 0);
+        if (handle_redirection(cmd))
+            exit(1);
+        exec_builtin(cmd, data_exec, 1);
+        exit(0);
     }
     else
-        exit(0);
+        run_command(data_exec->e, cmd, 0);
+
 }
 
 
@@ -189,8 +186,6 @@ static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_l
         close(pipe_fd[1]);
         *prev_pipe_in = pipe_fd[0];
     }
-    if ((*cmd_lst)->heredoc_filename)
-        unlink((*cmd_lst)->heredoc_filename);
     *cmd_lst = (*cmd_lst)->next;
 }
 
@@ -206,8 +201,14 @@ void wait_multiple_childs(t_exc_lits *lst, int *pids, int cmd_len)
     {
         waitpid(pids[i], &status, 0);
         if (check_exit(status))
-            break;
+        break;
     }
+    // while (lst)
+    // {
+    //     if (lst->heredoc_filename)
+    //         unlink(lst->heredoc_filename);
+    //     lst = lst->next;
+    // }
 }
 
 static void execute_pipeline(t_data_parsing *data_exec)

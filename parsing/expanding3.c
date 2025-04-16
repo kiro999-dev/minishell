@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/12 18:31:30 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:47:30 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 	{
 		if (not_character_expand(head->val[*i]))
 		{
-			printf("hi\n");
 			*flag = 1;
 			break ;
 		}
