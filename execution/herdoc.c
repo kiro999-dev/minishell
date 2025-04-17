@@ -73,7 +73,9 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
         {
             flag = 0;
             fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            if (fd == -1)
+            cmd->heredoc_fd = open(filename, O_RDONLY | O_CREAT | O_TRUNC, 0644);
+            unlink(filename);
+            if (fd == -1 || cmd->heredoc_fd == -1)
             {
                 exit_status(1, 1);
                 break;
@@ -85,7 +87,6 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
                 {
                     close(fd);
                     free(line);
-                    unlink(filename);
                     break;
                 }
                 if(is_qouted(herdoc_head->limtter))
@@ -109,7 +110,6 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
                 }
             }
             close(fd);
-            cmd->heredoc_filename = filename; 
             herdoc_head = herdoc_head->next;
         }
         cmd = cmd->next;

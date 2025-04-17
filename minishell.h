@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/15 17:21:55 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/17 19:10:25 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_exc_lits
 	t_list_here_doc *head_here_doc;
 	int		in;
 	int		out;
-	char  *heredoc_filename;
+	int 	heredoc_fd;
 	struct s_exc_lits *next;
 	
 }t_exc_lits;

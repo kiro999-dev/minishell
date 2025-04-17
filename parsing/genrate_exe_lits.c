@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   genrate_exe_lits.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:44:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 16:33:30 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:10:37 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	generate_list(t_toknes_list *tokenz_head, t_exc_lits **exc_head)
 		node = processing_tokenz(&tokenz_head, &here_doc_head, &f_head);
 		node->head_files = f_head;
 		node->head_here_doc = here_doc_head;
-		node->heredoc_filename = NULL;
+		node->heredoc_fd = -1;
 		add_back_list(exc_head, node);
 		if (tokenz_head && tokenz_head->type == PIPE)
 			tokenz_head = tokenz_head->next;

@@ -12,13 +12,13 @@ int handle_redirection(t_exc_lits *cmd)
     file = cmd->head_files;
 
     apply_input_redirection(&last_input_fd, file);
+    if (cmd->heredoc_fd != -1)
+        last_input_fd = cmd->heredoc_fd;
     if (cmd_in_out_redirection(file, 0) && last_input_fd == -1)
         return (1);
     if (apply_output_redirection(&last_output_fd, file))
         return (1);
     
-    if (cmd->heredoc_filename != NULL)
-        last_input_fd = open(cmd->heredoc_filename, O_RDONLY);
     if (cmd->cmd)
         set_final_redirections(last_input_fd, last_output_fd);
     else
@@ -74,7 +74,6 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
         else
             return ;
     }
-
     execve(path, cmd_lst->cmd, env);
     printf("minishell: %s: No such file or directory\n", cmd_lst->cmd[0]);
     if (pid == 0)
@@ -136,8 +135,6 @@ void single_cmd(t_data_parsing *data_exec)
         waitpid(pid, &status, 0);
         check_exit(status);
     }
-    // if (head->heredoc_filename)
-    //     unlink(head->heredoc_filename);
 }
 
 
@@ -148,7 +145,7 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
     if (handle_redirection(cmd))
         exit(1);
 
-    if (!cmd->heredoc_filename && !cmd_in_out_redirection(data_exec->head_file, 0) && prev_pipe_in != -1)
+    if (cmd->heredoc_fd == -1 && !cmd_in_out_redirection(data_exec->head_file, 0) && prev_pipe_in != -1)
     {
         dup2(prev_pipe_in, STDIN_FILENO);
         close(prev_pipe_in);
