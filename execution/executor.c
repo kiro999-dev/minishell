@@ -200,12 +200,12 @@ void wait_multiple_childs(t_exc_lits *lst, int *pids, int cmd_len)
         if (check_exit(status))
         break;
     }
-    // while (lst)
-    // {
-    //     if (lst->heredoc_filename)
-    //         unlink(lst->heredoc_filename);
-    //     lst = lst->next;
-    // }
+    while (lst)
+    {
+        if (lst->heredoc_fd != -1)
+            close(lst->heredoc_fd);
+        lst = lst->next;
+    }
 }
 
 static void execute_pipeline(t_data_parsing *data_exec)

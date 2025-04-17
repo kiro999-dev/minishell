@@ -105,9 +105,9 @@ void f_cd(char **cmd, t_data_parsing *data)
         handle_cd_error(path);
         return;
     }
-    update_pwd(data, old_pwd, data->p_pwd);
     tmp = getcwd(NULL, 0);
     data->p_pwd = ft_strdup(tmp);
+    update_pwd(data, old_pwd, data->p_pwd);
     free(old_pwd);
     free(tmp);
 }

@@ -151,21 +151,3 @@ int	env_size(t_env_list *lst)
 	}
 	return (i);
 }
-// int compare_key(char **array, char *key)
-// {
-//     int i;
-
-//     if (!array || !key)
-//         return (0);
-//     i = -1;
-//     while (array[++i])
-//     {
-//         if (equal_strcmp(array[i], key, 1) == 0)
-//         {
-//             free(array[i]);
-//             array[i] = ft_strdup(key);
-//             return (1);
-//         }
-//     }
-//     return (0); 
-// }
