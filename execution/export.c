@@ -80,7 +80,7 @@ int replace_existing_key(t_env_list *env, char *key)
     {
         if (declared && equal_strcmp(current->var, key) == 0)
         {
-            // free(current->var);
+            current->undec = 0;
             current->var = ft_strdup(key);
             return (1);
         }
