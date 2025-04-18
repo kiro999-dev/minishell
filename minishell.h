@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/17 19:10:25 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/18 14:39:10 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_toknes
 	int				join_me;
 	int				ambiguous;
 	int 			len_expand;
+	int				flag_exit;
 }t_toknes_list;
 
 
@@ -189,7 +190,7 @@ int	handle_dollar_expansion_h(int *i, t_env_list *e,
 	char **val, int check);
 int		check_expand_h(char **val, t_env_list *e);
 char	*build_prefix(char *s2, int j, int n);
-char	*build_env_value(char *s, int flag);
+char	*build_env_value(char *s, int flag,int flag_exit);
 char	*build_suffix(char *s2, int j);
 char	*combine_parts(char *p, char *e, char *s);
 void	process_quote(char *s, int *i, char **cpy, char quote);

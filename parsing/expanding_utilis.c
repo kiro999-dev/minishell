@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/21 21:17:59 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:22:49 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	split_t2condi(char *s, int i)
 
 int	not_character_expand(char c)
 {
-	if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'))
+	if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '?'))
 		return (1);
 	return (0);
 }

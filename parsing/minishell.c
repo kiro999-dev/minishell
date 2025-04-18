@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/14 16:38:10 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/18 14:15:06 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	parsing(t_data_parsing *data)
 	}
 	else
 	{
+		exit_status(2,1);
 		free(data->buff);
 		return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/08 16:49:21 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:41:46 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,20 @@ char	*build_prefix(char *s2, int j, int n)
 	return (res);
 }
 
-char	*build_env_value(char *s, int flag)
+char	*build_env_value(char *s, int flag,int flag_exit)
 {
 	int		i;
 	char	*res;
 
 	i = 0;
 	res = ft_strdup("");
-	while (s[i] && s[i] != '=')
-		i++;
-	if (s[i])
-		i++;
+	if(!flag_exit)
+	{
+		while (s[i] && s[i] != '=')
+			i++;
+		if (s[i])
+			i++;
+	}
 	if (flag)
 		res = join_character(res, '\"');
 	while (s[i])
@@ -96,9 +99,8 @@ char	*expand_val(char *s, t_toknes_list *head, int j, int flag)
 	char	*p;
 	char	*e;
 	char	*suf;
-
 	p = build_prefix(head->val, j, head->len_expand);
-	e = build_env_value(s, flag);
+	e = build_env_value(s, flag,head->flag_exit);
 	suf = build_suffix(head->val, j);
 	return (combine_parts(p, e, suf));
 }

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:43:04 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/09 17:34:08 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:39:33 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*expand_val_h(char *s, char *val, int j, int len_expand)
 	char	*suf;
 
 	p = build_prefix(val, j, len_expand);
-	e = build_env_value(s, 0);
+	e = build_env_value(s, 0,0);
 	suf = build_suffix(val, j);
 	return (combine_parts(p, e, suf));
 }
