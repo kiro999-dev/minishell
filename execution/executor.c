@@ -133,7 +133,8 @@ void single_cmd(t_data_parsing *data_exec)
     else
     {
         waitpid(pid, &status, 0);
-        check_exit(status);
+        if (check_exit(status))
+            printf("\n");
     }
 }
 
@@ -145,13 +146,12 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
     if (handle_redirection(cmd))
         exit(1);
 
-    if (cmd->heredoc_fd == -1 && !cmd_in_out_redirection(data_exec->head_file, 0) && prev_pipe_in != -1)
+    if (cmd->heredoc_fd == -1 && !cmd_in_out_redirection(cmd->head_files, 0) && prev_pipe_in != -1)
     {
         dup2(prev_pipe_in, STDIN_FILENO);
         close(prev_pipe_in);
     }
-
-    if (cmd->next && !cmd_in_out_redirection(data_exec->head_file, 1))
+    if (cmd->next && !cmd_in_out_redirection(cmd->head_files, 1))
     {
         close(pipe_fd[0]);
         dup2(pipe_fd[1], STDOUT_FILENO);
@@ -183,6 +183,7 @@ static void parent_process(int *prev_pipe_in, int pipe_fd[2], t_exc_lits **cmd_l
         close(pipe_fd[1]);
         *prev_pipe_in = pipe_fd[0];
     }
+    
     *cmd_lst = (*cmd_lst)->next;
 }
 
@@ -190,6 +191,7 @@ void wait_multiple_childs(t_exc_lits *lst, int *pids, int cmd_len)
 {
     int status;
     int i;
+    int new_line;
 
     if (!lst || !pids || !cmd_len)
         return ;
@@ -197,9 +199,10 @@ void wait_multiple_childs(t_exc_lits *lst, int *pids, int cmd_len)
     while (++i < cmd_len)
     {
         waitpid(pids[i], &status, 0);
-        if (check_exit(status))
-        break;
+        new_line = check_exit(status);
     }
+    if (new_line)
+        printf("\n");
     while (lst)
     {
         if (lst->heredoc_fd != -1)

@@ -67,19 +67,17 @@ void default_signals(void)
 
 int check_exit(int status)
 {
-	int spec;
+    int spec = 0;
 
-	spec = 0;
     if (WIFSIGNALED(status))
     {
-        printf("\n");
+        if (WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT)
+            spec = 1;
         exit_status(128 + WTERMSIG(status), 1);
-		spec = 1;
     }
     else if (WIFEXITED(status))
-    {
         exit_status(WEXITSTATUS(status), 1);
-    }
+
     signals_handling();
-	return (spec);
+    return (spec); 
 }
