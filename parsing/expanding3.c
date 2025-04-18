@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/16 18:47:30 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/18 14:08:00 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,25 +90,28 @@ void	handle_dollar_expansion(int *i, t_env_list *e,
 	int		flag;
 	char	*expand;
 	int		found;
-
+	t_env_list *w;
+	
+	w = e;
 	found = 0;
 	expand = build_expand_string(i, head, &flag);
-	while (e)
+	while (w)
 	{
+		
 		head->len_expand = ft_strlen(expand);
-		if (strcmp_env(e->var, expand, ft_strlen(expand)))
+		if (strcmp_env(w->var, expand, ft_strlen(expand)))
 		{
 			found = 1;
-			head->val = expand_val(e->var, head, *i, flag3);
+			head->val = expand_val(w->var, head, *i, flag3);
 			if (flag)
 				check_is_expandig(head, e);
 			break ;
 		}
-		e = e->next;
+		w = w->next;
 	}
 	if (!found)
 	{
-		head->val = expand_val("", head, *i, flag3);
+		head->val = expand_val(ft_strdup(""), head, *i, flag3);
 		if (flag)
 			check_is_expandig(head, e);
 	}
