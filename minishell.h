@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 14:39:10 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:16:08 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,14 @@ char	*combine_parts(char *p, char *e, char *s);
 void	process_quote(char *s, int *i, char **cpy, char quote);
 char	*process_unquoted(char *s, int *i);
 // execution
+void sort_env(t_env_list **head);
+int replace_existing_key(t_env_list *env, char *key);
+int valid_key(char *var);
+void	add_back(t_env_list **lst, t_env_list *new);
+t_env_list	*lstlast(t_env_list *lst);
+void	handle_cd_error(const char *path);
+void	update_pwd(t_data_parsing *data, const char *old_pwd, char *new);
+void	replace_key_value(t_env_list **env, const char *key, const char *value);
 void add_var_2_env(char *cmd, t_env_list **env);
 int	is_num(char c);
 int	ft_atoi(const char *nptr); 
@@ -237,8 +245,6 @@ void    f_echo(char **av);
 void f_env(t_env_list *env, t_exc_lits *cmd);
 char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
 void	execution(t_data_parsing *data_exec);
-void add_back(t_env_list **lst, t_env_list *new);
 t_env_list	*new_node(void *content);
-
 
 #endif

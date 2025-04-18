@@ -1,7 +1,16 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/18 18:12:18 by onajem            #+#    #+#             */
+/*   Updated: 2025/04/18 18:12:46 by onajem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 static int	check_overflow(long long num, char digit, int is_neg)
 {
@@ -41,7 +50,7 @@ int	ft_atoi(const char *nptr)
 {
 	int			sign;
 	long long	sum;
-	const char *tmp;
+	const char	*tmp;
 
 	sum = 0;
 	tmp = nptr;

@@ -1,28 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/18 18:20:45 by onajem            #+#    #+#             */
+/*   Updated: 2025/04/18 18:21:05 by onajem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
-
-
-int exit_status(int stat, int flag)
-{
-	static int e_status = 0;
-	
-	if (flag == 1)
-		e_status = stat;
-	return (e_status);
-}
-
-
-int exit_herdoc(int x, int flag)
-{
-	static int stat = 0;
-
-	if (flag == 1)
-		stat = x;
-	return (stat);
-}
 
 void	handler(int sig)
 {
-	(void)sig;
 	printf("\n");
 	if (sig == SIGINT)
 	{
@@ -39,45 +30,25 @@ void	signals_handling(void)
 	signal(SIGINT, &handler);
 }
 
-
-void heredoc_handler(int sig)
+void	heredoc_handler(int sig)
 {
-    (void)sig;
+	(void)sig;
 	exit_herdoc(1, 1);
 	exit_status(130, 1);
 	ioctl(0, TIOCSTI, "\n");
-    rl_replace_line("", 0);
-    rl_on_new_line();          
-
+	rl_replace_line("", 0);
+	rl_on_new_line();
 }
 
-void heredoc_signals(void)
+void	heredoc_signals(void)
 {
 	exit_herdoc(0, 1);
-    signal(SIGINT, heredoc_handler);
-    signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, heredoc_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-
-void default_signals(void)
+void	default_signals(void)
 {
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
-}
-
-int check_exit(int status)
-{
-    int spec = 0;
-
-    if (WIFSIGNALED(status))
-    {
-        if (WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT)
-            spec = 1;
-        exit_status(128 + WTERMSIG(status), 1);
-    }
-    else if (WIFEXITED(status))
-        exit_status(WEXITSTATUS(status), 1);
-
-    signals_handling();
-    return (spec); 
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
