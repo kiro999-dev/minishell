@@ -87,3 +87,23 @@ $minishell>
 $minishell> 
 $minishell> s
 minishell: s: command not found
+---------------------------------------------------------------
+export k=========""$a sould not split ---> parser problem ):
+echo "$$$USER"
+export a='"ls"'
+---------------------------------------------------------------
+$minishell> sdgds
+minishell: command not found
+$minishell> 
+exit
+$minishell> echo $?
+0---> sould be 127
+
+---------------------
+$minishell> asddasd
+minishell: command not found
+$minishell> ls | exit
+$minishell> echo $?
+0 should be --> 127
+$minishell> 
+----------------------------
