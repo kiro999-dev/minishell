@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:43:04 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 14:39:33 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:27:26 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ static char	*build_expand_string_h(int *i, char *val, int *flag)
 	*flag = 0;
 	while (val[*i])
 	{
-		if (not_character_expand(val[*i]))
+		if(val[*i] == '?')
+		{
+			*flag = 1;
+			(*i)++;
+			return(ft_strdup("?"));
+		}
+		else if (not_character_expand(val[*i]))
 		{
 			*flag = 1;
 			break ;
@@ -75,7 +81,13 @@ int	handle_dollar_expansion_h(int *i, t_env_list *e,
 	found = handle_dollar_expansion_h2(i, e, val, v);
 	if (!found)
 	{
-		*val = expand_val_h("", v, *i, ft_strlen(expand));
+		if(expand[0] == '?')
+		{
+			*val = expand_val_status_h(ft_itoa(exit_status(0,0)), v, *i, ft_strlen(expand));
+			(*i)++;
+		}
+		else
+			*val = expand_val_h(ft_strdup(""), v, *i, ft_strlen(expand));
 		if (flag)
 			check_is_expandig_h(val, e, 1);
 	}
@@ -87,9 +99,25 @@ char	*expand_val_h(char *s, char *val, int j, int len_expand)
 	char	*p;
 	char	*e;
 	char	*suf;
+	int		flag;
+
+	flag = 0;
+	if(s[0] == '?')
+		flag = 1;
+	p = build_prefix(val, j, len_expand);
+	e = build_env_value(s, 0,flag);
+	suf = build_suffix(val, j);
+	return (combine_parts(p, e, suf));
+}
+char	*expand_val_status_h(char *s, char *val, int j, int len_expand)
+{
+	char	*p;
+	char	*e;
+	char	*suf;
+
 
 	p = build_prefix(val, j, len_expand);
-	e = build_env_value(s, 0,0);
+	e = build_env_value(s, 0,1);
 	suf = build_suffix(val, j);
 	return (combine_parts(p, e, suf));
 }

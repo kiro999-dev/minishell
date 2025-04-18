@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 16:42:00 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/09 17:31:16 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:27:18 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ static int	expand_in_double_quotes_h(char **val, t_env_list *e, int *i,
 		{
 			while ((*val)[*i] && (*val)[*i] == '$')
 				(*i)++;
-			if (not_character_expand((*val)[*i]))
+			if((*val)[*i] == '?')
+				check = handle_dollar_expansion_h(i, e, val, check);
+			else if (not_character_expand((*val)[*i]))
 				break ;
 			check = handle_dollar_expansion_h(i, e, val, check);
 		}
@@ -43,7 +45,9 @@ static int	expand_plain_h(char **val, t_env_list *e, int *i, int check)
 {
 	while ((*val)[*i] && (*val)[*i] == '$')
 		(*i)++;
-	if (!not_character_expand((*val)[*i]))
+	if((*val)[*i]=='?')
+		handle_dollar_expansion_h(i, e, val, check);
+	else if (!not_character_expand((*val)[*i]))
 		handle_dollar_expansion_h(i, e, val, check);
 	return (1);
 }

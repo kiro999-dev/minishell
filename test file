@@ -58,10 +58,17 @@ work hhh
 handle ambigous ??
 ----------------------------
 $minishell> execution/
+exit status should be 127
 minishell: execution/: command not found
 zkhourba@e1r7p1:~/minishell00$ execution/
 bash: execution/: Is a directory
-
+---------------------------------------
+$minishell> ''
+minishell: : No such file or directory
+$minishell> echo $?
+1
+exit status should be 127
+---------------------------------------
 $minishell> << a
 > asd
 > asd

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 14:42:16 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/18 22:27:56 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 	*flag = 0;
 	while (head->val[*i])
 	{
-		if (not_character_expand(head->val[*i]))
+		if(head->val[*i] == '?')
+		{
+			*flag = 1;
+			(*i)++;
+			return(ft_strdup("?"));
+		}
+		else if (not_character_expand(head->val[*i]))
 		{
 			*flag = 1;
 			break ;
@@ -28,6 +34,7 @@ static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 		expand = join_character(expand, head->val[*i]);
 		(*i)++;
 	}
+	
 	return (expand);
 }
 
@@ -97,6 +104,7 @@ void	handle_dollar_expansion(int *i, t_env_list *e,
 	expand = build_expand_string(i, head, &flag);
 	while (w)
 	{
+		head->flag_exit = 0;
 		head->len_expand = ft_strlen(expand);
 		if (strcmp_env(w->var, expand, ft_strlen(expand)))
 		{
