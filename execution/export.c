@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:58:31 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 18:07:38 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/18 19:23:00 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ void	f_export(char **cmd, t_env_list **ev, int i)
 	if (size_2d(cmd) == 1)
 	{
 		tmp = copy_list(*ev);
-		tmp = NULL;
 		if (!tmp)
 			return ;
 		sort_env(&tmp);
