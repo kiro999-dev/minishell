@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:43:04 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 22:27:26 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:56:22 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,14 @@ static char	*build_expand_string_h(int *i, char *val, int *flag)
 			(*i)++;
 			return(ft_strdup("?"));
 		}
-		else if (not_character_expand(val[*i]))
+		else if (not_character_expand(val[*i]) && (val[*i] != '\"' 
+			&& val[*i] != '\''))
 		{
 			*flag = 1;
 			break ;
 		}
+		else if(not_character_expand(val[*i]))
+			break;
 		expand = join_character(expand, val[*i]);
 		(*i)++;
 	}

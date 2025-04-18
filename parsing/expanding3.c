@@ -6,13 +6,13 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:38:26 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 22:27:56 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:52:54 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
+static char	*build_expand_string(int *i, t_toknes_list *head, int *flag) // test this because you modfie it 
 {
 	char	*expand;
 
@@ -22,15 +22,16 @@ static char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
 	{
 		if(head->val[*i] == '?')
 		{
-			*flag = 1;
 			(*i)++;
-			return(ft_strdup("?"));
+			return(*flag = 1,ft_strdup("?"));
 		}
-		else if (not_character_expand(head->val[*i]))
+		else if (not_character_expand(head->val[*i]) && (head->val[*i] != '\"' && head->val[*i] != '\''))
 		{
 			*flag = 1;
 			break ;
 		}
+		else if(not_character_expand(head->val[*i]))
+			break;
 		expand = join_character(expand, head->val[*i]);
 		(*i)++;
 	}
@@ -124,7 +125,9 @@ void	handle_dollar_expansion(int *i, t_env_list *e,
 			head->val = expand_val(ft_itoa(exit_status(0,0)), head, *i, flag3);
 		}
 		else
+		{
 			head->val = expand_val(ft_strdup(""), head, *i, flag3);
+		}
 		if (flag)
 			check_is_expandig(head, e);
 	}

@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:58:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 23:10:29 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:58:12 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ static void	expand_in_double_quotes(t_toknes_list *head, t_env_list *e, int *i)
 				(*i)++;
 			if(head->val[*i] == '?')
 				handle_dollar_expansion(i, e, head, 0);
-			else if (not_character_expand(head->val[*i]))
-				break ;
-			handle_dollar_expansion(i, e, head, 0);
+			else if (!not_character_expand(head->val[*i]))
+				handle_dollar_expansion(i, e, head, 0);
 		}
 		else if (head->val[*i] == '\"')
 			dq = 0;
@@ -50,9 +49,7 @@ static void	expand_plain(t_toknes_list *head, t_env_list *e, int *i)
 	while (head->val[*i] && head->val[*i] == '$')
 		(*i)++;
 	if(head->val[*i] == '?')
-	{
 		handle_dollar_expansion(i, e, head, 1);
-	}
 	else if (!not_character_expand(head->val[*i]))
 		handle_dollar_expansion(i, e, head, 1);
 }

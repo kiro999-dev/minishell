@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 22:27:52 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:43:04 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ char	*expand_val(char *s, t_toknes_list *head, int j, int flag)
 	char	*p;
 	char	*e;
 	char	*suf;
+	
 	
 	p = build_prefix(head->val, j, head->len_expand);
 	e = build_env_value(s, flag,head->flag_exit);
