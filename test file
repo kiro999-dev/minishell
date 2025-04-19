@@ -88,9 +88,10 @@ $minishell>
 $minishell> s
 minishell: s: command not found
 ---------------------------------------------------------------
-export k=========""$a sould not split ---> parser problem ):
-echo "$$$USER"
-export a='"ls"'
+export k=========""$a sould not split ---> parser problem ): wwwwwwwaaaaaaaaaaaaaaaaa
+echo "$$$USER" ✅
+export a='"ls"' its ur problem we need to talk about that :_)
+ls >| out       wtf is this hhhhh 9wadaaa hadiiiii
 ---------------------------------------------------------------
 $minishell> sdgds
 minishell: command not found
@@ -106,4 +107,27 @@ $minishell> ls | exit
 $minishell> echo $?
 0 should be --> 127
 $minishell> 
+
+--------------------
+ls | piehgdsioed
+minishell: command not found
+$minishell> echo $?
+0 should be 127
+
 ----------------------------
+export a="one two"
+$minishell> export s=============""$a
+ export
+ this leaks:
+
+Direct leak of 64 byte(s) in 2 object(s) allocated from:
+    #0 0x49a26d in malloc (/home/zkhourba/minishell00/minishell+0x49a26d)
+    #1 0x7f7155a99bac in xmalloc (/lib/x86_64-linux-gnu/libreadline.so.8+0x39bac)
+--------------------------------------------------
+problem in export:
+export a="one two" ok
+export s=$a ok
+ export $s=$a no 
+minishell: export: not a valid identifier NOOO
+bash work us NO :(
+--------------------------------------------------
