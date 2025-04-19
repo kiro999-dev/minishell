@@ -68,16 +68,16 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
     env = env_list_to_array(e);
     if (!path || !env)
     {
-        printf("minishell: %s: No such file or directory\n", cmd_lst->cmd[0]);
+        handle_cd_error(cmd_lst->cmd[0], 0);
         if (pid == 0)
             exit(1);
         else
             return ;
     }
     execve(path, cmd_lst->cmd, env);
-    printf("minishell: %s: No such file or directory\n", cmd_lst->cmd[0]);
+    handle_cd_error(cmd_lst->cmd[0], 0);
     if (pid == 0)
-        exit(1);
+        exit(127);
     return ;
 }
 
@@ -94,17 +94,16 @@ int check_no_cmd(t_exc_lits *head, t_env_list *e)
     else if (!head->cmd && head->head_files)
     {
         exit_status(handle_redirection(head), 1);
-        return (0);
+        return (exit_status(0, 0));
     }
     if (head->cmd && !is_builtin(head->cmd[0]) && !get_path(e, head->cmd[0]))
     {
         apply_output_redirection(&out, head->head_files);
         exit_status(127, 1);
         close(out);
-        write(2, "minishell: command not found\n", 30);
-        return (0);
+        return (127);
     }
-    return (1);
+    return (-1);
 }
 
 
@@ -115,7 +114,7 @@ void single_cmd(t_data_parsing *data_exec)
     int         status;
     
     head = data_exec->head_exe;
-    if (!head || check_no_cmd(head, data_exec->e) == 0)
+    if (!head || check_no_cmd(head, data_exec->e) != -1)
         return;
     if (is_builtin(head->cmd[0]))
     {
@@ -138,10 +137,9 @@ void single_cmd(t_data_parsing *data_exec)
     }
 }
 
-
-
 static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_pipe_in, int pipe_fd[2])
 {
+    int exit_child;
 
     if (handle_redirection(cmd))
         exit(1);
@@ -157,9 +155,9 @@ static void child_process(t_exc_lits *cmd, t_data_parsing *data_exec, int prev_p
         dup2(pipe_fd[1], STDOUT_FILENO);
         close(pipe_fd[1]);
     }
-   
-    if (!check_no_cmd(cmd, data_exec->e))
-        exit(0);
+    exit_child = check_no_cmd(cmd, data_exec->e);
+    if (exit_child != -1)
+        exit(exit_child);
     
     if (is_builtin(cmd->cmd[0]))
     {
@@ -196,6 +194,7 @@ void wait_multiple_childs(t_exc_lits *lst, int *pids, int cmd_len)
     if (!lst || !pids || !cmd_len)
         return ;
     i = -1;
+    status = 0;
     while (++i < cmd_len)
     {
         waitpid(pids[i], &status, 0);

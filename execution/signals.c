@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:20:45 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 18:21:05 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/19 17:51:02 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	handler(int sig)
 
 void	signals_handling(void)
 {
+	// signal(SIG, SIG_IGN);
+	
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &handler);
 }

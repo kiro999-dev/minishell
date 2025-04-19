@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:58:31 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/19 02:48:26 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/19 14:53:27 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ void	f_export(char **cmd, t_env_list **ev, int i)
 	{
 		while (cmd[i])
 		{
-			printf("%s\n",cmd[i]);
 			if (!valid_key(cmd[i]))
 				handle_unvalid_key(cmd[i], ev);
 			else

@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:38:03 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 17:58:47 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/19 16:40:39 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	f_exit(char **cmd, t_data_parsing *data_exe, int child)
 {
 	int	e_status;
 
-	e_status = 0;
+	e_status = exit_status(0, 0);
 	if (child != 1)
 		printf("exit\n");
 	if (cmd[1])

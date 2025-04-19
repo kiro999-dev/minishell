@@ -11,7 +11,7 @@ SRC = parsing/minishell.c parsing/lexer.c parsing/strings.c parsing/linked_lists
 OBJ = $(SRC:.c=.o)
 INC = parsing/minishell.h 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g 
 
 LDFLAGS = -lreadline            
 NAME = minishell
@@ -19,14 +19,12 @@ NAME = minishell
 
 all: $(NAME)
 
-# -fsanitize=address
-# -fsanitize=address
 $(NAME): $(OBJ)
 	$(CC) -fsanitize=address $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)  
 
 
 %.o: %.c $(INC)
-	$(CC) -fsanitize=address $(CFLAGS) -c $< -o $@ 
+	$(CC) fsanitize=address $(CFLAGS) -c $< -o $@ 
 
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:24:31 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 15:25:23 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/19 15:14:42 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,19 @@ void	update_pwd(t_data_parsing *data, const char *old_pwd, char *new)
 	replace_key_value(&data->e, "PWD", new);
 }
 
-void	handle_cd_error(const char *path)
+void	handle_cd_error(const char *path, int ex)
 {
 	if (access(path, F_OK) == -1)
-		write(2, "minishell: cd: No such file or directory\n", 42);
+		write(2, "minishell: No such file or directory\n", 38);
 	else if (access(path, X_OK) == -1)
-		write(2, "minishell: cd: Permission denied\n", 34);
+		write(2, "minishell: Permission denied\n", 30);
 	else
-		write(2, "minishell: cd: Not a directory\n", 32);
-	exit_status(1, 1);
+	{
+		if (!ex)
+			write(2, "minishell: is a directory\n", 27);
+		else
+			write(2, "minishell: Not a directory\n", 28);
+	}
+	if (ex)
+		exit_status(1, 1);
 }

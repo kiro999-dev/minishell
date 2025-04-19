@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:48:15 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 16:07:38 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/19 15:10:18 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	update_paths(t_data_parsing *data, char *old_pwd, char *path)
 	if (chdir(path) == -1)
 	{
 		free(old_pwd);
-		handle_cd_error(path);
+		handle_cd_error(path, 1);
 		return ;
 	}
 	tmp = getcwd(NULL, 0);

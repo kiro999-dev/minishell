@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:34:32 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 17:37:44 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/19 17:56:36 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ char	*prepare_path(char *path, char *cmd)
 		{
 			if (access(dest, X_OK) == 0)
 				return (dest);
+			write(2, "minishell: Permission denied\n", 30);
 			return (NULL);
 		}
 	}
+	write(2, "minishell: command not found\n", 30);
 	return (NULL);
 }
 
@@ -47,7 +49,10 @@ char	*get_path(t_env_list *env, char *cmd)
 		return (cmd);
 	else if (access(cmd, X_OK) == -1
 		&& (ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd, "/", 1) == 0))
+	{
+		write(2, "minishell: Permission denied\n", 30);
 		return (NULL);
+	}
 	while (env)
 	{
 		if (!ft_strncmp(env->var, "PATH=", 5))
@@ -56,6 +61,7 @@ char	*get_path(t_env_list *env, char *cmd)
 	}
 	if (!env)
 	{
+		write(2, "minishell: command not found\n", 30);
 		return (NULL);
 	}
 	return (prepare_path(env->var + 5, cmd));
@@ -94,7 +100,7 @@ int	is_builtin(char *cmd)
 	return (!ft_strncmp(cmd, "export", 7) || !ft_strncmp(cmd, "env", 4)
 		|| !ft_strncmp(cmd, "unset", 6) || !ft_strncmp(cmd, "cd", 3)
 		|| !ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "pwd", 4)
-		|| !ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "stat", 4));
+		|| !ft_strncmp(cmd, "exit", 5));
 }
 
 void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child)
@@ -113,6 +119,4 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child)
 		f_pwd(data_exec);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", 5))
 		f_exit(cmd->cmd, data_exec, child);
-	else if (!ft_strncmp(cmd->cmd[0], "stat", 5))
-		printf("-> %d\n", exit_status(0, 0));
 }
