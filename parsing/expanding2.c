@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/20 16:10:19 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/20 17:40:44 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,25 @@ char	*build_env_value(char *s, int flag,int flag_exit)
 
 	i = 0;
 	res = ft_strdup("");
-	if(!flag_exit)
+	if (!flag_exit)
 	{
 		while (s[i] && s[i] != '=')
 			i++;
 		if (s[i])
 			i++;
 	}
-	if (flag)
+	if (s[i] =='\"' && flag)
+		res = join_character(res, '\'');
+	else if (flag)
 		res = join_character(res, '\"');
 	while (s[i])
 	{
 		res = join_character(res, s[i]);
 		i++;
 	}
-	if (flag)
+	if(s[i-1] =='\"' && flag)
+		res = join_character(res, '\'');
+	else if (flag)
 		res = join_character(res, '\"');
 	return (res);
 }
@@ -56,7 +60,7 @@ char	*build_env_value(char *s, int flag,int flag_exit)
 char	*build_suffix(char *s2, int j)
 {
 	char	*res;
-	
+
 	res = ft_strdup("");
 	while (s2[j])
 	{

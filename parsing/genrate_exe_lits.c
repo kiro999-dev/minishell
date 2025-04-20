@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:44:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/20 16:57:53 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/20 17:19:48 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ t_exc_lits	*processing_tokenz(t_toknes_list **tokenz_head,
 			node->cmd = cmd;
 		}
 		if (*tokenz_head && isfile((*tokenz_head)->type,*tokenz_head))
-			add_list_file(f_head, (*tokenz_head)->val, (*tokenz_head)->type,(*tokenz_head)->ambiguous);
+			add_list_file(f_head, (*tokenz_head)->val,
+				(*tokenz_head)->type, (*tokenz_head)->ambiguous);
 		if (*tokenz_head && (*tokenz_head)->type == LIMTER)
 			here_doc_add(here_doc_head,
 				ft_strdup((*tokenz_head)->val), HER_DOC, 1);
