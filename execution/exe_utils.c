@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:34:32 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/19 17:56:36 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/20 18:37:57 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*get_path(t_env_list *env, char *cmd)
 {
 	if (!env || !cmd)
 		return (NULL);
-	if (access(cmd, X_OK) == 0)
+	if (!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
 		return (cmd);
 	else if (access(cmd, X_OK) == -1
 		&& (ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd, "/", 1) == 0))

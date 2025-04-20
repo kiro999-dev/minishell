@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:12:18 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/20 15:52:13 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/20 18:09:15 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	ft_atoi(const char *nptr)
 
 	sum = 0;
 	tmp = nptr;
+	if (!ft_strcmp((char *)nptr, "-9223372036854775808"))
+		exit(0);
 	sign = num_start(&nptr);
 	while (is_num(*nptr))
 	{
