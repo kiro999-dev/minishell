@@ -1,8 +1,0 @@
-execution
-hh
-Makefile
-minishell
-minishell.h
-out
-parsing
-test file
