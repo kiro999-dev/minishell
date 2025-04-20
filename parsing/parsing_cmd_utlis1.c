@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:42:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/18 14:03:09 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/20 21:43:34 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
-
+	if (!s1 || !s2)
+		return (1);
 	i = 0;
-	while (s1[i] && s2[i])
+	while (s1[i] || s2[i])
 	{
 		if (s1[i] != s2[i])
 			return (1);
@@ -95,7 +96,8 @@ char	**cmd_int(int count)
 
 	k = 0;
 	cmd = gc_malloc(sizeof(char *) * (count + 1), 1);
-	while (k < count)
+	cmd[count] = NULL;
+	while (k <= count)
 	{
 		cmd[k] = NULL;
 		k++;
