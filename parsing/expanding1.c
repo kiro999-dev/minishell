@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:58:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/19 01:53:20 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:55:09 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	expand_in_double_quotes(t_toknes_list *head, t_env_list *e, int *i)
 		{
 			while (head->val[*i] && head->val[*i] == '$')
 				(*i)++;
-			if(head->val[*i] == '?')
+			if (head->val[*i] == '?')
 				handle_dollar_expansion(i, e, head, 0);
 			else if (!not_character_expand(head->val[*i]))
 				handle_dollar_expansion(i, e, head, 0);
@@ -40,13 +40,13 @@ static void	expand_in_double_quotes(t_toknes_list *head, t_env_list *e, int *i)
 
 static void	expand_plain(t_toknes_list *head, t_env_list *e, int *i)
 {
-	if (split_t2condi(head->val, 0))
+	if (split_t2condi(head->val, 0) && head->val[0] == '$')
 		head->split_it2 = 1;
 	else
 		head->split_it = 1;
 	while (head->val[*i] && head->val[*i] == '$')
 		(*i)++;
-	if(head->val[*i] == '?')
+	if (head->val[*i] == '?')
 		handle_dollar_expansion(i, e, head, 1);
 	else if (!not_character_expand(head->val[*i]))
 		handle_dollar_expansion(i, e, head, 1);

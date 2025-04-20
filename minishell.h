@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/19 15:10:07 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:58:11 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_file
 {
 	char *file;
 	t_TOKENS type;
+	int 	ambigous;
 	struct s_file *next;
 	
 }t_file;
@@ -136,7 +137,7 @@ int 	split_t2condi(char *s,int i);
 int 	check_expand(t_toknes_list *head,t_env_list *e);
 int 	check_is_expandig(t_toknes_list *head, t_env_list *e);
 void 	expanding(t_toknes_list *token_head,t_env_list *e);
-void 	add_list_file(t_file **head, char *name, t_TOKENS type);
+void 	add_list_file(t_file **head, char *name, t_TOKENS type,int ambigous);
 void 	add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type, t_file *head_files);
 void 	add_back_list(t_exc_lits **head,t_exc_lits *node);
 t_exc_lits	*creat_node_exc(char **cmd, t_TOKENS type,
@@ -151,7 +152,7 @@ void 	*gc_malloc(size_t size,int flag);
 void	free_gc(t_gc_collector **gc_head);
 int 	is_token(char c);
 int 	isparam_for_file(t_tok *data_tok);
-int 	isfile(t_TOKENS type);
+int		isfile(t_TOKENS type,t_toknes_list *tokenz_head);
 int 	ft_isspace(int c);
 void 	token_add(t_toknes_list **head,t_tok *data_tok,t_TOKENS type);
 void 	add_token(t_tok *data_tok,t_toknes_list **head);

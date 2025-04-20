@@ -113,3 +113,6 @@ export s=$a ok
 minishell: export: not a valid identifier NOOO
 bash work us NO :(
 --------------------------------------------------
+exit -9223372036854775808
+handle this :)
+>> out 

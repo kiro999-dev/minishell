@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   genrate_exe_lits.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:44:48 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/17 19:10:37 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:57:53 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	isfile(t_TOKENS type)
+int	isfile(t_TOKENS type, t_toknes_list *tokenz_head)
 {
+	if (!(tokenz_head->val[0] == '\0' && tokenz_head->ambiguous))
+		tokenz_head->ambiguous = 0;
 	if (type == IS_FILE_IN || type == IS_FILE_OUT || type == IS_FILE_APPEND)
 		return (1);
 	return (0);
@@ -49,8 +51,8 @@ t_exc_lits	*processing_tokenz(t_toknes_list **tokenz_head,
 			cmd = cmd_case(tokenz_head);
 			node->cmd = cmd;
 		}
-		if (*tokenz_head && isfile((*tokenz_head)->type))
-			add_list_file(f_head, (*tokenz_head)->val, (*tokenz_head)->type);
+		if (*tokenz_head && isfile((*tokenz_head)->type,*tokenz_head))
+			add_list_file(f_head, (*tokenz_head)->val, (*tokenz_head)->type,(*tokenz_head)->ambiguous);
 		if (*tokenz_head && (*tokenz_head)->type == LIMTER)
 			here_doc_add(here_doc_head,
 				ft_strdup((*tokenz_head)->val), HER_DOC, 1);

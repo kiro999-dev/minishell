@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:01:50 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/03/23 21:17:56 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/20 16:59:30 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_file	*creat_node_file(char *name, t_TOKENS type)
 	return (node);
 }
 
-void	add_list_file(t_file **head, char *name, t_TOKENS type)
+void	add_list_file(t_file **head, char *name, t_TOKENS type,int ambigous)
 {
 	t_file	*node;
 	t_file	*tmp;
@@ -89,6 +89,7 @@ void	add_list_file(t_file **head, char *name, t_TOKENS type)
 	if (head == NULL)
 		return ;
 	node = creat_node_file(name, type);
+	node->ambigous = ambigous;
 	if (!node)
 		return ;
 	if (*head == NULL)
