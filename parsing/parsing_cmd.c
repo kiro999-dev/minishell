@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:40:57 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/19 03:21:57 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/20 21:52:53 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ void	process_default(t_toknes_list **current, char **cmd, int *i)
 	else
 		cmd[*i] = ft_strdup("");
 	*current = (*current)->next;
-	while (*current && (*current)->join_me && !(*current)->split_it)
+	while (*current && (*current)->join_me)
 	{
+		if((*current)->split_it && cmd[0] && (ft_strcmp(cmd[0],"export") && !(*current)->prv->join_me))
+			break;
 		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val);
 		*current = (*current)->next;
 	}
