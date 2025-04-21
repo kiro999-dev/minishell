@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:24:31 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/19 15:14:42 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/21 15:34:26 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void	replace_key_value(t_env_list **env, const char *key, const char *value)
 void	update_pwd(t_data_parsing *data, const char *old_pwd, char *new)
 {
 	if (!new)
-	{
-		perror("minishell: cd: getcwd error");
 		return ;
-	}
 	exit_status(0, 1);
 	replace_key_value(&data->e, "OLDPWD", old_pwd);
 	replace_key_value(&data->e, "PWD", new);

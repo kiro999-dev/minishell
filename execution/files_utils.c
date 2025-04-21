@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:07:48 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 18:12:09 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/21 18:39:19 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	apply_input_redirection(int *last_input_fd, t_file *file)
 			*last_input_fd = open(file->file, O_RDONLY);
 			if (*last_input_fd == -1)
 			{
-				write(2, "minishell: in: No such file or directory\n", 42);
+				handle_cd_error(file->file, 0);
 				return ;
 			}
 		}
@@ -44,13 +44,13 @@ void	apply_input_redirection(int *last_input_fd, t_file *file)
 	}
 }
 
-int	apply_output_redirection(int *last_out, t_file *file)
+int	apply_output_redirection(int *last_out, t_file *file, int single)
 {
 	while (file)
 	{
 		if (file->type == IS_FILE_OUT || file->type == IS_FILE_APPEND)
 		{
-			if (*last_out != -1)
+			if (*last_out != -1 && single == 1)
 				close(*last_out);
 			if (file->type == IS_FILE_OUT)
 				*last_out = open(file->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -58,7 +58,10 @@ int	apply_output_redirection(int *last_out, t_file *file)
 				*last_out = open(file->file, O_RDWR | O_CREAT | O_APPEND, 0644);
 			if (*last_out == -1)
 			{
-				printf("minishell: Bad file descriptor\n");
+				if (file->ambigous)
+					write(2, "minishell: ambiguous redirect\n", 31);
+				else
+					handle_cd_error(file->file, 0);
 				return (1);
 			}
 		}

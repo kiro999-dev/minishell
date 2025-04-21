@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 21:28:32 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/20 16:58:11 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:19:39 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ int	is_builtin(char *cmd);
 void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child);
 void apply_input_redirection(int *last_input_fd, t_file *file);
 int cmd_in_out_redirection(t_file *file, int red);
-int apply_output_redirection(int *last_output_fd, t_file *file);
+int	apply_output_redirection(int *last_out, t_file *file, int single);
 void	hexa_format(unsigned int value, char *output);
 int process_heredocs(t_exc_lits *cmd,t_env_list *e);
 void set_final_redirections(int last_input_fd, int last_output_fd);

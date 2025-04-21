@@ -6,7 +6,7 @@
 /*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:34:32 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/20 18:37:57 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/21 18:28:51 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*prepare_path(char *path, char *cmd)
 		}
 	}
 	write(2, "minishell: command not found\n", 30);
-	return (NULL);
+	exit(127);
 }
 
 char	*get_path(t_env_list *env, char *cmd)
