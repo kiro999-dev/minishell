@@ -10,7 +10,7 @@ SRC = parsing/minishell.c parsing/lexer.c parsing/strings.c parsing/linked_lists
 
 OBJ = $(SRC:.c=.o)
 INC = minishell.h 
-CC = cc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror -g 
 
 LDFLAGS = -lreadline            

@@ -68,7 +68,8 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
     env = env_list_to_array(e);
     if (!path || !env)
     {
-        handle_cd_error(cmd_lst->cmd[0], 0);
+        if (cmd_lst->cmd[0])
+            handle_cd_error(cmd_lst->cmd[0], 0);
         if (pid == 0)
             exit(1);
         else

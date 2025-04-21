@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:00:29 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/21 15:50:17 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/21 20:17:24 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*build_env_value(char *s, int flag,int flag_exit)
 		res = join_character(res, s[i]);
 		i++;
 	}
-	if(s[i-1] =='\"' && flag)
+	if(i > 0 && s[i-1] =='\"' && flag)
 		res = join_character(res, '\'');
 	else if (flag)
 		res = join_character(res, '\"');

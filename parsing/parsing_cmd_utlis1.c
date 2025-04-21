@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 20:42:42 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/20 21:43:34 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:26:40 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char	**cmd_int(int count)
 
 	k = 0;
 	cmd = gc_malloc(sizeof(char *) * (count + 1), 1);
+
 	cmd[count] = NULL;
 	while (k <= count)
 	{
