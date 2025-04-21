@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 21:16:37 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/21 18:54:49 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/21 20:46:04 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int	main(int argc, char **argv, char **env)
 			printf("exit\n");
 			exit(exit_status(0, 0));
 		}
-		add_history(data.buff);
+		if(data.buff[0] != '\0')
+			add_history(data.buff);
 		if (parsing(&data))
 		{
 			execution(&data);

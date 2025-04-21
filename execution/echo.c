@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:09:34 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/18 16:10:05 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/21 20:41:44 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,9 @@
 
 void	echo_putstr(char *s)
 {
-	size_t	i;
-
 	if (!s)
 		return ;
-	i = 0;
-	while (s[i])
-	{
-		write(1, s + i, 1);
-		i++;
-	}
+	write(1, s, ft_strlen(s));
 }
 
 int	echo_flag(char *str)
