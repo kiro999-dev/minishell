@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 16:42:00 by zkhourba          #+#    #+#             */
-/*   Updated: 2025/04/19 00:55:26 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:42:25 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_is_expandig_h(char **val, t_env_list *e, int check)
 		else if ((*val)[i] == '\'')
 		{
 			q = 1;
-			skip_q_expand(*val, &i, &q);
+			check = expand_in_double_quotes_h(val, e, &i, check);
 		}
 		else if ((*val)[i] == '$')
 		{

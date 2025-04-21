@@ -1,0 +1,7 @@
+// ==574130== 1,232 bytes in 77 blocks are still reachable in loss record 85 of 116
+// ==574130==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+// ==574130==    by 0x402AE2: gc_malloc (garbge_collcter.c:38)
+// ==574130==    by 0x409962: new_node (list_env.c:45)
+// ==574130==    by 0x4068D8: init_env (env_utils.c:84)
+// ==574130==    by 0x401314: data_init (minishell.c:22)
+// ==574130==    by 0x40141B: main (minishell.c:85)
