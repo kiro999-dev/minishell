@@ -16,7 +16,7 @@ int handle_redirection(t_exc_lits *cmd)
         last_input_fd = cmd->heredoc_fd;
     if (cmd_in_out_redirection(file, 0) && last_input_fd == -1)
         return (1);
-    if (apply_output_redirection(&last_output_fd, file))
+    if (apply_output_redirection(&last_output_fd, file, 1))
         return (1);
     
     if (cmd->cmd)
@@ -84,8 +84,7 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 
 int check_no_cmd(t_exc_lits *head, t_env_list *e)
 {
-    int out;
-
+    (void)e;
     if (!head->cmd && !head->head_files)
     {
         exit_status(0, 1);
@@ -95,13 +94,6 @@ int check_no_cmd(t_exc_lits *head, t_env_list *e)
     {
         exit_status(handle_redirection(head), 1);
         return (exit_status(0, 0));
-    }
-    if (head->cmd && !is_builtin(head->cmd[0]) && !get_path(e, head->cmd[0]))
-    {
-        apply_output_redirection(&out, head->head_files);
-        exit_status(127, 1);
-        close(out);
-        return (127);
     }
     return (-1);
 }
@@ -116,6 +108,7 @@ void single_cmd(t_data_parsing *data_exec)
     head = data_exec->head_exe;
     if (!head || check_no_cmd(head, data_exec->e) != -1)
         return;
+        
     if (is_builtin(head->cmd[0]))
     {
         builtins_process(data_exec);
@@ -134,6 +127,8 @@ void single_cmd(t_data_parsing *data_exec)
         waitpid(pid, &status, 0);
         if (check_exit(status))
             printf("\n");
+        if (head->heredoc_fd != -1)
+            close(head->heredoc_fd);        
     }
 }
 

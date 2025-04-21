@@ -71,10 +71,10 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
         herdoc_head = cmd->head_here_doc;
         while (herdoc_head && exit_herdoc(0, 0) != 1)
         {
-            flag = 0;
             fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             cmd->heredoc_fd = open(filename, O_RDONLY | O_CREAT | O_TRUNC, 0644);
             unlink(filename);
+            flag = 0;
             if (fd == -1 || cmd->heredoc_fd == -1)
             {
                 exit_status(1, 1);
@@ -94,6 +94,7 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
                 herdoc_head->limtter = ft_strdup(remove_q_d_h(herdoc_head->limtter));
                 if (!line || !ft_strcmp(line, herdoc_head->limtter))
                 {
+                    close(fd);
                     free(line);
                     break;
                 }
@@ -110,6 +111,8 @@ int process_heredocs(t_exc_lits *cmd,t_env_list *e)
                 }
             }
             close(fd);
+            if (herdoc_head->next)
+                close(cmd->heredoc_fd);
             herdoc_head = herdoc_head->next;
         }
         cmd = cmd->next;

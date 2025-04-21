@@ -9,7 +9,7 @@ SRC = parsing/minishell.c parsing/lexer.c parsing/strings.c parsing/linked_lists
  execution/list_env.c execution/export_utils.c execution/exit_status.c execution/strings_3.c
 
 OBJ = $(SRC:.c=.o)
-INC = parsing/minishell.h 
+INC = minishell.h 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g 
 
@@ -24,7 +24,7 @@ $(NAME): $(OBJ)
 
 
 %.o: %.c $(INC)
-	$(CC) fsanitize=address $(CFLAGS) -c $< -o $@ 
+	$(CC) -fsanitize=address $(CFLAGS) -c $< -o $@ 
 
 
 clean:
