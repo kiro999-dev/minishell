@@ -78,6 +78,7 @@ void	remove_q_d(t_toknes_list *head)
 	j = 0;
 	while (head->val[i])
 	{
+		j = 0;
 		if (head->val[i] == '\'')
 			process_quote(head->val, &i, &cpy, '\'');
 		else if (head->val[i] == '\"')
