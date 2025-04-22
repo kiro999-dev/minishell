@@ -43,8 +43,13 @@ char	*prepare_path(char *path, char *cmd)
 
 char	*get_path(t_env_list *env, char *cmd)
 {
-	if (!env || !cmd || ft_strlen(cmd) == 0)
+	if (!env || !cmd)
 		return (NULL);
+	if (ft_strlen(cmd) == 0)
+	{
+		write(2, "minishell: command not found\n", 30);
+		exit(127);
+	}
 	if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1)))
 		return (cmd);
 	while (env)
