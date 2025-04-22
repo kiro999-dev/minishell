@@ -43,3 +43,18 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return ((void *)dst);
 }
+
+void	hexa_format(unsigned int value, char *output)
+{
+	const char	*hex_digits;
+	int			i;
+
+	i = 0;
+	hex_digits = "0123456789abcdef";
+	while (i < 8)
+	{
+		output[i] = hex_digits[(value >> (28 - i * 4)) & 0xF];
+		i++;
+	}
+	output[8] = '\0';
+}

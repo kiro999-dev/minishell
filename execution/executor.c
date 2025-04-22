@@ -114,11 +114,13 @@ void	execution(t_data_parsing *data_exec)
 	t_exc_lits	*cmd_lst;
 	int			*pids;
 	int			cmd_size;
+	int			fd_herdoc;
 
 	cmd_lst = data_exec->head_exe;
 	if (!cmd_lst)
 		return ;
-	if (!process_heredocs(cmd_lst, data_exec->e))
+	fd_herdoc = 0;
+	if (!process_heredocs(cmd_lst, data_exec->e, fd_herdoc))
 		return ;
 	if (cmds_size(cmd_lst) == 1)
 		single_cmd(data_exec);

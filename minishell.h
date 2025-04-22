@@ -226,7 +226,7 @@ void apply_input_redirection(int *last_input_fd, t_file *file);
 int check_in_out(t_file *file, int red);
 int	apply_output_redirection(int *last_out, t_file *file, int single);
 void	hexa_format(unsigned int value, char *output);
-int process_heredocs(t_exc_lits *cmd,t_env_list *e);
+int process_heredocs(t_exc_lits *cmd,t_env_list *e, int fd_herdoc);
 void set_final_redirections(int last_input_fd, int last_output_fd);
 char *generate_random_filename(void);
 char	*ft_itoa(int n);
