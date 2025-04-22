@@ -26,8 +26,6 @@ void	handler(int sig)
 
 void	signals_handling(void)
 {
-	// signal(SIG, SIG_IGN);
-	
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &handler);
 }
