@@ -203,7 +203,7 @@ int replace_existing_key(t_env_list *env, char *key);
 int valid_key(char *var);
 void	add_back(t_env_list **lst, t_env_list *new);
 t_env_list	*lstlast(t_env_list *lst);
-void	handle_cd_error(const char *path, int ex);
+void	handle_file_error(const char *path, int ex);
 void	update_pwd(t_data_parsing *data, const char *old_pwd, char *new);
 void	replace_key_value(t_env_list **env, const char *key, const char *value);
 void add_var_2_env(char *cmd, t_env_list **env);

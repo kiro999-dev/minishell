@@ -1,6 +1,5 @@
 #include "../minishell.h"
 
-
 int handle_redirection(t_exc_lits *cmd)
 {
     t_file *file;
@@ -69,14 +68,14 @@ void run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
     if (!path || !env)
     {
         if (cmd_lst->cmd[0])
-            handle_cd_error(cmd_lst->cmd[0], 0);
+            handle_file_error(cmd_lst->cmd[0], 0);
         if (pid == 0)
             exit(1);
         else
             return ;
     }
     execve(path, cmd_lst->cmd, env);
-    handle_cd_error(cmd_lst->cmd[0], 0);
+    handle_file_error(cmd_lst->cmd[0], 0);
     if (pid == 0)
         exit(127);
     return ;

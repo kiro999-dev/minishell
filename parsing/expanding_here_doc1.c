@@ -55,10 +55,10 @@ static int	expand_plain_h(char **val, t_env_list *e, int *i, int check)
 int	check_is_expandig_h(char **val, t_env_list *e, int check)
 {
 	int	i;
-	int	q;
+	// int	q;
 
 	i = 0;
-	q = 0;
+	// q = 0;
 	while (i < ft_strlen(*val) && (*val)[i])
 	{
 		if ((*val)[i] == '\"')
@@ -67,7 +67,7 @@ int	check_is_expandig_h(char **val, t_env_list *e, int check)
 		}
 		else if ((*val)[i] == '\'')
 		{
-			q = 1;
+			// q = 1;
 			check = expand_in_double_quotes_h(val, e, &i, check);
 		}
 		else if ((*val)[i] == '$')

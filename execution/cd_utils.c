@@ -60,7 +60,7 @@ void	update_pwd(t_data_parsing *data, const char *old_pwd, char *new)
 	replace_key_value(&data->e, "PWD", new);
 }
 
-void	handle_cd_error(const char *path, int ex)
+void	handle_file_error(const char *path, int ex)
 {
 	if (access(path, F_OK) == -1)
 		write(2, "minishell: No such file or directory\n", 38);
