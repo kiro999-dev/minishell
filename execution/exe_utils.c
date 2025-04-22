@@ -43,16 +43,10 @@ char	*prepare_path(char *path, char *cmd)
 
 char	*get_path(t_env_list *env, char *cmd)
 {
-	if (!env || !cmd)
+	if (!env || !cmd || ft_strlen(cmd) == 0)
 		return (NULL);
-	if (!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
+	if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1)))
 		return (cmd);
-	else if (access(cmd, X_OK) == -1
-		&& (ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd, "/", 1) == 0))
-	{
-		write(2, "minishell: Permission denied\n", 30);
-		return (NULL);
-	}
 	while (env)
 	{
 		if (!ft_strncmp(env->var, "PATH=", 5))
@@ -61,8 +55,8 @@ char	*get_path(t_env_list *env, char *cmd)
 	}
 	if (!env)
 	{
-		write(2, "minishell: command not found\n", 30);
-		return (NULL);
+		write(2, "minishell: No such file or directory\n", 38);
+		exit(127);
 	}
 	return (prepare_path(env->var + 5, cmd));
 }

@@ -58,7 +58,9 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 			return ;
 	}
 	execve(path, cmd_lst->cmd, env);
-	handle_file_error(cmd_lst->cmd[0], 0);
+	if (access(path, X_OK) == 0)
+		exit(0);
+	write(2, "minishell: command not found\n", 30);
 	if (pid == 0)
 		exit(127);
 	return ;
@@ -118,7 +120,7 @@ void	execution(t_data_parsing *data_exec)
 
 	cmd_lst = data_exec->head_exe;
 	if (!cmd_lst)
-		return ;
+	return ;
 	fd_herdoc = 0;
 	if (!process_heredocs(cmd_lst, data_exec->e, fd_herdoc))
 		return ;
