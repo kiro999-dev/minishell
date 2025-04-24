@@ -222,7 +222,7 @@ char	*get_path(t_env_list *env, char *cmd);
 char	**env_list_to_array(t_env_list *list);
 int	is_builtin(char *cmd);
 void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child);
-void apply_input_redirection(int *last_input_fd, t_file *file);
+int	apply_input_redirection(int *last_input_fd, t_file *file);
 int check_in_out(t_file *file, int red);
 int	apply_output_redirection(int *last_out, t_file *file, int single);
 void	hexa_format(unsigned int value, char *output);

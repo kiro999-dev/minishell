@@ -17,19 +17,34 @@ int	handle_redirection(t_exc_lits *cmd)
 	t_file	*file;
 	int		last_input_fd;
 	int		last_output_fd;
+	int		fail;
 
 	last_input_fd = -1;
 	last_output_fd = -1;
+	fail = 0;
 	if (!cmd)
 		return (1);
 	file = cmd->head_files;
-	apply_input_redirection(&last_input_fd, file);
+	while (file && fail == 0)
+	{
+		if (file->type == IS_FILE_IN)
+			fail = apply_input_redirection(&last_input_fd, file);
+
+		if (file->type == IS_FILE_OUT || file->type == IS_FILE_APPEND)
+			fail = apply_output_redirection(&last_output_fd, file, 1);
+		file = file->next;
+	}
+	if (fail)
+		return (1);
+	// apply_input_redirection(&last_input_fd, file);
+	// if (check_in_out(file, 0) && last_input_fd == -1)
+	// return (1);
+	// if (apply_output_redirection(&last_output_fd, file, 1))
+	// return (1);
 	if (cmd->heredoc_fd != -1)
 		last_input_fd = cmd->heredoc_fd;
-	if (check_in_out(file, 0) && last_input_fd == -1)
-		return (1);
-	if (apply_output_redirection(&last_output_fd, file, 1))
-		return (1);
+	
+
 	if (cmd->cmd)
 		set_final_redirections(last_input_fd, last_output_fd);
 	else
