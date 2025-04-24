@@ -30,7 +30,7 @@ int	is_numeric(const char *str)
 	return (1);
 }
 
-void	f_exit(char **cmd, t_data_parsing *data_exe, int child)
+void	f_exit(char **cmd, int child)
 {
 	int	e_status;
 
@@ -53,7 +53,7 @@ void	f_exit(char **cmd, t_data_parsing *data_exe, int child)
 		else
 			e_status = ft_atoi(cmd[1]) % 256;
 	}
-	free_gc(&data_exe->gc_head);
+	gc_malloc(0,0);
 	exit(e_status);
 }
 

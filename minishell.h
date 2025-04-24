@@ -92,6 +92,7 @@ typedef struct s_exc_lits
 	int		in;
 	int		out;
 	int 	heredoc_fd;
+	int 	priority;
 	struct s_exc_lits *next;
 	
 }t_exc_lits;
@@ -121,6 +122,7 @@ int exit_herdoc(int x, int flag);
 int check_exit(int status);
 void default_signals(void);
 // parsing
+void print_list(t_toknes_list *to);
 char 	*join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
@@ -235,7 +237,7 @@ int	env_size(t_env_list *lst);
 int	cmds_size(t_exc_lits *lst);
 int	ft_isalnum(int ch);
 int	ft_isalpha(int c);
-void    f_exit(char **cmd, t_data_parsing *data_exe, int child);
+void	f_exit(char **cmd, int child);
 void    f_unset(t_env_list **env, char **var);
 char	*ft_strdup(const char *s1);
 char    *trim_plus_sign(char *key);

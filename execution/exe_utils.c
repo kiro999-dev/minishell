@@ -119,5 +119,5 @@ void	exec_builtin(t_exc_lits *cmd, t_data_parsing *data_exec, int child)
 	else if (!ft_strncmp(cmd->cmd[0], "pwd", 4))
 		f_pwd(data_exec);
 	else if (!ft_strncmp(cmd->cmd[0], "exit", 5))
-		f_exit(cmd->cmd, data_exec, child);
+		f_exit(cmd->cmd, child);
 }

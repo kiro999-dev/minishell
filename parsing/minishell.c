@@ -77,7 +77,49 @@ int	parsing(t_data_parsing *data)
 // 	}
 // 	printf("size :%d\n",i);
 // }
+void print(char *s , t_TOKENS type)
+{
+	
+	if(s)
+	{
+			printf("%s--->",s);
+	}
+	if(type ==PIPE)
+		printf("PIPE\n");
+	if(type == CMD)
+		printf("CMD\n");
+	if(type == WORD)
+		printf("WORD\n");
+	if(type == REDIR_IN)
+		printf("REDIR_IN\n");
+	if(type == REDIR_OUT)
+		printf("REDIR_OUT\n");
+	if(type == APPEND)
+		printf("APPEND\n");
+	if(type == HER_DOC)
+		printf("HER_DOC\n");
+   if(type == IS_FILE_IN)
+		printf("IS_FILE_IN\n");
+	if(type == IS_FILE_OUT)
+		printf("IS_FILE_OUT\n");
+	if(type == LIMTER)
+		printf("LIMTER\n");
+	if(type == IS_FILE_APPEND)
+		printf("IS_FILE_APPEND\n");
+	if(s && type == DOLLAR)
+		printf("the joind str\n");
+	
+}
 
+void print_list(t_toknes_list *to)
+{
+	while (to)
+	{
+		print(to->val,to->type);
+		to = to->next;
+	}
+	
+}
 int	main(int argc, char **argv, char **env)
 {
 	t_data_parsing	data;

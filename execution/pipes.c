@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 15:58:23 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/22 16:26:17 by onajem           ###   ########.fr       */
+/*   Updated: 2025/04/24 18:08:01 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	handle_redirection(t_exc_lits *cmd)
 	// return (1);
 	// if (apply_output_redirection(&last_output_fd, file, 1))
 	// return (1);
-	if (cmd->heredoc_fd != -1)
+	if (cmd->heredoc_fd != -1 && cmd->priority == 2)
 		last_input_fd = cmd->heredoc_fd;
 	
 
