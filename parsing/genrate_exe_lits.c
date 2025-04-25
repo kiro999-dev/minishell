@@ -14,8 +14,12 @@
 
 int	isfile(t_TOKENS type, t_toknes_list *tokenz_head)
 {
-	if (!(tokenz_head->val[0] == '\0' && tokenz_head->ambiguous))
+
+	if((tokenz_head->val[0] != '\0' && tokenz_head->ambiguous)
+		&& counting_words(tokenz_head->val," \t") == 1)
+	{
 		tokenz_head->ambiguous = 0;
+	}
 	if (type == IS_FILE_IN || type == IS_FILE_OUT || type == IS_FILE_APPEND)
 		return (1);
 	return (0);

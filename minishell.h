@@ -123,6 +123,7 @@ int check_exit(int status);
 void default_signals(void);
 // parsing
 void print_list(t_toknes_list *to);
+size_t	counting_words(const char *s1, char *c);
 char 	*join_character(char *s,char c);
 char	*ft_strdup(const char *s1);
 int     ft_strlen(const char *s);
