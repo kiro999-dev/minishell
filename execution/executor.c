@@ -88,6 +88,7 @@ void	single_cmd(t_data_parsing *data_exec)
 	int			pid;
 	int			status;
 
+	status = 0;
 	head = data_exec->head_exe;
 	if (!head || check_no_cmd(head, data_exec->e) != -1)
 		return ;

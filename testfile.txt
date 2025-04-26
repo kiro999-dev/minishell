@@ -29,7 +29,85 @@ exit
 ==232863== 
 ==232863== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
 ==232863==    <inherited from parent>
-==232863== 
+==232863== $minishell> exit < cat | '' << here ls > /dev/stdout
+> here
+minishell: No such file or directory
+minishell: command not found
+==239161== 
+==239161== FILE DESCRIPTORS: 8 open (3 std) at exit.
+==239161== Open file descriptor 5:
+==239161==    at 0x49D907D: pipe (pipe.c:29)
+==239161==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239161== 
+==239161== Open file descriptor 3:
+==239161==    at 0x49D907D: pipe (pipe.c:29)
+==239161==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239161== 
+==239161== Open file descriptor 4: /tmp/minishell_heredoc_d6802e1e
+==239161==    at 0x49D853B: open (open64.c:41)
+==239161==    by 0x40831C: herdoc_file (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40855D: process_heredocs (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x407281: execution (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239161== 
+==239161== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==239161==    <inherited from parent>
+==239161== 
+==239161== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==239161==    <inherited from parent>
+==239161== 
+==239161== 
+==239161== HEAP SUMMARY:
+==239161==     in use at exit: 239,948 bytes in 2,240 blocks
+==239161==   total heap usage: 2,589 allocs, 349 frees, 267,058 bytes allocated
+==239161== 
+==239161== LEAK SUMMARY:
+==239161==    definitely lost: 32 bytes in 1 blocks
+==239161==    indirectly lost: 34 bytes in 2 blocks
+==239161==      possibly lost: 0 bytes in 0 blocks
+==239161==    still reachable: 239,882 bytes in 2,237 blocks
+==239161==         suppressed: 0 bytes in 0 blocks
+==239161== Rerun with --leak-check=full to see details of leaked memory
+==239161== 
+==239161== For lists of detected and suppressed errors, rerun with: -s
+==239161== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==239162== 
+==239162== FILE DESCRIPTORS: 6 open (3 std) at exit.
+==239162== Open file descriptor 3:
+==239162==    at 0x49D907D: pipe (pipe.c:29)
+==239162==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==239162==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==239162==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239162==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239162== 
+==239162== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==239162==    <inherited from parent>
+==239162== 
+==239162== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==239162==    <inherited from parent>
+==239162== 
+==239162== 
+==239162== HEAP SUMMARY:
+==239162==     in use at exit: 239,948 bytes in 2,240 blocks
+==239162==   total heap usage: 2,589 allocs, 349 frees, 267,058 bytes allocated
+==239162== 
+==239162== LEAK SUMMARY:
+==239162==    definitely lost: 32 bytes in 1 blocks
+==239162==    indirectly lost: 34 bytes in 2 blocks
+==239162==      possibly lost: 0 bytes in 0 blocks
+==239162==    still reachable: 239,882 bytes in 2,237 blocks
+==239162==         suppressed: 0 bytes in 0 blocks
+==239162== Rerun with --leak-check=full to see details of leaked memory
+==239162== 
+==239162== For lists of detected and suppressed errors, rerun with: -s
+==239162== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ==232863== 
 ==232863== HEAP SUMMARY:
 ==232863==     in use at exit: 208,224 bytes in 225 blocks
@@ -45,3 +123,412 @@ exit
 ==232863== 
 ==232863== For lists of detected and suppressed errors, rerun with: -s
 ==232863== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+$minishell> << . cat | ls > exit
+> ..
+> .
+$minishell> << . cat | ls | exit
+> .
+==234420== 
+==234420== FILE DESCRIPTORS: 6 open (3 std) at exit.
+==234420== Open file descriptor 4: /tmp/minishell_heredoc_e4d994c8
+==234420==    at 0x49D853B: open (open64.c:41)
+==234420==    by 0x40831C: herdoc_file (in /home/zkhourba/minishell00/minishell)
+==234420==    by 0x40855D: process_heredocs (in /home/zkhourba/minishell00/minishell)
+==234420==    by 0x407281: execution (in /home/zkhourba/minishell00/minishell)
+==234420==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==234420==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==234420== 
+==234420== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==234420==    <inherited from parent>
+==234420== 
+==234420== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==234420==    <inherited from parent>
+==234420== 
+==234420== 
+==234420== HEAP SUMMARY:
+==234420==     in use at exit: 208,523 bytes in 231 blocks
+==234420==   total heap usage: 1,147 allocs, 916 frees, 247,409 bytes allocated
+==234420== 
+==234420== LEAK SUMMARY:
+==234420==    definitely lost: 0 bytes in 0 blocks
+==234420==    indirectly lost: 0 bytes in 0 blocks
+==234420==      possibly lost: 0 bytes in 0 blocks
+==234420==    still reachable: 208,523 bytes in 231 blocks
+==234420==         suppressed: 0 bytes in 0 blocks
+==234420== Rerun with --leak-check=full to see details of leaked memory
+==234420== 
+==234420== For lists of detected and suppressed errors, rerun with: -s
+==234420== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+$minishell> < cat | cat > /dev/stdout
+minishell: No such file or directory
+==235650== 
+==235650== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==235650== Open file descriptor 4:
+==235650==    at 0x49D907D: pipe (pipe.c:29)
+==235650==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==235650==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==235650==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==235650==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==235650== 
+==235650== Open file descriptor 3:
+==235650==    at 0x49D907D: pipe (pipe.c:29)
+==235650==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==235650==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==235650==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==235650==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==235650== 
+==235650== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==235650==    <inherited from parent>
+==235650== 
+==235650== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==235650==    <inherited from parent>
+==235650== 
+==235650== 
+==235650== HEAP SUMMARY:
+==235650==     in use at exit: 219,448 bytes in 719 blocks
+==235650==   total heap usage: 942 allocs, 223 frees, 244,462 bytes allocated
+==235650== 
+==235650== LEAK SUMMARY:
+==235650==    definitely lost: 0 bytes in 0 blocks
+==235650==    indirectly lost: 0 bytes in 0 blocks
+==235650==      possibly lost: 0 bytes in 0 blocks
+==235650==    still reachable: 219,448 bytes in 719 blocks
+==235650==         suppressed: 0 bytes in 0 blocks
+==235650== Rerun with --leak-check=full to see details of leaked memory
+==235650== 
+==235650== For lists of detected and suppressed errors, rerun with: -s
+==235650== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+
+$minishell> exit < cat | '' << here ls > /dev/stdout
+> here
+minishell: No such file or directory
+minishell: command not found
+==239161== 
+==239161== FILE DESCRIPTORS: 8 open (3 std) at exit.
+==239161== Open file descriptor 5:
+==239161==    at 0x49D907D: pipe (pipe.c:29)
+==239161==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239161== 
+==239161== Open file descriptor 3:
+==239161==    at 0x49D907D: pipe (pipe.c:29)
+==239161==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239161== 
+==239161== Open file descriptor 4: /tmp/minishell_heredoc_d6802e1e
+==239161==    at 0x49D853B: open (open64.c:41)
+==239161==    by 0x40831C: herdoc_file (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40855D: process_heredocs (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x407281: execution (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239161==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239161== 
+==239161== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==239161==    <inherited from parent>
+==239161== 
+==239161== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==239161==    <inherited from parent>
+==239161== 
+==239161== 
+==239161== HEAP SUMMARY:
+==239161==     in use at exit: 239,948 bytes in 2,240 blocks
+==239161==   total heap usage: 2,589 allocs, 349 frees, 267,058 bytes allocated
+==239161== 
+==239161== LEAK SUMMARY:
+==239161==    definitely lost: 32 bytes in 1 blocks
+==239161==    indirectly lost: 34 bytes in 2 blocks
+==239161==      possibly lost: 0 bytes in 0 blocks
+==239161==    still reachable: 239,882 bytes in 2,237 blocks
+==239161==         suppressed: 0 bytes in 0 blocks
+==239161== Rerun with --leak-check=full to see details of leaked memory
+==239161== 
+==239161== For lists of detected and suppressed errors, rerun with: -s
+==239161== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==239162== 
+==239162== FILE DESCRIPTORS: 6 open (3 std) at exit.
+==239162== Open file descriptor 3:
+==239162==    at 0x49D907D: pipe (pipe.c:29)
+==239162==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==239162==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==239162==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==239162==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==239162== 
+==239162== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==239162==    <inherited from parent>
+==239162== 
+==239162== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==239162==    <inherited from parent>
+==239162== 
+==239162== 
+==239162== HEAP SUMMARY:
+==239162==     in use at exit: 239,948 bytes in 2,240 blocks
+==239162==   total heap usage: 2,589 allocs, 349 frees, 267,058 bytes allocated
+==239162== 
+==239162== LEAK SUMMARY:
+==239162==    definitely lost: 32 bytes in 1 blocks
+==239162==    indirectly lost: 34 bytes in 2 blocks
+==239162==      possibly lost: 0 bytes in 0 blocks
+==239162==    still reachable: 239,882 bytes in 2,237 blocks
+==239162==         suppressed: 0 bytes in 0 blocks
+==239162== Rerun with --leak-check=full to see details of leaked memory
+==239162== 
+==239162== For lists of detected and suppressed errors, rerun with: -s
+==239162== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+$minishell> exit < cat | tr ' ' '\n' > /dev/stdout
+minishell: No such file or directory
+==241353== 
+==241353== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==241353== Open file descriptor 4:
+==241353==    at 0x49D907D: pipe (pipe.c:29)
+==241353==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==241353==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==241353==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==241353==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==241353== 
+==241353== Open file descriptor 3:
+==241353==    at 0x49D907D: pipe (pipe.c:29)
+==241353==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==241353==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==241353==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==241353==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==241353== 
+==241353== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==241353==    <inherited from parent>
+==241353== 
+==241353== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==241353==    <inherited from parent>
+==241353== 
+==241353== 
+==241353== HEAP SUMMARY:
+==241353==     in use at exit: 237,927 bytes in 2,130 blocks
+==241353==   total heap usage: 2,462 allocs, 332 frees, 265,075 bytes allocated
+==241353== 
+==241353== LEAK SUMMARY:
+==241353==    definitely lost: 0 bytes in 0 blocks
+==241353==    indirectly lost: 0 bytes in 0 blocks
+==241353==      possibly lost: 0 bytes in 0 blocks
+==241353==    still reachable: 237,927 bytes in 2,130 blocks
+==241353==         suppressed: 0 bytes in 0 blocks
+==241353== Reachable blocks (those to which a pointer was found) are not shown.
+==241353== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==241353== 
+==241353== For lists of detected and suppressed errors, rerun with: -s
+==241353== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+$minishell> 
+
+
+$minishell> < "" "" | "" "" | << ls
+> ls
+minishell: No such file or directory
+minishell: command not found
+==242700== Warning: invalid file descriptor -1 in syscall close()
+==242698== 
+==242698== FILE DESCRIPTORS: 8 open (3 std) at exit.
+==242698== Open file descriptor 5:
+==242698==    at 0x49D907D: pipe (pipe.c:29)
+==242698==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==242698== 
+==242698== Open file descriptor 3:
+==242698==    at 0x49D907D: pipe (pipe.c:29)
+==242698==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==242698== 
+==242698== Open file descriptor 4: /tmp/minishell_heredoc_3f5bd336
+==242698==    at 0x49D853B: open (open64.c:41)
+==242698==    by 0x40831C: herdoc_file (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x40855D: process_heredocs (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x407281: execution (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==242698==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==242698== 
+==242698== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==242698==    <inherited from parent>
+==242698== 
+==242698== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==242698==    <inherited from parent>
+==242698== 
+==242698== 
+==242698== HEAP SUMMARY:
+==242698==     in use at exit: 247,674 bytes in 2,756 blocks
+==242698==   total heap usage: 3,276 allocs, 520 frees, 278,012 bytes allocated
+==242698== 
+==242698== LEAK SUMMARY:
+==242698==    definitely lost: 0 bytes in 0 blocks
+==242698==    indirectly lost: 0 bytes in 0 blocks
+==242698==      possibly lost: 0 bytes in 0 blocks
+==242698==    still reachable: 247,674 bytes in 2,756 blocks
+==242698==         suppressed: 0 bytes in 0 blocks
+==242698== Reachable blocks (those to which a pointer was found) are not shown.
+==242698== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==242698== 
+==242698== For lists of detected and suppressed errors, rerun with: -s
+==242698== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==242699== 
+==242699== FILE DESCRIPTORS: 6> .
+==242699== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==242699==    <inherited from parent>
+==242699== 
+==242699== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==242699==    <inherited from parent>
+==242699== 
+==242699== 
+==242699== HEAP SUMMARY:
+==242699==     in use at exit: 247,674 bytes in 2,756 blocks
+==242699==   total heap usage: 3,276 allocs, 520 frees, 278,012 bytes allocated
+==242699== 
+==242699== LEAK SUMMARY:
+==242699==    definitely lost: 0 bytes in 0 blocks
+==242699==    indirectly lost: 0 bytes in 0 blocks
+==242699==      possibly lost: 0 bytes in 0 blocks
+==242699==    still reachable: 247,674 bytes in 2,756 blocks
+==242699==         suppressed: 0 bytes in 0 blocks
+==242699== Reachable blocks (those to which a pointer was found) are not shown.
+==242699== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==242699== 
+==242699== For lists of detected and suppressed errors, rerun with: -s
+==242699== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==242700== 
+==242700== FILE DESCRIPTORS: 6 open (3 std) at exit.
+==242700== Open file descriptor 5:
+==242700==    at 0x49D907D: pipe (pipe.c:29)
+==242700==    by 0x40A245: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==242700==    by 0x4072F1: execution (in /home/zkhourba/minishell00/minishell)
+==242700==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==242700==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==242700== 
+==242700== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==242700==    <inherited from parent>
+==242700== 
+==242700== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==242700==    <inherited from parent>
+==242700== 
+==242700== 
+==242700== HEAP SUMMARY:
+==242700==     in use at exit: 247,674 bytes in 2,756 blocks
+==242700==   total heap usage: 3,276 allocs, 520 frees, 278,012 bytes allocated
+==242700== 
+==242700== LEAK SUMMARY:
+==242700==    definitely lost: 0 bytes in 0 blocks
+==242700==    indirectly lost: 0 bytes in 0 blocks
+==242700==      possibly lost: 0 bytes in 0 blocks
+==242700==    still reachable: 247,674 bytes in 2,756 blocks
+==242700==         suppressed: 0 bytes in 0 blocks
+==242700== Reachable blocks (those to which a pointer was found) are not shown.
+==242700== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==242700== 
+==242700== For lists of detected and suppressed errors, rerun with: -s
+==242700== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+$minishell> < ls << cat >
+syntax error '>'
+$minishell> < ls << cat
+> ldsjfdsf
+> ls
+> cat
+==257899== Warning: invalid file descriptor -1 in syscall close()
+$minishell> < ls << cat | ls
+> ls
+> cat
+$minishell> ls
+$minishell> ls
+$minishell> << . cat 
+> .
+$minishell> exit
+exit
+==257899== 
+==257899== FILE DESCRIPTORS: 11 open (3 std) at exit.
+==257899== Open file descriptor 8: /dev/pts/0
+==257899==    at 0x49D8FEB: dup (syscall-template.S:120)
+==257899==    by 0x406EBA: builtins_process (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x407188: single_cmd (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40729A: execution (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
+==257899== 
+==257899== Open file descriptor 7: /dev/pts/0
+==257899==    at 0x49D8FEB: dup (syscall-template.S:120)
+==257899==    by 0x406EAD: builtins_process (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x407188: single_cmd (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40729A: execution (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
+==257899== 
+==257899== Open file descriptor 6:
+==257899==    at 0x49D907D: pipe (pipe.c:29)
+==257899==    by 0x40A235: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4072E1: execution (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
+==257899== 
+==257899== Open file descriptor 4:
+==257899==    at 0x49D907D: pipe (pipe.c:29)
+==257899==    by 0x40A235: execute_pipeline (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4072E1: execution (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
+==257899== 
+==257899== Open file descriptor 5: /tmp/minishell_heredoc_562e72a9
+==257899==    at 0x49D853B: open (open64.c:41)
+==257899==    by 0x40830C: herdoc_file (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40854D: process_heredocs (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x407271: execution (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
+==257899== 
+==257899== Open file descriptor 3: ls
+==257899==    at 0x49D853B: open (open64.c:41)
+==257899==    by 0x407EB3: apply_input_redirection (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x409E48: handle_redirection (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4070EA: check_no_cmd (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x407159: single_cmd (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40729A: execution (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
+==257899== 
+==257899== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==257899==    <inherited from parent>
+==257899== 
+==257899== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==257899==    <inherited from parent>
+==257899== 
+==257899== 
+==257899== HEAP SUMMARY:
+==257899==     in use at exit: 208,935 bytes in 249 blocks
+==257899==   total heap usage: 1,360 allocs, 1,111 frees, 250,450 bytes allocated
+==257899== 
+==257899== LEAK SUMMARY:
+==257899==    definitely lost: 0 bytes in 0 blocks
+==257899==    indirectly lost: 0 bytes in 0 blocks
+==257899==      possibly lost: 0 bytes in 0 blocks
+==257899==    still reachable: 208,935 bytes in 249 blocks
+==257899==         suppressed: 0 bytes in 0 blocks
+==257899== Reachable blocks (those to which a pointer was found) are not shown.
+==257899== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==257899== 
+==257899== For lists of detected and suppressed errors, rerun with: -s
+==257899== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+
+
+# define fork() -1
+./ls 
+
+
+
+
+
+
