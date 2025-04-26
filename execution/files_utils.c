@@ -44,7 +44,6 @@ int	apply_input_redirection(int *last_input_fd, t_file *file)
 
 int	apply_output_redirection(int *last_out, t_file *file, int single)
 {
-
 	if (*last_out != -1 && single == 1)
 		close(*last_out);
 	if (file->type == IS_FILE_OUT && file->ambigous != 1)

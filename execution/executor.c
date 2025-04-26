@@ -120,7 +120,7 @@ void	execution(t_data_parsing *data_exec)
 
 	cmd_lst = data_exec->head_exe;
 	if (!cmd_lst)
-	return ;
+		return ;
 	fd_herdoc = 0;
 	if (!process_heredocs(cmd_lst, data_exec->e, fd_herdoc))
 		return ;

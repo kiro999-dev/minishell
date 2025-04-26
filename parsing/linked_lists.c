@@ -81,7 +81,7 @@ t_file	*creat_node_file(char *name, t_TOKENS type)
 	return (node);
 }
 
-void	add_list_file(t_file **head, char *name, t_TOKENS type,int ambigous)
+void	add_list_file(t_file **head, char *name, t_TOKENS type, int ambigous)
 {
 	t_file	*node;
 	t_file	*tmp;

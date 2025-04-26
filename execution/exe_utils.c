@@ -50,7 +50,7 @@ char	*get_path(t_env_list *env, char *cmd)
 		write(2, "minishell: command not found\n", 30);
 		exit(127);
 	}
-	if (ft_strchr(cmd, '/') && access(cmd, X_OK)  == 0)
+	if (ft_strchr(cmd, '/') && access(cmd, X_OK) == 0)
 		return (cmd);
 	while (env)
 	{
@@ -60,7 +60,7 @@ char	*get_path(t_env_list *env, char *cmd)
 	}
 	if (!env)
 	{
-		if (access(ft_strjoin("./", cmd), X_OK)  == 0)
+		if (access(ft_strjoin("./", cmd), X_OK) == 0)
 			return (cmd);
 		write(2, "minishell: No such file or directory\n", 38);
 		exit(127);

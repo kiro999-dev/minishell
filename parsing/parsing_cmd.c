@@ -70,6 +70,7 @@ char	**process_split_it2(t_toknes_list **current,
 
 void	process_default(t_toknes_list **current, char **cmd, int *i)
 {
+
 	if ((*current)->val)
 		cmd[*i] = ft_strdup((*current)->val);
 	else
@@ -77,8 +78,9 @@ void	process_default(t_toknes_list **current, char **cmd, int *i)
 	*current = (*current)->next;
 	while (*current && (*current)->join_me)
 	{
-		if((*current)->split_it && cmd[0] && (ft_strcmp(cmd[0],"export") && !(*current)->prv->join_me))
-			break;
+		if ((*current)->split_it && cmd[0]
+			&& (ft_strcmp(cmd[0], "export") && !(*current)->prv->join_me))
+			break ;
 		cmd[*i] = ft_strjoin(cmd[*i], (*current)->val);
 		*current = (*current)->next;
 	}

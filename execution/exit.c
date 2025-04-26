@@ -53,7 +53,7 @@ void	f_exit(char **cmd, int child)
 		else
 			e_status = ft_atoi(cmd[1]) % 256;
 	}
-	gc_malloc(0,0);
+	gc_malloc(0, 0);
 	exit(e_status);
 }
 

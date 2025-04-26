@@ -27,7 +27,7 @@ static int	expand_in_double_quotes_h(char **val, t_env_list *e, int *i,
 		{
 			while ((*val)[*i] && (*val)[*i] == '$')
 				(*i)++;
-			if((*val)[*i] == '?')
+			if ((*val)[*i] == '?')
 				check = handle_dollar_expansion_h(i, e, val, check);
 			else if (not_character_expand((*val)[*i]))
 				break ;
@@ -45,7 +45,7 @@ static int	expand_plain_h(char **val, t_env_list *e, int *i, int check)
 {
 	while ((*val)[*i] && (*val)[*i] == '$')
 		(*i)++;
-	if((*val)[*i]=='?')
+	if ((*val)[*i] == '?')
 		handle_dollar_expansion_h(i, e, val, check);
 	else if (!not_character_expand((*val)[*i]))
 		handle_dollar_expansion_h(i, e, val, check);
@@ -55,10 +55,8 @@ static int	expand_plain_h(char **val, t_env_list *e, int *i, int check)
 int	check_is_expandig_h(char **val, t_env_list *e, int check)
 {
 	int	i;
-	// int	q;
 
 	i = 0;
-	// q = 0;
 	while (i < ft_strlen(*val) && (*val)[i])
 	{
 		if ((*val)[i] == '\"')
@@ -67,7 +65,6 @@ int	check_is_expandig_h(char **val, t_env_list *e, int check)
 		}
 		else if ((*val)[i] == '\'')
 		{
-			// q = 1;
 			check = expand_in_double_quotes_h(val, e, &i, check);
 		}
 		else if ((*val)[i] == '$')

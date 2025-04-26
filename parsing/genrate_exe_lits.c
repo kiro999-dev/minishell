@@ -14,8 +14,7 @@
 
 int	isfile(t_TOKENS type, t_toknes_list *tokenz_head)
 {
-
-	if((tokenz_head->val[0] != '\0' && tokenz_head->ambiguous)
+	if ((tokenz_head->val[0] != '\0' && tokenz_head->ambiguous)
 		&& counting_words(tokenz_head->val," \t") == 1)
 	{
 		tokenz_head->ambiguous = 0;
@@ -37,27 +36,27 @@ char	**cmd_case(t_toknes_list **toknz_head_addres)
 	*toknz_head_addres = tokenz_head;
 	return (cmd);
 }
-void check_p(t_toknes_list  *head1,t_exc_lits *head2 )
+
+void	check_p(t_toknes_list  *head1,t_exc_lits *head2 )
 {
-	int p;
-	int i;
+	int	p;
+	int	i;
 
 	i = 0;
 	p = 0;
-	
 	while (head1)
 	{
-		
-		if(head1->type == PIPE)
-			break;
-		else if(head1->type == HER_DOC)
+		if (head1->type == PIPE)
+			break ;
+		else if (head1->type == HER_DOC)
 			p = 2;
-		else if(head1->type == IS_FILE_IN)
+		else if (head1->type == IS_FILE_IN)
 			p = 1;
 		head1 = head1->next;
 	}
 	head2->priority = p;
 }
+
 t_exc_lits	*processing_tokenz(t_toknes_list **tokenz_head,
 		t_list_here_doc **here_doc_head, t_file	**f_head)
 {
@@ -68,7 +67,7 @@ t_exc_lits	*processing_tokenz(t_toknes_list **tokenz_head,
 	node->next = NULL;
 	node->cmd = NULL;
 	node->priority = 0;
-	check_p(*tokenz_head,node);
+	check_p(*tokenz_head, node);
 	while (*tokenz_head && ((*tokenz_head)->type != PIPE))
 	{
 		cmd = NULL;

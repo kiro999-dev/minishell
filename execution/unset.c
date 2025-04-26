@@ -18,6 +18,11 @@ void	pop_node(t_env_list **env, t_env_list *to_pop, t_env_list *prev)
 		return ;
 	if (!equal_strcmp(to_pop->var, "_"))
 		return ;
+	if (!equal_strcmp(to_pop->var, "SHLVL"))
+	{
+		to_pop->var = ft_strdup("SHLVL=0");
+		return ;
+	}
 	if (prev)
 		prev->next = to_pop->next;
 	else

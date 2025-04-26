@@ -5,3 +5,43 @@
 // ==574130==    by 0x4068D8: init_env (env_utils.c:84)
 // ==574130==    by 0x401314: data_init (minishell.c:22)
 // ==574130==    by 0x40141B: main (minishell.c:85)
+exit
+==232863== 
+==232863== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==232863== Open file descriptor 4: /dev/pts/0
+==232863==    at 0x49D8FEB: dup (syscall-template.S:120)
+==232863==    by 0x406ECA: builtins_process (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x407191: single_cmd (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x4072AA: execution (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==232863== 
+==232863== Open file descriptor 3: /dev/pts/0
+==232863==    at 0x49D8FEB: dup (syscall-template.S:120)
+==232863==    by 0x406EBD: builtins_process (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x407191: single_cmd (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x4072AA: execution (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x40141A: start_minishell (in /home/zkhourba/minishell00/minishell)
+==232863==    by 0x40150B: main (in /home/zkhourba/minishell00/minishell)
+==232863== 
+==232863== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
+==232863==    <inherited from parent>
+==232863== 
+==232863== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
+==232863==    <inherited from parent>
+==232863== 
+==232863== 
+==232863== HEAP SUMMARY:
+==232863==     in use at exit: 208,224 bytes in 225 blocks
+==232863==   total heap usage: 788 allocs, 563 frees, 242,349 bytes allocated
+==232863== 
+==232863== LEAK SUMMARY:
+==232863==    definitely lost: 0 bytes in 0 blocks
+==232863==    indirectly lost: 0 bytes in 0 blocks
+==232863==      possibly lost: 0 bytes in 0 blocks
+==232863==    still reachable: 208,224 bytes in 225 blocks
+==232863==         suppressed: 0 bytes in 0 blocks
+==232863== Rerun with --leak-check=full to see details of leaked memory
+==232863== 
+==232863== For lists of detected and suppressed errors, rerun with: -s
+==232863== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

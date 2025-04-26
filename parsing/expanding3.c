@@ -12,30 +12,30 @@
 
 #include "../minishell.h"
 
-static char	*build_expand_string(int *i, t_toknes_list *head, int *flag) // test this because you modfie it 
-{
+char	*build_expand_string(int *i, t_toknes_list *head, int *flag)
+{	
 	char	*expand;
 
 	expand = ft_strdup("");
 	*flag = 0;
 	while (head->val[*i])
 	{
-		if(head->val[*i] == '?')
+		if (head->val[*i] == '?')
 		{
 			(*i)++;
-			return(*flag = 1,ft_strdup("?"));
+			return (*flag = 1, ft_strdup("?"));
 		}
-		else if (not_character_expand(head->val[*i]) && (head->val[*i] != '\"' && head->val[*i] != '\''))
+		else if (not_character_expand(head->val[*i])
+			&& (head->val[*i] != '\"' && head->val[*i] != '\''))
 		{
 			*flag = 1;
 			break ;
 		}
-		else if(not_character_expand(head->val[*i]))
-			break;
+		else if (not_character_expand(head->val[*i]))
+			break ;
 		expand = join_character(expand, head->val[*i]);
 		(*i)++;
 	}
-	
 	return (expand);
 }
 
@@ -71,8 +71,8 @@ void	remove_q_d(t_toknes_list *head)
 	char	*temp;
 	int		j;
 
-	if(head->type == LIMTER)
-		return;
+	if (head->type == LIMTER)
+		return ;
 	i = 0;
 	cpy = ft_strdup("");
 	j = 0;
@@ -96,11 +96,11 @@ void	remove_q_d(t_toknes_list *head)
 void	handle_dollar_expansion(int *i, t_env_list *e,
 		t_toknes_list *head, int flag3)
 {
-	int		flag;
-	char	*expand;
-	int		found;
-	t_env_list *w;
-	
+	int			flag;
+	char		*expand;
+	int			found;
+	t_env_list	*w;
+
 	w = e;
 	found = 0;
 	expand = build_expand_string(i, head, &flag);
@@ -120,10 +120,10 @@ void	handle_dollar_expansion(int *i, t_env_list *e,
 	}
 	if (!found)
 	{
-		if(expand[0] == '?')
+		if (expand[0] == '?')
 		{
 			head->flag_exit = 1;
-			head->val = expand_val(ft_itoa(exit_status(0,0)), head, *i, flag3);
+			head->val = expand_val(ft_itoa(exit_status(0, 0)), head, *i, flag3);
 		}
 		else
 		{

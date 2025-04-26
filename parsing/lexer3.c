@@ -82,6 +82,7 @@ void	single_q(int *i_ptr, char *s, t_tok *data, t_toknes_list **head)
 void	double_q(int *i_ptr, char *s, t_tok *data, t_toknes_list **head)
 {
 	char	*token;
+
 	token = gen_double_q_str(i_ptr, s, data, 0);
 	data->token = token;
 	add_token(data, head);

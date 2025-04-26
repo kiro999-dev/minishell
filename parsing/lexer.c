@@ -44,13 +44,11 @@ void	init_tok(t_tok *data_tok)
 
 int	isparam_for_file(t_tok *data_tok)
 {
-	
 	if (data_tok->is_redir_out || data_tok->is_here_d
 		|| data_tok->is_append || data_tok->is_redir_in)
-			return (1);
+		return (1);
 	else
 		return (0);
-	
 }
 
 void	not_token_case(t_tok *data_tok,

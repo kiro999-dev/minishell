@@ -27,7 +27,7 @@ char	*build_prefix(char *s2, int j, int n)
 	return (res);
 }
 
-char	*build_env_value(char *s, int flag,int flag_exit)
+char	*build_env_value(char *s, int flag, int flag_exit)
 {
 	int		i;
 	char	*res;
@@ -50,7 +50,7 @@ char	*build_env_value(char *s, int flag,int flag_exit)
 		res = join_character(res, s[i]);
 		i++;
 	}
-	if(i > 0 && s[i-1] =='\"' && flag)
+	if (i > 0 && s[i-1] =='\"' && flag)
 		res = join_character(res, '\'');
 	else if (flag)
 		res = join_character(res, '\"');
