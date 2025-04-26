@@ -45,6 +45,10 @@ int	check_pipe(t_toknes_list *head)
 
 int	check_redir(t_toknes_list *head)
 {
+	if(head->next && head->next->type ==CMD)
+	{
+		head->next->type =  IS_FILE_APPEND;
+	}
 	if (!head->next || (head->next->type != IS_FILE_IN
 			&& head->next->type != IS_FILE_APPEND
 			&& head->next->type != IS_FILE_OUT))
