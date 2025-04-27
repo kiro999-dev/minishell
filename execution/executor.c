@@ -50,8 +50,6 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 	env = env_list_to_array(e);
 	if (!path || !env)
 	{
-		printf("path unvalid\n");
-
 		if (cmd_lst->cmd[0])
 			handle_file_error(cmd_lst->cmd[0], 0);
 		if (pid == 0)

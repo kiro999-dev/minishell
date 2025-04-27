@@ -65,7 +65,11 @@ void	handle_file_error(const char *path, int ex)
 	if (access(path, F_OK) == -1)
 		write(2, "minishell: No such file or directory\n", 38);
 	else if (access(path, X_OK) == -1)
+	{
 		write(2, "minishell: Permission denied\n", 30);
+		if (ex == 0)
+			exit(126);
+	}
 	else
 	{
 		if (!ex)

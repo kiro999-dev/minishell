@@ -51,23 +51,22 @@ void	f_exit(char **cmd, int child)
 		printf("exit\n");
 	if (cmd[1])
 	{
-		if (cmd[2])
-		{
-			write(2, "minishell : exit : too many arguments\n", 39);
-			exit_status(1, 1);
-			return ;
-		}
+		e_status = ft_atoi(cmd[1]) % 256;
 		if (!is_numeric(cmd[1]))
 		{
 			write(2, "minishell : exit : numeric argument required\n", 46);
 			e_status = 2;
 		}
-		else
-			e_status = ft_atoi(cmd[1]) % 256;
+		else if (cmd[2])
+		{
+			write(2, "minishell : exit : too many arguments\n", 39);
+			exit_status(1, 1);
+			return ;
+		}
 	}
-	gc_malloc(0, 0);
-	close_fds();
-	exit(e_status);
+		gc_malloc(0, 0);
+		close_fds();
+		exit(e_status);
 }
 
 void	print_export(t_env_list *e)

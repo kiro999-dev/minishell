@@ -79,6 +79,7 @@ void	f_cd(char **cmd, t_data_parsing *data)
 		if (!path)
 		{
 			(free(old_pwd), printf("minishell: cd: HOME not set\n"));
+			exit_status(1, 1);
 			return ;
 		}
 	}
