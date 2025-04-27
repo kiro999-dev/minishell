@@ -24,7 +24,7 @@
 # include <sys/ioctl.h>
 #include <signal.h>
 
-
+// # define fork() -1
 
 typedef struct s_env_list
 {

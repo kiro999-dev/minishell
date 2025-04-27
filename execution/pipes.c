@@ -54,7 +54,7 @@ void	child_process(t_exc_lits *cmd, t_data_parsing *data, int in, int fd[2])
 	int	exit_child;
 
 	if (handle_redirection(cmd))
-		(close_fds(), exit(1));
+		(close_fds(), gc_malloc(0, 0), exit(1));
 	if (cmd->heredoc_fd == -1 && !check_in_out(cmd->head_files, 0) && in != -1)
 		(dup2(in, STDIN_FILENO), close(in));
 	if (cmd->next && !check_in_out(cmd->head_files, 1))
@@ -65,13 +65,13 @@ void	child_process(t_exc_lits *cmd, t_data_parsing *data, int in, int fd[2])
 	}
 	exit_child = check_no_cmd(cmd, data->e);
 	if (exit_child != -1)
-		(close_fds(), exit(exit_child));
+		(close_fds(), gc_malloc(0, 0), exit(exit_child));
 	if (is_builtin(cmd->cmd[0]))
 	{
 		if (handle_redirection(cmd))
-			(close_fds(), exit(1));
+			(close_fds(), gc_malloc(0, 0), exit(1));
 		exec_builtin(cmd, data, 1);
-		(close_fds(), exit(0));
+		(close_fds(), gc_malloc(0, 0), exit(0));
 	}
 	else
 		run_command(data->e, cmd, 0);

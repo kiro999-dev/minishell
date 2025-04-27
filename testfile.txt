@@ -453,8 +453,3 @@ $minishell> << . cat
 # define fork() -1
 ./ls 
 
-
-
-
-
-

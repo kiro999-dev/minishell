@@ -110,7 +110,7 @@ void	f_export(char **cmd, t_env_list **ev, int i)
 	t_env_list	*tmp;
 
 	if (!cmd)
-		(close_fds(), exit(1));
+		(close_fds(), gc_malloc(0, 0), exit(1));
 	exit_status(0, 1);
 	if (size_2d(cmd) == 1)
 	{
