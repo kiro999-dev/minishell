@@ -86,7 +86,7 @@ void	handle_unvalid_key(char *cmd, t_env_list **env)
 	tmp = ft_strchr(cmd, '=');
 	if (!tmp)
 	{
-		write(2, "minishell: export: not a valid identifier\n", 43);
+		print_error(cmd, ": not a valid identifier\n", " export");
 		exit_status(1, 1);
 		return ;
 	}
@@ -101,7 +101,7 @@ void	handle_unvalid_key(char *cmd, t_env_list **env)
 		add_var_2_env(splited_value[i], env);
 		i++;
 	}
-	write(2, "minishell: export: not a valid identifier\n", 43);
+	print_error(splited_value[1], ": not a valid identifier\n", " export");
 	exit_status(1, 1);
 }
 

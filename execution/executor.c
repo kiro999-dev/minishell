@@ -67,7 +67,7 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 		(close_fds(), gc_malloc(0, 0), exit(126));
 	}
 	else
-		write(2, "minishell: command not found\n", 30);
+		print_error(cmd_lst->cmd[0], ": command not found\n", NULL);
 	if (pid == 0)
 		(close_fds(), gc_malloc(0, 0), exit(127));
 	return ;

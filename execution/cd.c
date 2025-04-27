@@ -78,7 +78,7 @@ void	f_cd(char **cmd, t_data_parsing *data)
 		path = find_path(data->e, "HOME", 4);
 		if (!path)
 		{
-			(free(old_pwd), printf("minishell: cd: HOME not set\n"));
+			(free(old_pwd), write(2, "minishell: cd: HOME not set\n", 29));
 			exit_status(1, 1);
 			return ;
 		}
@@ -98,7 +98,7 @@ void	f_env(t_env_list *env, t_exc_lits *cmd)
 		return ;
 	if (cmd->cmd[1] != NULL)
 	{
-		write(2, "minishell: NO such file or directory\n", 38);
+		print_error(cmd->cmd[1], ": NO such file or directory\n", NULL);
 		exit_status(127, 1);
 		return ;
 	}

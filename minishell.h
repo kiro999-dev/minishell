@@ -116,8 +116,8 @@ typedef struct s_data_parsing
 }t_data_parsing;
 
 
+void print_error(const char *output, char *error, char *builtin);
 int handle_exe_files(char *cmd);
-
 void	close_fds();
 int exit_status(int stat, int flag);
 void	handler(int sig);

@@ -54,7 +54,7 @@ void	f_exit(char **cmd, int child)
 		e_status = ft_atoi(cmd[1]) % 256;
 		if (!is_numeric(cmd[1]))
 		{
-			write(2, "minishell : exit : numeric argument required\n", 46);
+			print_error(cmd[1], ": numeric argument required\n", " exit: ");
 			e_status = 2;
 		}
 		else if (cmd[2])
