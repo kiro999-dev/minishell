@@ -55,14 +55,14 @@ int	ft_atoi(const char *nptr)
 	sum = 0;
 	tmp = nptr;
 	if (!ft_strcmp((char *)nptr, "-9223372036854775808"))
-		exit(0);
+		(close_fds(), exit(0));
 	sign = num_start(&nptr);
 	while (is_num(*nptr))
 	{
 		if (check_overflow(sum, *nptr, sign) != 1)
 		{
 			printf("minishell: exit: %s: numeric argument required\n", tmp);
-			exit(2);
+			(close_fds(), exit(2));
 		}
 		sum = sum * 10 + (*nptr - '0');
 		nptr++;

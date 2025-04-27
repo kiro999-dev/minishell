@@ -53,16 +53,16 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 		if (cmd_lst->cmd[0])
 			handle_file_error(cmd_lst->cmd[0], 0);
 		if (pid == 0)
-			exit(1);
+			(close_fds(), exit(1));
 		else
 			return ;
 	}
 	execve(path, cmd_lst->cmd, env);
 	if (access(path, X_OK) == 0)
-		exit(0);
+		(close_fds(), exit(0));
 	write(2, "minishell: command not found\n", 30);
 	if (pid == 0)
-		exit(127);
+		(close_fds(), exit(127));
 	return ;
 }
 
@@ -76,6 +76,7 @@ int	check_no_cmd(t_exc_lits *head, t_env_list *e)
 	}
 	else if (!head->cmd && head->head_files)
 	{
+		printf("hh\n");
 		exit_status(handle_redirection(head), 1);
 		return (exit_status(0, 0));
 	}
@@ -102,7 +103,7 @@ void	single_cmd(t_data_parsing *data_exec)
 	if (pid == 0)
 	{
 		if (handle_redirection(head))
-			exit(1);
+			(close_fds(), exit(1));
 		run_command(data_exec->e, head, pid);
 	}
 	waitpid(pid, &status, 0);

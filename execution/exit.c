@@ -30,6 +30,18 @@ int	is_numeric(const char *str)
 	return (1);
 }
 
+void	close_fds()
+{
+	int	i;
+
+	i = 3;
+	while (i < 1024)
+	{
+		close(i);
+		i++;
+	}
+}
+
 void	f_exit(char **cmd, int child)
 {
 	int	e_status;
@@ -54,6 +66,7 @@ void	f_exit(char **cmd, int child)
 			e_status = ft_atoi(cmd[1]) % 256;
 	}
 	gc_malloc(0, 0);
+	close_fds();
 	exit(e_status);
 }
 

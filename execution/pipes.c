@@ -36,22 +36,16 @@ int	handle_redirection(t_exc_lits *cmd)
 	}
 	if (fail)
 		return (1);
-	// apply_input_redirection(&last_input_fd, file);
-	// if (check_in_out(file, 0) && last_input_fd == -1)
-	// return (1);
-	// if (apply_output_redirection(&last_output_fd, file, 1))
-	// return (1);
 	if (cmd->heredoc_fd != -1 && cmd->priority == 2)
 		last_input_fd = cmd->heredoc_fd;
 	
 
 	if (cmd->cmd)
 		set_final_redirections(last_input_fd, last_output_fd);
-	else
-	{
+	else if (last_input_fd != -1)
 		close(last_input_fd);
+	else if (last_output_fd != -1)
 		close(last_output_fd);
-	}
 	return (0);
 }
 
@@ -60,7 +54,7 @@ void	child_process(t_exc_lits *cmd, t_data_parsing *data, int in, int fd[2])
 	int	exit_child;
 
 	if (handle_redirection(cmd))
-		exit(1);
+		(close_fds(), exit(1));
 	if (cmd->heredoc_fd == -1 && !check_in_out(cmd->head_files, 0) && in != -1)
 		(dup2(in, STDIN_FILENO), close(in));
 	if (cmd->next && !check_in_out(cmd->head_files, 1))
@@ -71,13 +65,13 @@ void	child_process(t_exc_lits *cmd, t_data_parsing *data, int in, int fd[2])
 	}
 	exit_child = check_no_cmd(cmd, data->e);
 	if (exit_child != -1)
-		exit(exit_child);
+		(close_fds(), exit(exit_child));
 	if (is_builtin(cmd->cmd[0]))
 	{
 		if (handle_redirection(cmd))
-			exit(1);
+			(close_fds(), exit(1));
 		exec_builtin(cmd, data, 1);
-		exit(0);
+		(close_fds(), exit(0));
 	}
 	else
 		run_command(data->e, cmd, 0);

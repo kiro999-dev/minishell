@@ -40,9 +40,9 @@ char	**cmd_case(t_toknes_list **toknz_head_addres)
 void	check_p(t_toknes_list  *head1,t_exc_lits *head2 )
 {
 	int	p;
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	p = 0;
 	while (head1)
 	{

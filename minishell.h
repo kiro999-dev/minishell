@@ -115,6 +115,7 @@ typedef struct s_data_parsing
 }t_data_parsing;
 
 
+void	close_fds();
 int exit_status(int stat, int flag);
 void	handler(int sig);
 void	signals_handling(void);

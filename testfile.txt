@@ -5,6 +5,7 @@
 // ==574130==    by 0x4068D8: init_env (env_utils.c:84)
 // ==574130==    by 0x401314: data_init (minishell.c:22)
 // ==574130==    by 0x40141B: main (minishell.c:85)
+✅✅✅✅✅✅✅✅✅✅✅✅
 exit
 ==232863== 
 ==232863== FILE DESCRIPTORS: 7 open (3 std) at exit.
@@ -29,7 +30,7 @@ exit
 ==232863== 
 ==232863== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
 ==232863==    <inherited from parent>
-==232863== $minishell> exit < cat | '' << here ls > /dev/stdout
+==232863== $minishell> exit < cat | '' << here ls > /dev/stdout ✅✅✅✅✅✅✅✅✅✅✅✅
 > here
 minishell: No such file or directory
 minishell: command not found
@@ -124,11 +125,11 @@ minishell: command not found
 ==232863== For lists of detected and suppressed errors, rerun with: -s
 ==232863== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 
-$minishell> << . cat | ls > exit
+$minishell> << . cat | ls > exit ✅✅✅✅✅✅✅✅✅✅✅✅
 > ..
 > .
-$minishell> << . cat | ls | exit
-> .
+$minishell> << . cat | ls | exit ✅✅✅✅✅✅✅✅✅✅✅✅
+> . 
 ==234420== 
 ==234420== FILE DESCRIPTORS: 6 open (3 std) at exit.
 ==234420== Open file descriptor 4: /tmp/minishell_heredoc_e4d994c8
@@ -160,7 +161,7 @@ $minishell> << . cat | ls | exit
 ==234420== 
 ==234420== For lists of detected and suppressed errors, rerun with: -s
 ==234420== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-$minishell> < cat | cat > /dev/stdout
+$minishell> < cat | cat > /dev/stdout  ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
 minishell: No such file or directory
 ==235650== 
 ==235650== FILE DESCRIPTORS: 7 open (3 std) at exit.
@@ -202,7 +203,7 @@ minishell: No such file or directory
 
 
 
-$minishell> exit < cat | '' << here ls > /dev/stdout
+$minishell> exit < cat | '' << here ls > /dev/stdout  ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
 > here
 minishell: No such file or directory
 minishell: command not found
@@ -282,7 +283,7 @@ minishell: command not found
 ==239162== For lists of detected and suppressed errors, rerun with: -s
 ==239162== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 
-$minishell> exit < cat | tr ' ' '\n' > /dev/stdout
+$minishell> exit < cat | tr ' ' '\n' > /dev/stdout ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
 minishell: No such file or directory
 ==241353== 
 ==241353== FILE DESCRIPTORS: 7 open (3 std) at exit.
@@ -325,11 +326,11 @@ minishell: No such file or directory
 $minishell> 
 
 
-$minishell> < "" "" | "" "" | << ls
+$minishell> < "" "" | "" "" | << ls ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
 > ls
 minishell: No such file or directory
 minishell: command not found
-==242700== Warning: invalid file descriptor -1 in syscall close()
+==242700== Warning: invalid file descriptor -1 in syscall close() ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
 ==242698== 
 ==242698== FILE DESCRIPTORS: 8 open (3 std) at exit.
 ==242698== Open file descriptor 5:
@@ -434,93 +435,18 @@ minishell: command not found
 
 $minishell> < ls << cat >
 syntax error '>'
-$minishell> < ls << cat
+$minishell> < ls << cat ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
 > ldsjfdsf
 > ls
 > cat
-==257899== Warning: invalid file descriptor -1 in syscall close()
-$minishell> < ls << cat | ls
+==257899== Warning: invalid file descriptor -1 in syscall close() ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
+$minishell> < ls << cat | ls 
 > ls
 > cat
 $minishell> ls
 $minishell> ls
 $minishell> << . cat 
 > .
-$minishell> exit
-exit
-==257899== 
-==257899== FILE DESCRIPTORS: 11 open (3 std) at exit.
-==257899== Open file descriptor 8: /dev/pts/0
-==257899==    at 0x49D8FEB: dup (syscall-template.S:120)
-==257899==    by 0x406EBA: builtins_process (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x407188: single_cmd (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40729A: execution (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
-==257899== 
-==257899== Open file descriptor 7: /dev/pts/0
-==257899==    at 0x49D8FEB: dup (syscall-template.S:120)
-==257899==    by 0x406EAD: builtins_process (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x407188: single_cmd (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40729A: execution (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
-==257899== 
-==257899== Open file descriptor 6:
-==257899==    at 0x49D907D: pipe (pipe.c:29)
-==257899==    by 0x40A235: execute_pipeline (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4072E1: execution (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
-==257899== 
-==257899== Open file descriptor 4:
-==257899==    at 0x49D907D: pipe (pipe.c:29)
-==257899==    by 0x40A235: execute_pipeline (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4072E1: execution (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
-==257899== 
-==257899== Open file descriptor 5: /tmp/minishell_heredoc_562e72a9
-==257899==    at 0x49D853B: open (open64.c:41)
-==257899==    by 0x40830C: herdoc_file (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40854D: process_heredocs (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x407271: execution (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
-==257899== 
-==257899== Open file descriptor 3: ls
-==257899==    at 0x49D853B: open (open64.c:41)
-==257899==    by 0x407EB3: apply_input_redirection (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x409E48: handle_redirection (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4070EA: check_no_cmd (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x407159: single_cmd (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40729A: execution (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x40140A: start_minishell (in /home/zkhourba/minishell00/minishell)
-==257899==    by 0x4014FB: main (in /home/zkhourba/minishell00/minishell)
-==257899== 
-==257899== Open file descriptor 103: /home/zkhourba/Downloads/code-stable-x64-1739405584/share/code/v8_context_snapshot.bin
-==257899==    <inherited from parent>
-==257899== 
-==257899== Open file descriptor 37: /home/zkhourba/.config/Code/logs/20250426T193012/ptyhost.log
-==257899==    <inherited from parent>
-==257899== 
-==257899== 
-==257899== HEAP SUMMARY:
-==257899==     in use at exit: 208,935 bytes in 249 blocks
-==257899==   total heap usage: 1,360 allocs, 1,111 frees, 250,450 bytes allocated
-==257899== 
-==257899== LEAK SUMMARY:
-==257899==    definitely lost: 0 bytes in 0 blocks
-==257899==    indirectly lost: 0 bytes in 0 blocks
-==257899==      possibly lost: 0 bytes in 0 blocks
-==257899==    still reachable: 208,935 bytes in 249 blocks
-==257899==         suppressed: 0 bytes in 0 blocks
-==257899== Reachable blocks (those to which a pointer was found) are not shown.
-==257899== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==257899== 
-==257899== For lists of detected and suppressed errors, rerun with: -s
-==257899== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-
 
 
 

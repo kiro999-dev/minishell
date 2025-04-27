@@ -83,7 +83,7 @@ t_env_list	*init_env(char *ev[])
 			else
 				new = new_node(ft_strdup(ev[i]));
 			if (!new)
-				exit(1);
+				(close_fds(), exit(1));
 			add_back(&env_list, new);
 			i++;
 		}

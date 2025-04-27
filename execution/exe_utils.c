@@ -38,7 +38,7 @@ char	*prepare_path(char *path, char *cmd)
 		}
 	}
 	write(2, "minishell: command not found\n", 30);
-	exit(127);
+	(close_fds(), exit(127));
 }
 
 char	*get_path(t_env_list *env, char *cmd)
@@ -48,7 +48,7 @@ char	*get_path(t_env_list *env, char *cmd)
 	if (ft_strlen(cmd) == 0)
 	{
 		write(2, "minishell: command not found\n", 30);
-		exit(127);
+		(close_fds(), exit(127));
 	}
 	if (ft_strchr(cmd, '/') && access(cmd, X_OK) == 0)
 		return (cmd);
@@ -63,7 +63,7 @@ char	*get_path(t_env_list *env, char *cmd)
 		if (access(ft_strjoin("./", cmd), X_OK) == 0)
 			return (cmd);
 		write(2, "minishell: No such file or directory\n", 38);
-		exit(127);
+		(close_fds(), exit(127));
 	}
 	return (prepare_path(env->var + 5, cmd));
 }
