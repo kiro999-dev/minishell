@@ -50,6 +50,8 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 	env = env_list_to_array(e);
 	if (!path || !env)
 	{
+		printf("path unvalid\n");
+
 		if (cmd_lst->cmd[0])
 			handle_file_error(cmd_lst->cmd[0], 0);
 		if (pid == 0)
@@ -57,10 +59,17 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 		else
 			return ;
 	}
+
 	execve(path, cmd_lst->cmd, env);
-	if (access(path, X_OK) == 0)
+	if (handle_exe_files(path) == 0)
 		(close_fds(), gc_malloc(0, 0), exit(0));
-	write(2, "minishell: command not found\n", 30);
+	else if (handle_exe_files(path) == 2)
+	{
+		handle_file_error(path, 0);
+		(close_fds(), gc_malloc(0, 0), exit(126));
+	}
+	else
+		write(2, "minishell: command not found\n", 30);
 	if (pid == 0)
 		(close_fds(), gc_malloc(0, 0), exit(127));
 	return ;
@@ -76,7 +85,6 @@ int	check_no_cmd(t_exc_lits *head, t_env_list *e)
 	}
 	else if (!head->cmd && head->head_files)
 	{
-		printf("hh\n");
 		exit_status(handle_redirection(head), 1);
 		return (exit_status(0, 0));
 	}

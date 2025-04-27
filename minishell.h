@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+#include <sys/stat.h>
 #include <signal.h>
 
 // # define fork() -1
@@ -114,6 +115,8 @@ typedef struct s_data_parsing
 	char *p_pwd;
 }t_data_parsing;
 
+
+int handle_exe_files(char *cmd);
 
 void	close_fds();
 int exit_status(int stat, int flag);

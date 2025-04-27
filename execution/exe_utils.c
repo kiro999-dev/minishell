@@ -50,15 +50,17 @@ char	*get_path(t_env_list *env, char *cmd)
 		write(2, "minishell: command not found\n", 30);
 		(close_fds(), gc_malloc(0, 0), exit(127));
 	}
-	if (ft_strchr(cmd, '/') && access(cmd, X_OK) == 0)
+
+	if (ft_strchr(cmd, '/') && handle_exe_files(cmd) == 0)
 		return (cmd);
+	
 	while (env)
 	{
 		if (!ft_strncmp(env->var, "PATH=", 5))
 			break ;
 		env = env->next;
 	}
-	if (!env)
+	if (!env || ft_strchr(cmd, '/'))
 	{
 		if (access(ft_strjoin("./", cmd), X_OK) == 0)
 			return (cmd);

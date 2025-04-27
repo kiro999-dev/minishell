@@ -65,3 +65,20 @@ void	f_unset(t_env_list **env, char **var)
 	}
 	exit_status(0, 1);
 }
+
+int	handle_exe_files(char *cmd)
+{
+    struct stat	st;
+
+    if (!cmd)
+        return 1;
+    if (stat(cmd, &st) == -1)
+        return 1;
+    if (S_ISDIR(st.st_mode))
+        return 2;
+    if (!S_ISREG(st.st_mode))
+        return 1;
+    if (access(cmd, X_OK) != 0)
+        return 1;
+    return 0;
+}
