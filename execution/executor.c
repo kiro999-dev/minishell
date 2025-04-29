@@ -57,15 +57,11 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 		else
 			return ;
 	}
-
 	execve(path, cmd_lst->cmd, env);
 	if (handle_exe_files(path) == 0)
 		(close_fds(), gc_malloc(0, 0), exit(0));
 	else if (handle_exe_files(path) == 2)
-	{
-		handle_file_error(path, 0);
-		(close_fds(), gc_malloc(0, 0), exit(126));
-	}
+		(handle_file_error(path, 0), close_fds(), gc_malloc(0, 0), exit(126));
 	else
 		print_error(cmd_lst->cmd[0], ": command not found\n", NULL);
 	if (pid == 0)
@@ -100,10 +96,7 @@ void	single_cmd(t_data_parsing *data_exec)
 	if (!head || check_no_cmd(head, data_exec->e) != -1)
 		return ;
 	if (is_builtin(head->cmd[0]))
-	{
-		builtins_process(data_exec);
-		return ;
-	}
+		return (builtins_process(data_exec), (void)0);
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)

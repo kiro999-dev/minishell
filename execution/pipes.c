@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: onajem <onajem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 15:58:23 by onajem            #+#    #+#             */
-/*   Updated: 2025/04/24 18:08:01 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:03:35 by onajem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	handle_redirection(t_exc_lits *cmd)
 	{
 		if (file->type == IS_FILE_IN)
 			fail = apply_input_redirection(&last_input_fd, file);
-
 		if (file->type == IS_FILE_OUT || file->type == IS_FILE_APPEND)
 			fail = apply_output_redirection(&last_output_fd, file, 1);
 		file = file->next;
@@ -38,14 +37,7 @@ int	handle_redirection(t_exc_lits *cmd)
 		return (1);
 	if (cmd->heredoc_fd != -1 && cmd->priority == 2)
 		last_input_fd = cmd->heredoc_fd;
-	
-
-	if (cmd->cmd)
-		set_final_redirections(last_input_fd, last_output_fd);
-	else if (last_input_fd != -1)
-		close(last_input_fd);
-	else if (last_output_fd != -1)
-		close(last_output_fd);
+	set_final_redirections(cmd->cmd, last_input_fd, last_output_fd);
 	return (0);
 }
 

@@ -68,8 +68,7 @@ void	f_cd(char **cmd, t_data_parsing *data)
 	if (size > 2)
 	{
 		write(2, "minishell: cd: too many arguments\n", 35);
-		exit_status(1, 1);
-		return ;
+		return (exit_status(1, 1), (void)0);
 	}
 	old_pwd = getcwd(NULL, 0);
 	path = cmd[1];

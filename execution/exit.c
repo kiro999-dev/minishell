@@ -30,7 +30,7 @@ int	is_numeric(const char *str)
 	return (1);
 }
 
-void	close_fds()
+void	close_fds(void)
 {
 	int	i;
 
@@ -64,9 +64,9 @@ void	f_exit(char **cmd, int child)
 			return ;
 		}
 	}
-		gc_malloc(0, 0);
-		close_fds();
-		exit(e_status);
+	gc_malloc(0, 0);
+	close_fds();
+	exit(e_status);
 }
 
 void	print_export(t_env_list *e)

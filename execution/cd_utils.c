@@ -60,19 +60,19 @@ void	update_pwd(t_data_parsing *data, const char *old_pwd, char *new)
 	replace_key_value(&data->e, "PWD", new);
 }
 
-void print_error(const char *output, char *error, char *builtin)
+void	print_error(const char *output, char *error, char *builtin)
 {
 	write(2, "minishell: ", 12);
 	if (builtin)
 		write(2, builtin, ft_strlen(builtin));
 	if (output)
 		write(2, output, ft_strlen(output));
-	write(2, error, ft_strlen(error));	
+	write(2, error, ft_strlen(error));
 }
 
 void	handle_file_error(const char *path, int ex)
 {
-	char *cd;
+	char	*cd;
 
 	cd = NULL;
 	if (ex)

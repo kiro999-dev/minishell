@@ -116,7 +116,7 @@ typedef struct s_data_parsing
 
 void print_error(const char *output, char *error, char *builtin);
 int handle_exe_files(char *cmd);
-void	close_fds();
+void	close_fds(void);
 int exit_status(int stat, int flag);
 void	handler(int sig);
 void	signals_handling(void);
@@ -233,7 +233,7 @@ int check_in_out(t_file *file, int red);
 int	apply_output_redirection(int *last_out, t_file *file, int single);
 void	hexa_format(unsigned int value, char *output);
 int process_heredocs(t_exc_lits *cmd,t_env_list *e, int fd_herdoc);
-void set_final_redirections(int last_input_fd, int last_output_fd);
+void	set_final_redirections(char **cmd, int last_in_fd, int last_out_fd);
 char *generate_random_filename(void);
 char	*ft_itoa(int n);
 char *find_path(t_env_list *env, char *key, int len);

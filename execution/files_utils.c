@@ -61,18 +61,25 @@ int	apply_output_redirection(int *last_out, t_file *file, int single)
 	return (0);
 }
 
-void	set_final_redirections(int last_input_fd, int last_output_fd)
+void	set_final_redirections(char **cmd, int last_in_fd, int last_out_fd)
 {
-	if (last_input_fd != -1)
+	if (cmd)
 	{
-		dup2(last_input_fd, STDIN_FILENO);
-		close(last_input_fd);
+		if (last_in_fd != -1)
+		{
+			dup2(last_in_fd, STDIN_FILENO);
+			close(last_in_fd);
+		}
+		if (last_out_fd != -1)
+		{
+			dup2(last_out_fd, STDOUT_FILENO);
+			close(last_out_fd);
+		}
 	}
-	if (last_output_fd != -1)
-	{
-		dup2(last_output_fd, STDOUT_FILENO);
-		close(last_output_fd);
-	}
+	else if (last_in_fd != -1)
+		close(last_in_fd);
+	else if (last_out_fd != -1)
+		close(last_out_fd);
 }
 
 char	*generate_random_filename(void)

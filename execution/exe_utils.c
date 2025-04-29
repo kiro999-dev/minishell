@@ -50,7 +50,6 @@ char	*get_path(t_env_list *env, char *cmd)
 		print_error(cmd, ": command not found\n", NULL);
 		(close_fds(), gc_malloc(0, 0), exit(127));
 	}
-	
 	if (ft_strchr(cmd, '/') && handle_exe_files(cmd) == 0)
 		return (cmd);
 	else if (ft_strchr(cmd, '/'))
