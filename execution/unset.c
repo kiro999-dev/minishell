@@ -52,10 +52,7 @@ void	f_unset(t_env_list **env, char **var)
 	int			i;
 
 	if (!env || !var)
-	{
-		printf("something went wrong !\n");
 		return ;
-	}
 	i = -1;
 	while (var[++i])
 	{

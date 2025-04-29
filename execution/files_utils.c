@@ -34,7 +34,7 @@ int	apply_input_redirection(int *last_input_fd, t_file *file)
 	if (*last_input_fd == -1)
 	{
 		if (file->ambigous)
-			write(2, "minishell: ambiguous redirect\n", 31);
+			print_error(file->file, "ambiguous redirect\n", NULL);
 		else
 			handle_file_error(file->file, 0);
 		return (1);
@@ -53,7 +53,7 @@ int	apply_output_redirection(int *last_out, t_file *file, int single)
 	if (*last_out == -1)
 	{
 		if (file->ambigous)
-			write(2, "minishell: ambiguous redirect\n", 31);
+			print_error(file->file, "ambiguous redirect\n", NULL);
 		else
 			handle_file_error(file->file, 0);
 		return (1);

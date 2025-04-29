@@ -33,11 +33,11 @@ char	*prepare_path(char *path, char *cmd)
 		{
 			if (access(dest, X_OK) == 0)
 				return (dest);
-			write(2, "minishell: Permission denied\n", 30);
+			print_error(dest, ": Permission denied\n", NULL);
 			return (NULL);
 		}
 	}
-	write(2, "minishell: command not found\n", 30);
+	print_error(cmd, ": command not found\n", NULL);
 	(close_fds(), gc_malloc(0, 0), exit(127));
 }
 
@@ -47,7 +47,7 @@ char	*get_path(t_env_list *env, char *cmd)
 		return (NULL);
 	if (ft_strlen(cmd) == 0)
 	{
-		write(2, "minishell: command not found\n", 30);
+		print_error(cmd, ": command not found\n", NULL);
 		(close_fds(), gc_malloc(0, 0), exit(127));
 	}
 	
@@ -65,7 +65,7 @@ char	*get_path(t_env_list *env, char *cmd)
 	{
 		if (access(ft_strjoin("./", cmd), X_OK) == 0)
 			return (cmd);
-		write(2, "Xminishell: No such file or directory\n", 38);
+		print_error(cmd, ": No such file or directory\n", NULL);
 		(close_fds(), gc_malloc(0, 0), exit(127));
 	}
 	return (prepare_path(env->var + 5, cmd));

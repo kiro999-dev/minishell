@@ -61,7 +61,7 @@ int	ft_atoi(const char *nptr)
 	{
 		if (check_overflow(sum, *nptr, sign) != 1)
 		{
-			printf("minishell: exit: %s: numeric argument required\n", tmp);
+			print_error(tmp, ": numeric argument required\n", " exit: ");
 			(close_fds(), gc_malloc(0, 0), exit(2));
 		}
 		sum = sum * 10 + (*nptr - '0');
