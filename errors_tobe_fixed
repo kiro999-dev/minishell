@@ -1,0 +1,17 @@
+echo test <<<< 
+minishell => syntax error 
+bash 
+test <<<< 
+
+🔍🔍 in case of input after <<<< signs bash gives syntax error 
+it tries to hanlde it as input file
+
+*******************************************************************************************
+
+<< $"hola"$"b"
+minishell => syntax error 
+bash 
+its not a syntax error and opens the herdoc
+
+*******************************************************************************************
+

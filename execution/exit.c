@@ -54,12 +54,12 @@ void	f_exit(char **cmd, int child)
 		e_status = ft_atoi(cmd[1]) % 256;
 		if (!is_numeric(cmd[1]))
 		{
-			print_error(cmd[1], ": numeric argument required\n", " exit: ");
+			print_error(cmd[1], ": numeric argument required\n", "exit: ");
 			e_status = 2;
 		}
 		else if (cmd[2])
 		{
-			write(2, "minishell : exit : too many arguments\n", 39);
+			write(2, "minishell: exit: too many arguments\n", 37);
 			exit_status(1, 1);
 			return ;
 		}

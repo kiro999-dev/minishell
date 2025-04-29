@@ -76,12 +76,15 @@ void	handle_file_error(const char *path, int ex)
 
 	cd = NULL;
 	if (ex)
-		cd = " cd: ";
+		cd = "cd: ";
 	if (access(path, F_OK) == -1)
 		print_error(path, ": No such file or directory\n", cd);
 	else if (access(path, X_OK) == -1)
 	{
-		print_error(path, ": Permission denied\n", cd);
+		if (handle_exe_files((char *)path) != 2 && ex == 1)
+			print_error(path, ": Not a directory\n", cd);
+		else
+			print_error(path, ": Permission denied\n", cd);
 		if (ex == 0)
 			exit(126);
 	}

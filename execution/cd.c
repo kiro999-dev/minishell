@@ -98,7 +98,7 @@ void	f_env(t_env_list *env, t_exc_lits *cmd)
 		return ;
 	if (cmd->cmd[1] != NULL)
 	{
-		print_error(cmd->cmd[1], ": NO such file or directory\n", NULL);
+		print_error(NULL, "env too many arguments\n", NULL);
 		exit_status(127, 1);
 		return ;
 	}
