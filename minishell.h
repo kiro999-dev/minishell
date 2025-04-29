@@ -70,31 +70,31 @@ typedef struct s_tok_data
 }t_tok;
 typedef struct s_file
 {
-	char *file;
-	t_TOKENS type;
-	int 	ambigous;
-	struct s_file *next;
-	
+	char 			*file;
+	t_TOKENS 		type;
+	int 			ambigous;
+	struct s_file	*next;
+
 }t_file;
 typedef struct s_list_here_doc
 {
-	char	*limtter;
-	int		here_doc;	
-	struct s_list_here_doc *next; 
-	t_TOKENS type;
+	char					*limtter;
+	int						here_doc;	
+	struct s_list_here_doc	*next; 
+	t_TOKENS				type;
 }t_list_here_doc;
 
 typedef struct s_exc_lits
 {
-	char 	**cmd;
-	t_TOKENS type;
-	t_file	*head_files;
-	char 	*limiter;
-	t_list_here_doc *head_here_doc;
-	int 	heredoc_fd;
-	int 	priority;
-	struct s_exc_lits *next;
-	
+	char 				**cmd;
+	t_TOKENS 			type;
+	t_file				*head_files;
+	char 				*limiter;
+	t_list_here_doc		*head_here_doc;
+	int 				heredoc_fd;
+	int 				priority;
+	struct s_exc_lits	*next;
+
 }t_exc_lits;
 typedef struct s_gc_collector
 {

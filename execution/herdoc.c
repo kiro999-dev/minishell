@@ -24,6 +24,7 @@ char	*remove_q_d_h(char *s)
 	j = 0;
 	while (s[i])
 	{
+		j = 0;
 		if (s[i] == '\'')
 			process_quote(s, &i, &cpy, '\'');
 		else if (s[i] == '\"')
