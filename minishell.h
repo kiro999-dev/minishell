@@ -37,8 +37,8 @@ typedef struct s_env_list
 typedef enum e_TOKENS
 {
 	PIPE
-	,REDIR_OUT,REDIR_IN,DOLLAR,CMD,WORD,APPEND
-	,HER_DOC,IS_FILE_APPEND,IS_FILE_IN,IS_FILE_OUT,LIMTER,eq
+	,REDIR_OUT,REDIR_IN,CMD,WORD,APPEND
+	,HER_DOC,IS_FILE_APPEND,IS_FILE_IN,IS_FILE_OUT,LIMTER
 }t_TOKENS;
 
 typedef struct s_toknes
@@ -91,8 +91,6 @@ typedef struct s_exc_lits
 	t_file	*head_files;
 	char 	*limiter;
 	t_list_here_doc *head_here_doc;
-	int		in;
-	int		out;
 	int 	heredoc_fd;
 	int 	priority;
 	struct s_exc_lits *next;
