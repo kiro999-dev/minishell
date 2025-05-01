@@ -62,12 +62,18 @@ void	update_pwd(t_data_parsing *data, const char *old_pwd, char *new)
 
 void	print_error(const char *output, char *error, char *builtin)
 {
-	write(2, "minishell: ", 12);
+	char	*str;
+	int		size;
+
+	str = ft_strdup("minishell: ");
+
 	if (builtin)
-		write(2, builtin, ft_strlen(builtin));
+		str = ft_strjoin(str, builtin);
 	if (output)
-		write(2, output, ft_strlen(output));
-	write(2, error, ft_strlen(error));
+		str = ft_strjoin(str, output);
+	str = ft_strjoin(str, error);
+	size = ft_strlen(str);
+	write(2, str, size);
 }
 
 void	handle_file_error(const char *path, int ex)
