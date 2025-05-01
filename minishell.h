@@ -11,47 +11,45 @@
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
-#include <stdio.h>
-#include <stdbool.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
+# define MINISHELL_H
+# include <stdio.h>
+# include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <limits.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
-#include <sys/stat.h>
-#include <signal.h>
-
-// # define fork() -1
+# include <sys/stat.h>
+# include <signal.h>
 
 typedef struct s_env_list
 {
-    char *var;
-    struct s_env_list *next;
-    short undec;
-} t_env_list;
+    char	*var;
+    struct	s_env_list *next;
+    short	undec;
+}	t_env_list;
 
 typedef enum e_TOKENS
 {
 	PIPE
-	,REDIR_OUT,REDIR_IN,CMD,WORD,APPEND
-	,HER_DOC,IS_FILE_APPEND,IS_FILE_IN,IS_FILE_OUT,LIMTER
+	,REDIR_OUT, REDIR_IN, CMD, WORD, APPEND
+	,HER_DOC, IS_FILE_APPEND, IS_FILE_IN, IS_FILE_OUT, LIMTER
 }t_TOKENS;
 
 typedef struct s_toknes
 {
-	t_TOKENS        type;
-	char*           val;
-	struct s_toknes *next;
-	struct s_toknes *prv;
+	t_TOKENS 		type;
+	char*			val;
+	struct s_toknes	*next;
+	struct s_toknes	*prv;
 	int				split_it;
 	int				split_it2;
 	int				join_me;
 	int				ambiguous;
-	int 			len_expand;
+	int				len_expand;
 	int				flag_exit;
 }t_toknes_list;
 
@@ -70,7 +68,7 @@ typedef struct s_tok_data
 }t_tok;
 typedef struct s_file
 {
-	char 			*file;
+	char			*file;
 	t_TOKENS 		type;
 	int 			ambigous;
 	struct s_file	*next;
@@ -235,32 +233,33 @@ int	apply_output_redirection(int *last_out, t_file *file, int single);
 void	hexa_format(unsigned int value, char *output);
 int process_heredocs(t_exc_lits *cmd,t_env_list *e, int fd_herdoc);
 void	set_final_redirections(char **cmd, int last_in_fd, int last_out_fd);
-char *generate_random_filename(void);
-char	*ft_itoa(int n);
-char *find_path(t_env_list *env, char *key, int len);
-int	env_size(t_env_list *lst);
-int	cmds_size(t_exc_lits *lst);
-int	ft_isalnum(int ch);
-int	ft_isalpha(int c);
-void	f_exit(char **cmd, int child);
-void    f_unset(t_env_list **env, char **var);
-char	*ft_strdup(const char *s1);
-char    *trim_plus_sign(char *key);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-t_env_list *init_env(char *ev[]);
-int     equal_strcmp(const char *s1, const char *s2);
-void    print_export(t_env_list *e);
-void f_export(char **cmd, t_env_list **ev, int i);
-void    export_putstr(char *str);
-int     size_2d(char **arr);
-int     ft_strncmp(const char *s1, const char *s2, size_t n);
-void f_cd(char **cmd, t_data_parsing *data);
-void	echo_putstr(char *s);
-void f_pwd(t_data_parsing *data);
-void    f_echo(char **av);
-void f_env(t_env_list *env, t_exc_lits *cmd);
-char	*custom_strnstr(const char *haystack, const char *needle, size_t len);
-void	execution(t_data_parsing *data_exec);
+char 		*generate_random_filename(void);
+char		*ft_itoa(int n);
+char		 *find_path(t_env_list *env, char *key, int len);
+int			env_size(t_env_list *lst);
+int			cmds_size(t_exc_lits *lst);
+int			ft_isalnum(int ch);
+int			ft_isalpha(int c);
+void		f_exit(char **cmd, int child);
+void		f_unset(t_env_list **env, char **var);
+char		*ft_strdup(const char *s1);
+char		*trim_plus_sign(char *key);
+void		*ft_memcpy(void *dst, const void *src, size_t n);
+t_env_list 	*init_env(char *ev[]);
+int     	equal_strcmp(const char *s1, const char *s2);
+void    	print_export(t_env_list *e);
+void 		f_export(char **cmd, t_env_list **ev, int i);
+void		export_putstr(char *str);
+int			size_2d(char **arr);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+void		f_cd(char **cmd, t_data_parsing *data);
+void		echo_putstr(char *s);
+void 		f_pwd(t_data_parsing *data);
+void		f_echo(char **av);
+void		f_env(t_env_list *env, t_exc_lits *cmd);
+char		*custom_strnstr(const char *haystack,
+			const char *needle, size_t len);
+void		execution(t_data_parsing *data_exec);
 t_env_list	*new_node(void *content);
 
 #endif

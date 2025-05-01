@@ -26,13 +26,13 @@ static char	*build_expand_string_h(int *i, char *val, int *flag)
 			(*i)++;
 			return (ft_strdup("?"));
 		}
-		else if (not_character_expand(val[*i]) && (val[*i] != '\"' 
-			&& val[*i] != '\''))
+		else if (not_character_expand(val[*i]) && (val[*i] != '\"'
+				&& val[*i] != '\''))
 		{
 			*flag = 1;
 			break ;
 		}
-		else if(not_character_expand(val[*i]))
+		else if (not_character_expand(val[*i]))
 			break ;
 		expand = join_character(expand, val[*i]);
 		(*i)++;
@@ -77,19 +77,13 @@ int	handle_dollar_expansion_h(int *i, t_env_list *e,
 	expand = build_expand_string_h(&j, *val, &flag);
 	v = ft_strdup(*val);
 	if (check == 0)
-	{
-		free(*val);
-		*val = NULL;
-	}
+		(free(*val), *val = NULL);
 	found = handle_dollar_expansion_h2(i, e, val, v);
 	if (!found)
 	{
 		if (expand[0] == '?')
-		{
 			*val = expand_val_status_h
-				(ft_itoa(exit_status(0, 0)), v, *i, ft_strlen(expand));
-			(*i)++;
-		}
+				(ft_itoa(exit_status(0, 0)), v, (*i)++, ft_strlen(expand));
 		else
 			*val = expand_val_h(ft_strdup(""), v, *i, ft_strlen(expand));
 		if (flag)
@@ -109,7 +103,7 @@ char	*expand_val_h(char *s, char *val, int j, int len_expand)
 	if (s[0] == '?')
 		flag = 1;
 	p = build_prefix(val, j, len_expand);
-	e = build_env_value(s, 0,flag);
+	e = build_env_value(s, 0, flag);
 	suf = build_suffix(val, j);
 	return (combine_parts(p, e, suf));
 }

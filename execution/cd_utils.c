@@ -66,7 +66,6 @@ void	print_error(const char *output, char *error, char *builtin)
 	int		size;
 
 	str = ft_strdup("minishell: ");
-
 	if (builtin)
 		str = ft_strjoin(str, builtin);
 	if (output)
