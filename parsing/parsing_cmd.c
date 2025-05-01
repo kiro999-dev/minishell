@@ -70,7 +70,6 @@ char	**process_split_it2(t_toknes_list **current,
 
 void	process_default(t_toknes_list **current, char **cmd, int *i)
 {
-
 	if ((*current)->val)
 		cmd[*i] = ft_strdup((*current)->val);
 	else

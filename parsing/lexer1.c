@@ -58,8 +58,8 @@ void	gen_word(t_tok *data_tok, char *s, int *ptr_i)
 void	add_token(t_tok *data_tok, t_toknes_list **head)
 {
 	if (data_tok->is_cmd && !data_tok->is_redir_in
-		&& !data_tok->is_here_d && !data_tok->is_redir_out && 
-				!data_tok->is_append)
+		&& !data_tok->is_here_d && !data_tok->is_redir_out
+		&& !data_tok->is_append)
 		token_add(head, data_tok, CMD);
 	else if (data_tok->is_redir_in)
 		token_add(head, data_tok, IS_FILE_IN);

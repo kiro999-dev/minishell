@@ -86,3 +86,14 @@ void	here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type,
 		tmp->next = node;
 	}
 }
+
+t_exc_lits	*node_inite(void)
+{
+	t_exc_lits	*node;
+
+	node = gc_malloc(sizeof(t_exc_lits), 1);
+	node->next = NULL;
+	node->cmd = NULL;
+	node->priority = 0;
+	return (node);
+}

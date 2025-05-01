@@ -126,9 +126,7 @@ void	handle_dollar_expansion(int *i, t_env_list *e,
 			head->val = expand_val(ft_itoa(exit_status(0, 0)), head, *i, flag3);
 		}
 		else
-		{
 			head->val = expand_val(ft_strdup(""), head, *i, flag3);
-		}
 		if (flag)
 			check_is_expandig(head, e);
 	}

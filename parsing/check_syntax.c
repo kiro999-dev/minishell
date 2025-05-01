@@ -45,12 +45,10 @@ int	check_pipe(t_toknes_list *head)
 
 int	check_redir(t_toknes_list *head)
 {
-
 	if ((!head->next || (head->next->type != IS_FILE_IN
-			&& head->next->type != IS_FILE_APPEND
-			&& head->next->type != IS_FILE_OUT)))
+				&& head->next->type != IS_FILE_APPEND
+				&& head->next->type != IS_FILE_OUT)))
 	{
-		printf("look%s\n",head->prv->val);
 		if (head->next && head->type == APPEND && head->next->type == REDIR_OUT)
 			return (printf("syntax error '>'\n"), 1);
 		else
