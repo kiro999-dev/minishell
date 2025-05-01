@@ -61,6 +61,8 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	tmp = getcwd(NULL, 0);
+	if (!tmp)
+		write(2, "error retrieving current directory: getcwd failed\n", 51);
 	signals_handling();
 	data.p_pwd = ft_strdup(tmp);
 	free(tmp);

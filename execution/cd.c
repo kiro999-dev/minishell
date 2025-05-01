@@ -18,7 +18,10 @@ void	handle_getcwd_fails(t_data_parsing *data, char *cmd)
 	char	*old_tmp;
 
 	old_tmp = ft_strdup(data->p_pwd);
-	data->p_pwd = ft_strjoin(data->p_pwd, ft_strjoin("/", cmd));
+	if (!data->p_pwd)
+		data->p_pwd = ft_strdup(cmd);
+	else
+		data->p_pwd = ft_strjoin(data->p_pwd, ft_strjoin("/", cmd));
 	update_pwd(data, old_tmp, data->p_pwd);
 	chdir(cmd);
 	tmp = getcwd(NULL, 0);
@@ -50,6 +53,8 @@ void	update_paths(t_data_parsing *data, char *old_pwd, char *path)
 		return ;
 	}
 	tmp = getcwd(NULL, 0);
+	if (!tmp)
+		write(2, "error retrieving current directory: getcwd failed\n", 51);
 	data->p_pwd = ft_strdup(tmp);
 	update_pwd(data, old_pwd, data->p_pwd);
 	free(old_pwd);
@@ -87,6 +92,8 @@ void	f_cd(char **cmd, t_data_parsing *data)
 
 void	f_pwd(t_data_parsing *data)
 {
+	if (!data->p_pwd)
+		return ((void)write(2, "pwd : error retrieving current directory: getcwd failed\n", 57));
 	printf("%s\n", data->p_pwd);
 	exit_status(0, 1);
 }

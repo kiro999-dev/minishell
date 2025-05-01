@@ -35,6 +35,8 @@ char	*ft_strdup(const char *s1)
 	char		*s1_cpy;
 	size_t		size;
 
+	if (!s1)
+		return (NULL);
 	size = ft_strlen(s1) + 1;
 	s1_cpy = gc_malloc(size, 1);
 	if (!s1_cpy)
