@@ -31,6 +31,7 @@ int	check_append(t_env_list *env, char *var)
 				value = ft_strjoin("=", value);
 			tmp = ft_strjoin(env->var, value);
 			env->var = tmp;
+			env->undec = 0;
 			return (1);
 		}
 		env = env->next;
