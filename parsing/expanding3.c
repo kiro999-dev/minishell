@@ -96,38 +96,28 @@ void	remove_q_d(t_toknes_list *head)
 void	handle_dollar_expansion(int *i, t_env_list *e,
 		t_toknes_list *head, int flag3)
 {
-	int			flag;
-	char		*expand;
-	int			found;
-	t_env_list	*w;
+	t_expand_var	data;
 
-	w = e;
-	found = 0;
-	expand = build_expand_string(i, head, &flag);
-	while (w)
+	data.w = e;
+	data.found = 0;
+	data.expand = build_expand_string(i, head, &data.flag);
+	data.e = e;
+	data.flag3 = flag3;
+	data.i = i;
+	data.head = head;
+	expand_helper(&data);
+	if (!data.found)
 	{
-		head->flag_exit = 0;
-		head->len_expand = ft_strlen(expand);
-		if (strcmp_env(w->var, expand, ft_strlen(expand)))
-		{
-			found = 1;
-			head->val = expand_val(w->var, head, *i, flag3);
-			if (flag)
-				check_is_expandig(head, e);
-			break ;
-		}
-		w = w->next;
-	}
-	if (!found)
-	{
-		if (expand[0] == '?')
+		if (data.expand[0] == '?')
 		{
 			head->flag_exit = 1;
-			head->val = expand_val(ft_itoa(exit_status(0, 0)), head, *i, flag3);
+			head->val = expand_val(ft_itoa(exit_status(0, 0)),
+					data.head, *data.i, data.flag3);
 		}
 		else
-			head->val = expand_val(ft_strdup(""), head, *i, flag3);
-		if (flag)
+			head->val = expand_val(ft_strdup(""),
+					data.head, *data.i, data.flag3);
+		if (data.flag)
 			check_is_expandig(head, e);
 	}
 }

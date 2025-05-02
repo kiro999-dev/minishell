@@ -93,7 +93,9 @@ void	f_cd(char **cmd, t_data_parsing *data)
 void	f_pwd(t_data_parsing *data)
 {
 	if (!data->p_pwd)
-		return ((void)write(2, "pwd : error retrieving current directory: getcwd failed\n", 57));
+		return ((void)write(2,
+				"pwd : error retrieving current directory: getcwd failed\n",
+				57));
 	printf("%s\n", data->p_pwd);
 	exit_status(0, 1);
 }

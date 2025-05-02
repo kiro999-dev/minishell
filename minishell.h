@@ -110,7 +110,17 @@ typedef struct s_data_parsing
 	t_file *head_file;
 	char *p_pwd;
 }t_data_parsing;
-
+typedef struct s_expand_var
+{
+	int				flag;
+	char			*expand;
+	int				found;
+	t_env_list		*w;
+	int				*i;
+	t_env_list		*e;
+	t_toknes_list	*head;
+	int				flag3;
+}t_expand_var;
 
 void print_error(const char *output, char *error, char *builtin);
 int handle_exe_files(char *cmd);
@@ -182,6 +192,7 @@ char 	**process_split_it2(t_toknes_list **current, char **cmd, int *i, int orig_
 void	 process_split_it(t_toknes_list **current, char **cmd, int *i);
 char	*expand_val(char *s, t_toknes_list *head, int j, int flag);
 void 	handle_dollar_expansion(int *i, t_env_list  *e, t_toknes_list *head, int flag3);
+void	expand_helper(t_expand_var *data);
 void 	remove_q_d(t_toknes_list *head);
 int 	not_character_expand(char c);
 void 	skip_q_expand(char *s, int *ptr_i, int *q_ptr);

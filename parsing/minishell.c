@@ -70,11 +70,8 @@ int	main(int argc, char **argv, char **env)
 	{
 		data.buff = readline("$minishell> ");
 		if (data.buff == NULL)
-		{
-			printf("exit\n");
-			(close_fds(), gc_malloc(0, 0));
-			exit(exit_status(0, 0));
-		}
+			(printf("exit\n"), close_fds(), gc_malloc(0, 0)),
+					exit(exit_status(0, 0));
 		if (data.buff[0] != '\0')
 			add_history(data.buff);
 		start_minishell(&data, env);

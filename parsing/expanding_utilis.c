@@ -64,3 +64,22 @@ int	strcmp_env(char *s1, char *s2, int n)
 		return (0);
 	return (1);
 }
+
+void	expand_helper(t_expand_var *data)
+{
+	while (data->w)
+	{
+		data->head->flag_exit = 0;
+		data->head->len_expand = ft_strlen(data->expand);
+		if (strcmp_env(data->w->var, data->expand, ft_strlen(data->expand)))
+		{
+			data->found = 1;
+			data->head->val = expand_val(data->w->var,
+					data->head, *data->i, data->flag);
+			if (data->flag)
+				check_is_expandig(data->head, data->e);
+			break ;
+		}
+		data->w = data->w->next;
+	}
+}
