@@ -38,7 +38,7 @@ typedef enum e_TOKENS
 	, REDIR_OUT, REDIR_IN, CMD, WORD, APPEND
 	, HER_DOC, IS_FILE_APPEND, IS_FILE_IN, IS_FILE_OUT, LIMTER
 }t_TOKENS;
-typedef struct s_toknes_list
+typedef struct s_toknes
 {
 	t_TOKENS type;
 	char *val;
