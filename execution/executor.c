@@ -61,7 +61,7 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 	if (handle_exe_files(path) == 0)
 		(close_fds(), gc_malloc(0, 0), exit(0));
 	else if (handle_exe_files(path) == 2)
-		(handle_file_error(path, 0), close_fds(), gc_malloc(0, 0), exit(126));
+		(handle_file_error(path, 2), close_fds(), gc_malloc(0, 0), exit(126));
 	else
 		print_error(cmd_lst->cmd[0], ": command not found\n", NULL);
 	if (pid == 0)
