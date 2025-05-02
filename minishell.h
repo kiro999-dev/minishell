@@ -27,16 +27,22 @@
 
 typedef struct s_env_list
 {
-    char	*var;
-    struct	s_env_list *next;
-    short	undec;
+	char				*var;
+	struct s_env_list	*next;
+	short				undec;
 }	t_env_list;
 
 typedef enum e_TOKENS
 {
 	PIPE
-	,REDIR_OUT, REDIR_IN, CMD, WORD, APPEND
-	,HER_DOC, IS_FILE_APPEND, IS_FILE_IN, IS_FILE_OUT, LIMTER
+	,REDIR_OUT, 
+	REDIR_IN, 
+	CMD, WORD, 
+	APPEND
+	,HER_DOC,
+	 IS_FILE_APPEND, 
+	 IS_FILE_IN,
+	 IS_FILE_OUT, LIMTER
 }t_TOKENS;
 
 typedef struct s_toknes

@@ -57,9 +57,10 @@ int	main(int argc, char **argv, char **env)
 	t_data_parsing	data;
 	char			*tmp;
 
+	if (!isatty(1) || !isatty(0))
+		return (1);
 	data_init(&data, env, 1);
-	(void)argc;
-	(void)argv;
+	((void)argc, (void)argv);
 	tmp = getcwd(NULL, 0);
 	if (!tmp)
 		write(2, "error retrieving current directory: getcwd failed\n", 51);
