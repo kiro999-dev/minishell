@@ -36,7 +36,7 @@ int	apply_input_redirection(int *last_input_fd, t_file *file)
 		if (file->ambigous)
 			print_error(file->file, "ambiguous redirect\n", NULL);
 		else
-			handle_file_error(file->file, 0);
+			handle_file_error(file->file, 2);
 		return (1);
 	}
 	return (0);
@@ -55,7 +55,7 @@ int	apply_output_redirection(int *last_out, t_file *file, int single)
 		if (file->ambigous)
 			print_error(file->file, "ambiguous redirect\n", NULL);
 		else
-			handle_file_error(file->file, 0);
+			handle_file_error(file->file, 2);
 		return (1);
 	}
 	return (0);
