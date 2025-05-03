@@ -45,6 +45,7 @@ typedef enum e_TOKENS
 	struct s_toknes * next;
 	struct s_toknes * prv;
 	int split_it;
+	char *saved_val;
 	int split_it2;
 	int join_me;
 	int ambiguous;

@@ -19,6 +19,10 @@ int	isfile(t_TOKENS type, t_toknes_list *tokenz_head)
 	{
 		tokenz_head->ambiguous = 0;
 	}
+	else if (tokenz_head->ambiguous)
+	{
+		tokenz_head->val = tokenz_head->saved_val;
+	}
 	if (type == IS_FILE_IN || type == IS_FILE_OUT || type == IS_FILE_APPEND)
 		return (1);
 	return (0);

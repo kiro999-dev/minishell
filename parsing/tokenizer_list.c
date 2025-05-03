@@ -28,6 +28,7 @@ t_toknes_list	*creat_node(char *val, t_TOKENS type, int join_me)
 	node->ambiguous = 0;
 	node->len_expand = 0;
 	node->flag_exit = 0;
+	node->saved_val = NULL;
 	return (node);
 }
 

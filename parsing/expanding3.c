@@ -105,6 +105,7 @@ void	handle_dollar_expansion(int *i, t_env_list *e,
 	data.flag3 = flag3;
 	data.i = i;
 	data.head = head;
+	data.head->saved_val = ft_strdup(head->val);
 	expand_helper(&data);
 	if (!data.found)
 	{

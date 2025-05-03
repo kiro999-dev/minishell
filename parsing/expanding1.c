@@ -74,8 +74,8 @@ int	check_is_expandig(t_toknes_list *head, t_env_list *e, int flag_split)
 		else if (head->val[i] == '$'
 			&& !(head->val[i + 1] >= '0' && head->val[i + 1] <= '9'))
 		{
-			expand_plain(head, e, &i, flag_split);
 			head->ambiguous = 1;
+			expand_plain(head, e, &i, flag_split);
 		}
 		i++;
 	}
