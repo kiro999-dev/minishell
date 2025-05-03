@@ -50,7 +50,6 @@ typedef enum e_TOKENS
 	int ambiguous;
 	int len_expand;
 	int flag_exit;
-	int nb_here_doc;
 }t_toknes_list;
 
 typedef struct s_tok_data
@@ -125,6 +124,7 @@ typedef struct s_expand_var
 }t_expand_var;
 
 void		print_error(const char *output, char *error, char *builtin);
+int			check_here_doc_nb(t_toknes_list *head1);
 int			handle_exe_files(char *cmd);
 void		close_fds(void);
 int			exit_status(int stat, int flag);

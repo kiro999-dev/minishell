@@ -45,6 +45,12 @@ void	start_minishell(t_data_parsing *data, char **env)
 {
 	if (parsing(data))
 	{
+		if (check_here_doc_nb(data->head_toknez))
+		{
+			printf("minishell: maximum here-document count exceeded\n");
+			gc_malloc(0, 0);
+			exit(2);
+		}
 		execution(data);
 		data_init(data, env, 0);
 	}

@@ -12,6 +12,23 @@
 
 #include "../minishell.h"
 
+int	check_here_doc_nb(t_toknes_list *head1)
+{
+	int	count;
+
+	count = 0;
+	while (head1)
+	{
+		if (head1->type == HER_DOC)
+			count++;
+		head1 = head1->next;
+	}
+	if (count >= 17)
+		return (1);
+	else
+		return (0);
+}
+
 static int	expand_in_double_quotes_h(char **val, t_env_list *e, int *i,
 		int check)
 {
