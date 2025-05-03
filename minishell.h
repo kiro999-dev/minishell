@@ -50,6 +50,7 @@ typedef enum e_TOKENS
 	int ambiguous;
 	int len_expand;
 	int flag_exit;
+	int nb_here_doc;
 }t_toknes_list;
 
 typedef struct s_tok_data
