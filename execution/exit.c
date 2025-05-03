@@ -77,7 +77,8 @@ void	print_export(t_env_list *e)
 	}
 	while (e)
 	{
-		export_putstr(e->var);
+		if (ft_strncmp(e->var, "_=", 2))
+			export_putstr(e->var);
 		e = e->next;
 	}	
 }

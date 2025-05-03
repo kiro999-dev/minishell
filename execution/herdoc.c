@@ -79,8 +79,7 @@ void	fill_herdoc_file(int fd, char *limtter, t_exc_lits *cmd, t_env_list *e)
 		}
 		if (is_qouted(limtter))
 			flag = 1;
-		limtter = ft_strdup(remove_q_d_h(limtter));
-		if (!line || !ft_strcmp(line, limtter))
+		if (!line || !ft_strcmp(line, ft_strdup(remove_q_d_h(limtter))))
 		{
 			(close(fd), free(line));
 			break ;

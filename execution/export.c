@@ -44,6 +44,8 @@ void	add_var_2_env(char *cmd, t_env_list **env)
 	t_env_list	*new;
 	int			if_key_exist;
 
+	if (!ft_strncmp(cmd, "_=", 2))
+		return ;
 	if (check_append(*env, cmd))
 		return ;
 	if_key_exist = replace_existing_key(*env, cmd);
