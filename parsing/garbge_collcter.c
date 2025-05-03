@@ -12,6 +12,28 @@
 
 #include "../minishell.h"
 
+char	*creat_value(int i, int flag, char *s)
+{
+	char	*res;
+
+	res = ft_strdup("");
+	if (s[i] == '\'')
+		res = join_character(res, '\"');
+	if (s[i] == '\"')
+		res = join_character(res, '\'');
+	else if (flag)
+		res = join_character(res, '\"');
+	while (s[i])
+		res = join_character(res, s[i++]);
+	if (i > 0 && s[i - 1] == '\"')
+		res = join_character(res, '\'');
+	if (i > 0 && s[i - 1] == '\'')
+		res = join_character(res, '\"');
+	else if (flag)
+		res = join_character(res, '\"');
+	return (res);
+}
+
 void	free_gc(t_gc_collector **gc_head)
 {
 	t_gc_collector	*tmp;

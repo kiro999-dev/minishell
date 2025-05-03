@@ -63,7 +63,7 @@ int	herdoc_file(char *filename, t_exc_lits *cmd)
 	return (fd);
 }
 
-void	fill_herdoc_file(int fd, char *limtter, t_exc_lits *cmd, t_env_list *e)
+void	fill_herdoc_file(int fd, char *limtter, t_env_list *e)
 {
 	char	*line;
 	int		flag;
@@ -74,7 +74,7 @@ void	fill_herdoc_file(int fd, char *limtter, t_exc_lits *cmd, t_env_list *e)
 		line = readline("> ");
 		if (exit_herdoc(0, 0))
 		{
-			(close(cmd->heredoc_fd), close(fd), free(line));
+			(close_fds(), free(line));
 			break ;
 		}
 		if (is_qouted(limtter))
@@ -109,7 +109,7 @@ int	process_heredocs(t_exc_lits *cmd, t_env_list *e, int fd)
 				exit_status(1, 1);
 				break ;
 			}
-			fill_herdoc_file(fd, herdoc_head->limtter, cmd, e);
+			fill_herdoc_file(fd, herdoc_head->limtter, e);
 			close(fd);
 			if (herdoc_head->next)
 				close(cmd->heredoc_fd);

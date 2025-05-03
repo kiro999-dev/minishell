@@ -33,7 +33,6 @@ char	*build_env_value(char *s, int flag, int flag_exit)
 	char	*res;
 
 	i = 0;
-	res = ft_strdup("");
 	if (!flag_exit)
 	{
 		while (s[i] && s[i] != '=')
@@ -41,16 +40,7 @@ char	*build_env_value(char *s, int flag, int flag_exit)
 		if (s[i])
 			i++;
 	}
-	if (s[i] == '\"' && flag)
-		res = join_character(res, '\'');
-	else if (flag)
-		res = join_character(res, '\"');
-	while (s[i])
-		res = join_character(res, s[i++]);
-	if (i > 0 && s[i - 1] == '\"' && flag)
-		res = join_character(res, '\'');
-	else if (flag)
-		res = join_character(res, '\"');
+	res = creat_value(i, flag, s);
 	return (res);
 }
 

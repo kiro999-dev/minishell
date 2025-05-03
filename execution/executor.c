@@ -74,12 +74,14 @@ int	check_no_cmd(t_exc_lits *head, t_env_list *e)
 	(void)e;
 	if (!head->cmd && !head->head_files)
 	{
+		close_fds();
 		exit_status(0, 1);
 		return (0);
 	}
 	else if (!head->cmd && head->head_files)
 	{
 		exit_status(handle_redirection(head), 1);
+		close_fds();
 		return (exit_status(0, 0));
 	}
 	return (-1);

@@ -209,6 +209,7 @@ void		here_doc_add(t_list_here_doc **head, char *LIMTER, t_TOKENS type,
 				int here_doc);
 char		*expand_val_h(char *s, char *val, int j, int flag);
 char		*expand_val_status_h(char *s, char *val, int j, int len_expand);
+char		*creat_value(int i, int flag, char *s);
 int			check_is_expandig_h(char **val, t_env_list *e, int check);
 void		expand_helper(t_expand_var *data);
 int			handle_dollar_expansion_h(int *i, t_env_list *e, char **val,
