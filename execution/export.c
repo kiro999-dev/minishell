@@ -90,8 +90,7 @@ void	handle_unvalid_key(char *cmd, t_env_list **env)
 	if (!tmp)
 	{
 		print_error(cmd, ": not a valid identifier\n", " export");
-		exit_status(1, 1);
-		return ;
+		return ((void)exit_status(1, 1));
 	}
 	splited_value = ft_split(tmp + 1, " ");
 	if (!splited_value)
@@ -104,7 +103,9 @@ void	handle_unvalid_key(char *cmd, t_env_list **env)
 		add_var_2_env(splited_value[i], env);
 		i++;
 	}
-	print_error(splited_value[1], ": not a valid identifier\n", " export");
+	i = 0;
+	while (splited_value[++i])
+		print_error(splited_value[i], ": not a valid identifier\n", " export: ");
 	exit_status(1, 1);
 }
 
