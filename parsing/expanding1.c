@@ -38,8 +38,11 @@ static void	expand_in_double_quotes(t_toknes_list *head, t_env_list *e, int *i)
 	}
 }
 
-static void	expand_plain(t_toknes_list *head, t_env_list *e, int *i)
+static void	expand_plain(t_toknes_list *head, t_env_list *e, int *i,
+	int flag_split)
 {
+	if (flag_split)
+		head->split_it = 1;
 	if (split_t2condi(head->val, 0) && head->val[0] != '$')
 		head->split_it2 = 1;
 	else
@@ -52,7 +55,7 @@ static void	expand_plain(t_toknes_list *head, t_env_list *e, int *i)
 		handle_dollar_expansion(i, e, head, 1);
 }
 
-int	check_is_expandig(t_toknes_list *head, t_env_list *e)
+int	check_is_expandig(t_toknes_list *head, t_env_list *e, int flag_split)
 {
 	int	i;
 	int	q;
@@ -70,7 +73,7 @@ int	check_is_expandig(t_toknes_list *head, t_env_list *e)
 		}
 		else if (head->val[i] == '$')
 		{
-			expand_plain(head, e, &i);
+			expand_plain(head, e, &i, flag_split);
 			head->ambiguous = 1;
 		}
 		i++;
@@ -78,7 +81,7 @@ int	check_is_expandig(t_toknes_list *head, t_env_list *e)
 	return (i);
 }
 
-int	check_expand(t_toknes_list *head, t_env_list *e)
+int	check_expand(t_toknes_list *head, t_env_list *e, int flag_split)
 {
 	int	i;
 	int	flag;
@@ -91,7 +94,7 @@ int	check_expand(t_toknes_list *head, t_env_list *e)
 	{
 		if (head->val[i] == '$' && head->type != LIMTER)
 		{
-			i = check_is_expandig(head, e);
+			i = check_is_expandig(head, e, flag_split);
 			flag = 1;
 		}
 		len = ft_strlen(head->val);
@@ -103,11 +106,18 @@ int	check_expand(t_toknes_list *head, t_env_list *e)
 void	expanding(t_toknes_list *token_head, t_env_list *e)
 {
 	t_toknes_list	*head;
+	int				flag;
 
+	flag = 1;
 	head = token_head;
+	if (head)
+	{
+		if (!ft_strcmp(head->val, "export"))
+			flag = 0;
+	}
 	while (head)
 	{
-		check_expand(head, e);
+		check_expand(head, e, flag);
 		remove_q_d(head);
 		head = head->next;
 	}

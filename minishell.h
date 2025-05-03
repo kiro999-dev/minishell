@@ -147,13 +147,15 @@ int			redir_in(int *i_ptr, char *s, t_toknes_list **head, t_tok *d);
 void		add(t_toknes_list **head, char *val, t_TOKENS type, int join_me);
 int			check_syntax(t_toknes_list *head);
 int			split_t2condi(char *s, int i);
-int			check_expand(t_toknes_list *head, t_env_list *e);
-int			check_is_expandig(t_toknes_list *head, t_env_list *e);
+int			check_expand(t_toknes_list *head, t_env_list *e, int flag_split);
+int			check_is_expandig(t_toknes_list *head, t_env_list *e,
+				int flag_split);
 void		expanding(t_toknes_list *token_head, t_env_list *e);
 void		add_list_file(t_file **head, char *name, t_TOKENS type,
 				int ambigous);
 void		add_list_exc(t_exc_lits **head, char **cmd, t_TOKENS type,
 				t_file *head_files);
+char		*remove_q_d_h(char *s);
 void		add_back_list(t_exc_lits **head, t_exc_lits *node);
 t_exc_lits	*creat_node_exc(char **cmd, t_TOKENS type, t_file *head_files);
 char		*ft_substr(char const *s, int start, int len);

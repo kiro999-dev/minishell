@@ -77,7 +77,7 @@ void	expand_helper(t_expand_var *data)
 			data->head->val = expand_val(data->w->var,
 					data->head, *data->i, data->flag);
 			if (data->flag)
-				check_is_expandig(data->head, data->e);
+				check_is_expandig(data->head, data->e, 0);
 			break ;
 		}
 		data->w = data->w->next;
