@@ -111,6 +111,18 @@ typedef struct s_data_parsing
 	char			*p_pwd;
 }t_data_parsing;
 
+typedef struct s_expand_var
+{
+	int				flag;
+	char			*expand;
+	int				found;
+	t_env_list		*w;
+	int				*i;
+	t_env_list		*e;
+	t_toknes_list	*head;
+	int				flag3;
+}t_expand_var;
+
 void		print_error(const char *output, char *error, char *builtin);
 int			handle_exe_files(char *cmd);
 void		close_fds(void);
@@ -121,7 +133,6 @@ void		heredoc_signals(void);
 int			exit_herdoc(int x, int flag);
 int			check_exit(int status);
 void		default_signals(void);
-void		print_list(t_toknes_list *to);
 size_t		counting_words(const char *s1, char *c);
 char		*join_character(char *s, char c);
 char		*ft_strdup(const char *s1);
