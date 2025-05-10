@@ -55,8 +55,6 @@ char **val, char *v)
 		{
 			found = 1;
 			*val = expand_val_h(e->var, v, *i, ft_strlen(expand));
-			if (flag)
-				check_is_expandig_h(val, e, 1);
 			break ;
 		}
 		e = e->next;

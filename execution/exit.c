@@ -51,7 +51,7 @@ void	f_exit(char **cmd, int child)
 		printf("exit\n");
 	if (cmd[1])
 	{
-		e_status = ft_atoi(cmd[1]) % 256;
+		e_status = ft_atoi(cmd[1], 1) % 256;
 		if (!is_numeric(cmd[1]))
 		{
 			print_error(cmd[1], ": numeric argument required\n", "exit: ");

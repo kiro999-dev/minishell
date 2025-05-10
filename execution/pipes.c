@@ -6,7 +6,7 @@
 /*   By: zkhourba <zkhourba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 15:58:23 by onajem            #+#    #+#             */
-/*   Updated: 2025/05/03 21:19:24 by zkhourba         ###   ########.fr       */
+/*   Updated: 2025/05/04 15:26:54 by zkhourba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	child_process(t_exc_lits *cmd, t_data_parsing *data, int in, int fd[2])
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	exit_child = check_no_cmd(cmd, data->e);
+	exit_child = check_no_cmd(cmd);
 	if (exit_child != -1)
 		(close_fds(), gc_malloc(0, 0), exit(exit_child));
 	if (is_builtin(cmd->cmd[0]))

@@ -149,7 +149,7 @@ int			redir_in(int *i_ptr, char *s, t_toknes_list **head, t_tok *d);
 void		add(t_toknes_list **head, char *val, t_TOKENS type, int join_me);
 int			check_syntax(t_toknes_list *head);
 int			split_t2condi(char *s, int i);
-int			check_expand(t_toknes_list *head, t_env_list *e, int flag_split);
+void		check_expand(t_toknes_list *head, t_env_list *e, int flag_split);
 int			check_is_expandig(t_toknes_list *head, t_env_list *e,
 				int flag_split);
 void		expanding(t_toknes_list *token_head, t_env_list *e);
@@ -223,7 +223,7 @@ char		*combine_parts(char *p, char *e, char *s);
 void		process_quote(char *s, int *i, char **cpy, char quote);
 char		*process_unquoted(char *s, int *i);
 int			handle_redirection(t_exc_lits *cmd);
-int			check_no_cmd(t_exc_lits *head, t_env_list *e);
+int			check_no_cmd(t_exc_lits *head);
 void		run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid);
 void		child_process(t_exc_lits *cmd, t_data_parsing *data, int in,
 				int fd[2]);
@@ -243,7 +243,7 @@ void		replace_key_value(t_env_list **env, const char *key,
 				const char *value);
 void		add_var_2_env(char *cmd, t_env_list **env);
 int			is_num(char c);
-int			ft_atoi(const char *nptr);
+int			ft_atoi(const char *nptr, int ex);
 void		get_key_value(char *var, char **key, char **value);
 char		*prepare_path(char *path, char *cmd);
 char		*get_path(t_env_list *env, char *cmd);

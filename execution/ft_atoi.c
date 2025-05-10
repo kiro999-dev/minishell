@@ -46,7 +46,7 @@ static int	num_start(const char **str)
 	return (sign);
 }
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi(const char *nptr, int ex)
 {
 	int			sign;
 	long long	sum;
@@ -54,13 +54,15 @@ int	ft_atoi(const char *nptr)
 
 	sum = 0;
 	tmp = nptr;
-	if (!ft_strcmp((char *)nptr, "-9223372036854775808"))
+	if (!ft_strcmp((char *)nptr, "-9223372036854775808") && ex)
 		(close_fds(), gc_malloc(0, 0), exit(0));
 	sign = num_start(&nptr);
 	while (is_num(*nptr))
 	{
 		if (check_overflow(sum, *nptr, sign) != 1)
 		{
+			if (ex == 0)
+				return (0);
 			print_error(tmp, ": numeric argument required\n", " exit: ");
 			(close_fds(), gc_malloc(0, 0), exit(2));
 		}

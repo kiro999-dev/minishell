@@ -87,9 +87,8 @@ void	handle_unvalid_key(char *cmd, t_env_list **env)
 	int		i;
 
 	tmp = ft_strchr(cmd, '=');
-	if (!tmp)
+	if (!tmp || !*(tmp + 1))
 	{
-		print_error(cmd, ": not a valid identifier\n", " export");
 		return ((void)exit_status(1, 1));
 	}
 	splited_value = ft_split(tmp + 1, " ");
@@ -100,12 +99,12 @@ void	handle_unvalid_key(char *cmd, t_env_list **env)
 		i--;
 	while (splited_value[i])
 	{
+		if (!valid_key(splited_value[i]))
+			print_error(splited_value[i], ": not a valid identifier\n",
+				" export: ");
 		add_var_2_env(splited_value[i], env);
 		i++;
 	}
-	i = 0;
-	while (splited_value[++i])
-		print_error(splited_value[i], ": not a valid identifier\n", " export: ");
 	exit_status(1, 1);
 }
 
@@ -121,18 +120,19 @@ void	f_export(char **cmd, t_env_list **ev, int i)
 		tmp = copy_list(*ev);
 		if (!tmp)
 			return ;
-		sort_env(&tmp);
-		print_export(tmp);
+		(sort_env(&tmp), print_export(tmp));
 	}
 	else
 	{
-		while (cmd[i])
+		while (cmd[++i])
 		{
 			if (!valid_key(cmd[i]))
+			{
+				print_error(cmd[i], ": not a valid identifier\n", " export: ");
 				handle_unvalid_key(cmd[i], ev);
+			}
 			else
 				add_var_2_env(cmd[i], ev);
-			i++;
 		}
 	}
 }

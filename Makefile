@@ -19,7 +19,7 @@ NAME = minishell
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC)  $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)  
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)  
 
 
 %.o: %.c $(INC)

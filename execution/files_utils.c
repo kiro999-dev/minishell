@@ -31,7 +31,7 @@ int	apply_input_redirection(int *last_input_fd, t_file *file)
 		close(*last_input_fd);
 	if (file->file && file->ambigous != 1)
 		*last_input_fd = open(file->file, O_RDONLY);
-	if (*last_input_fd == -1 || file->ambigous == 1)
+	if (*last_input_fd == -1)
 	{
 		if (file->ambigous)
 			print_error(file->file, "ambiguous redirect\n", NULL);
@@ -50,7 +50,7 @@ int	apply_output_redirection(int *last_out, t_file *file, int single)
 		*last_out = open(file->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else if (file->type == IS_FILE_APPEND && file->ambigous != 1)
 		*last_out = open(file->file, O_RDWR | O_CREAT | O_APPEND, 0644);
-	if (*last_out == -1 || file->ambigous == 1)
+	if (*last_out == -1)
 	{
 		if (file->ambigous)
 			print_error(file->file, " ambiguous redirect\n", NULL);

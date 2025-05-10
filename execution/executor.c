@@ -69,9 +69,8 @@ void	run_command(t_env_list *e, t_exc_lits *cmd_lst, int pid)
 	return ;
 }
 
-int	check_no_cmd(t_exc_lits *head, t_env_list *e)
+int	check_no_cmd(t_exc_lits *head)
 {
-	(void)e;
 	if (!head->cmd && !head->head_files)
 	{
 		close_fds();
@@ -95,7 +94,7 @@ void	single_cmd(t_data_parsing *data_exec)
 
 	status = 0;
 	head = data_exec->head_exe;
-	if (!head || check_no_cmd(head, data_exec->e) != -1)
+	if (!head || check_no_cmd(head) != -1)
 		return ;
 	if (is_builtin(head->cmd[0]))
 		return (builtins_process(data_exec), (void)0);

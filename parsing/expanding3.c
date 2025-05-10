@@ -118,7 +118,6 @@ void	handle_dollar_expansion(int *i, t_env_list *e,
 		else
 			head->val = expand_val(ft_strdup(""),
 					data.head, *data.i, data.flag3);
-		if (data.flag)
-			check_is_expandig(head, e, 0);
+		(*i) -= data.head->len_expand;
 	}
 }

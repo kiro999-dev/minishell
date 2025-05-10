@@ -52,7 +52,7 @@ char	*handle_shlvl(char *lvl)
 	if (!equal_sign || !*(equal_sign + 1))
 		return (ft_strdup("SHLVL=1"));
 	value_str = equal_sign + 1;
-	value = ft_atoi(value_str);
+	value = ft_atoi(value_str, 0);
 	value++;
 	if (value > 9998)
 	{

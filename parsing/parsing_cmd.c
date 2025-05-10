@@ -38,36 +38,6 @@ void	process_split_it(t_toknes_list **current, char **cmd, int *i)
 	join_the_strings(current, cmd, i);
 }
 
-char	**process_split_it2(t_toknes_list **current,
-	char **cmd, int *i, int orig_count)
-{
-	int		re_count;
-	char	**split;
-	int		j;
-
-	re_count = 0;
-	split = NULL;
-	j = 0;
-	split = ft_split((*current)->val, " \t\n");
-	re_count = counting(split);
-	if ((*current)->join_me)
-	{
-		if (*i > 0)
-		{
-			(*i)--;
-			cmd[*i] = ft_strjoin(cmd[*i], split[0]);
-		}
-		else
-			cmd[*i] = ft_strdup(split[0]);
-		j++;
-		(*i)++;
-	}
-	cmd = realloc_cmd_array(cmd, orig_count, re_count);
-	copy_the_splited_string(split, cmd, i, j);
-	join_the_strings(current, cmd, i);
-	return (cmd);
-}
-
 void	process_default(t_toknes_list **current, char **cmd, int *i)
 {
 	if ((*current)->val)
@@ -101,9 +71,6 @@ char	**copy_cmd_tokens(t_toknes_list *token, int count)
 		{
 			if (current->split_it)
 				process_split_it(&current, cmd, &i);
-			else if (current->split_it2 && cmd[0]
-				&& ft_strcmp("export", cmd[0]))
-				cmd = process_split_it2(&current, cmd, &i, count);
 			else
 				process_default(&current, cmd, &i);
 		}

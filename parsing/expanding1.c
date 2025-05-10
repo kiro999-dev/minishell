@@ -82,26 +82,20 @@ int	check_is_expandig(t_toknes_list *head, t_env_list *e, int flag_split)
 	return (i);
 }
 
-int	check_expand(t_toknes_list *head, t_env_list *e, int flag_split)
+void	check_expand(t_toknes_list *head, t_env_list *e, int flag_split)
 {
 	int	i;
-	int	flag;
 	int	len;
 
 	i = 0;
-	flag = 0;
 	len = ft_strlen(head->val);
 	while (head && head->val && i < len)
 	{
 		if (head->val[i] == '$' && head->type != LIMTER)
-		{
 			i = check_is_expandig(head, e, flag_split);
-			flag = 1;
-		}
 		len = ft_strlen(head->val);
 		i++;
 	}
-	return (flag);
 }
 
 void	expanding(t_toknes_list *token_head, t_env_list *e)
