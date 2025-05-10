@@ -76,6 +76,7 @@ void	expand_helper(t_expand_var *data)
 			data->found = 1;
 			data->head->val = expand_val(data->w->var,
 					data->head, *data->i, data->flag);
+			(*data->i) -= data->head->len_expand;
 			break ;
 		}
 		data->w = data->w->next;
